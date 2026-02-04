@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Administrateur</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px; border-radius: 12px; margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filters {
+            display: flex; gap: 15px; margin-bottom: 30px; background: white;
+            padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-btn {
+            padding: 10px 20px; border: 2px solid #e0e0e0; background: white;
+            border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.3s;
+        }
+        
+        .filter-btn.active { background: #667eea; color: white; border-color: #667eea; }
+        
+        .table-container {
+            background: white; border-radius: 12px; overflow: visible; /* Important pour le dropdown */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 20px; text-align: left; border-bottom: 1px solid #e9ecef; }
+        thead { background-color: #f8f9fa; }
+        
+        .status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-validate { background-color: #91fdaa; color: #155724; }
+        .status-reject { background-color: #ff6b77; color: #721c24; }
+        
+        /* Dropdown Logic */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-toggle {
+            background: none; border: none; cursor: pointer; font-size: 24px;
+            padding: 5px 10px; color: #6c757d;
+        }
+        
+        .dropdown-menu {
+            position: absolute; right: 0; top: 100%; background: white;
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 160px; z-index: 1000; display: none; /* Masqué par défaut */
+        }
+        
+        .dropdown.show .dropdown-menu { display: block; }
+        
+        .dropdown-item {
+            display: block; width: 100%; padding: 12px 20px; border: none;
+            background: none; text-align: left; cursor: pointer; font-size: 14px; transition: 0.2s;
+        }
+        
+        .dropdown-item.validate { color: #28a745; }
+        .dropdown-item.validate:hover { background-color: #d4edda; }
+        .dropdown-item.reject { color: #dc3545; }
+        .dropdown-item.reject:hover { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Page Administrateur</h1>
+            <p>Gestion des demandes de tokens API</p>
+        </div>
+
+
+        <div th:if="${message}" th:class="'alert alert-' + ${message.type}">
+            <p th:text="${message.content}"></p>
+        </div>
+    
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTable('ALL', this)">Tous</button>
+            <button class="filter-btn" onclick="filterTable('PENDING', this)">En attente</button>
+            <button class="filter-btn" onclick="filterTable('VALIDATED', this)">Validés</button>
+            <button class="filter-btn" onclick="filterTable('REJECT', this)">Rejetés</button>
+        </div>
+
+        <div class="table-container">
+            <table th:if="${requests != null and !requests.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>NOM</th>
+                        <th>EMAIL</th>
+                        <th>STATUS</th>
+                        <th style="width: 80px;">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="requestTableBody">
+                    <tr th:each="request : ${requests}" 
+                        th:data-status="${request.statusRequestToken}" 
+                        class="request-row">
+                        
+                        <td th:text="${request.clientName}">Nom</td>
+                        <td th:text="${request.email}">Email</td>
+                        <td>
+                            <span th:class="'status-badge status-' + ${#strings.toLowerCase(request.statusRequestToken)}"
+                                  th:text="${request.statusRequestToken}">STATUS</span>
+                        </td>
+                        <td>
+                            <!-- Dropdown uniquement pour PENDING -->
+                            <div class="dropdown" th:if="${#strings.toString(request.statusRequestToken) == 'PENDING'}">
+                                <button class="dropdown-toggle" onclick="toggleMenu(this)">⋮</button>
+                                <div class="dropdown-menu">
+                                    <form th:action="@{/admin/request/validate/{id}(id=${request.id})}" method="post">
+                                        <button type="submit" class="dropdown-item validate">✓ Valider</button>
+                                    </form>
+                                    <form th:action="@{/admin/request/reject/{id} (id=${request.id})}" method="post">
+                                        <button type="submit" class="dropdown-item reject">✕ Rejeter</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Si pas PENDING, on affiche un petit tiret pour le design -->
+                            <span th:unless="${#strings.toString(request.statusRequestToken) == 'PENDING'}" style="color: #ccc; padding-left: 10px;">-</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fonction de filtrage
+        function filterTable(status, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const rows = document.querySelectorAll('.request-row');
+            rows.forEach(row => {
+                const rowStatus = row.getAttribute('data-status');
+                if (status === 'ALL' || rowStatus === status) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        // Fonction Toggle Menu
+        function toggleMenu(button) {
+            const parent = button.parentElement;
+            // Ferme les autres menus ouverts
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== parent) d.classList.remove('show');
+            });
+            // Bascule le menu actuel
+            parent.classList.toggle('show');
+        }
+
+        // Fermer les menus si on clique à l'extérieur
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+            }
+        }
+    </script>
+</body>
+</html>

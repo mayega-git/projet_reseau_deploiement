@@ -1,0 +1,171 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-discussion-group
+      author: codex
+      changes:
+        - createTable:
+            tableName: discussion_group
+            columns:
+              - column:
+                  name: group_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: creator_name
+                  type: text
+              - column:
+                  name: creator_id
+                  type: uuid
+              - column:
+                  name: name
+                  type: text
+              - column:
+                  name: type
+                  type: text
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: members
+                  type: uuid[]
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: deleted_at
+                  type: timestamp
+
+
+  - changeSet:
+      id: 002-create-categorie
+      author: codex
+      changes:
+        - createTable:
+            tableName: categorie
+            columns:
+              - column:
+                  name: categorie_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: categorie_nom
+                  type: text
+              - column:
+                  name: groupe_id
+                  type: uuid
+              - column:
+                  name: date_suppression
+                  type: timestamp
+              - column:
+                  name: posts_ids
+                  type: uuid[]
+
+  - changeSet:
+      id: 003-create-post
+      author: codex
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: post_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: auteur_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: groupe_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_titre
+                  type: text
+              - column:
+                  name: post_contenu
+                  type: text
+              - column:
+                  name: date_creation
+                  type: timestamp
+              - column:
+                  name: date_modification
+                  type: timestamp
+              - column:
+                  name: date_supression
+                  type: timestamp
+              - column:
+                  name: categorie_ids
+                  type: uuid[]
+              - column:
+                  name: post_likes
+                  type: uuid[]
+              - column:
+                  name: post_dislikes
+                  type: uuid[]
+              - column:
+                  name: number_of_likes
+                  type: int
+              - column:
+                  name: number_of_dislikes
+                  type: int
+
+  - changeSet:
+      id: 004-create-commentaire
+      author: codex
+      changes:
+        - createTable:
+            tableName: commentaire
+            columns:
+              - column:
+                  name: commentaire_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: contenu
+                  type: text
+              - column:
+                  name: auteur_id
+                  type: uuid
+              - column:
+                  name: date_creation
+                  type: timestamp
+              - column:
+                  name: date_modification
+                  type: timestamp
+              - column:
+                  name: date_suppression
+                  type: timestamp
+              - column:
+                  name: post_id
+                  type: uuid
+              - column:
+                  name: commentaire_parent_id
+                  type: uuid
+  - changeSet:
+      id: 005-add-status-to-discussion-group
+      author: codex
+      changes:
+        - addColumn:
+            tableName: discussion_group
+            columns:
+              - column:
+                  name: status
+                  type: text
+                  defaultValue: PENDING
+                  constraints:
+                    nullable: false

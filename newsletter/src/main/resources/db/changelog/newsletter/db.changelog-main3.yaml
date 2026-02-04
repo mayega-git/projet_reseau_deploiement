@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-merges9
+      author: megane
+      preConditions:
+        onFail: MARK_RAN
+        onError: HALT
+        not:
+          tableExists:
+            tableName: comments
+      changes:
+        - sqlFile:
+            path: sql/news1.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: false

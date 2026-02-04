@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+ 
+
+  scylla:
+    image: scylladb/scylla:5.4.3  # version stable et légère
+    container_name: scylla
+    ports:
+      - "9042:9042"     # Port Cassandra CQL
+      - "10000:10000"   # Port REST (facultatif)
+    command: --smp 1 --memory 512M
+    volumes:
+      - scylla-data:/var/lib/scylla
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  scylla-data:

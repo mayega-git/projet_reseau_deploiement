@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Demande de Token API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <h3 class="card-title mb-4 text-center">
+                        Demande de Token API
+                    </h3>
+
+                    <!-- ALERT -->
+                    <div th:if="${message}"
+                         th:class="'alert alert-' + ${message.type}"
+                         id="alertMessage"
+                         class="d-flex align-items-start gap-2">
+
+                        <strong class="me-1">
+                            <span th:if="${message.type == 'success'}">✓</span>
+                            <span th:if="${message.type == 'error'}">✗</span>
+                            <span th:if="${message.type == 'warning'}">⚠</span>
+                            <span th:if="${message.type == 'info'}">ℹ</span>
+                        </strong>
+
+                        <div class="flex-grow-1">
+                            <p class="mb-0" th:text="${message.content}"></p>
+                        </div>
+
+                        <button type="button" class="btn-close" onclick="closeAlert()"></button>
+                    </div>
+
+                    <!-- FORM -->
+                    <form th:action="@{/request}" th:object="${requestTokenDto}" method="post">
+
+                        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+                        <input type="hidden" th:field="*{id}">
+
+                        <!-- Client name -->
+                        <div class="mb-3">
+                            <label class="form-label">Nom du client</label>
+                            <input type="text"
+                                   class="form-control"
+                                   th:field="*{clientName}"
+                                   placeholder="Nom du client"
+                                   required>
+                            <div class="text-danger small"
+                                 th:if="${#fields.hasErrors('clientName')}"
+                                 th:errors="*{clientName}"></div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label class="form-label">Email</label>
+                            <input type="email"
+                                   class="form-control"
+                                   th:field="*{email}"
+                                   placeholder="email@exemple.com"
+                                   required>
+                            <div class="text-danger small"
+                                 th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}"></div>
+                        </div>
+
+                        <!-- SERVICES -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Services & Scopes (max 3)
+                            </label>
+
+                            <div id="servicesContainer" class="vstack gap-3">
+
+                                <div class="border rounded p-3 bg-body"
+                                     th:each="entry, iter : ${requestTokenDto.serviceNames}">
+
+                                                                            <div class="form-group mb-3 service-scope-group">
+                                        <div class="row g-2 align-items-end">
+                                            <div class="col-md-5">
+                                            <label for="module0" class="form-label">Module</label>
+                                            <select id="module0" name="module_0" class="form-select" required>
+                                                <option value="">-- Sélectionnez --</option>
+                                                <!-- Options dynamiques -->
+                                            </select>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                            <label for="scope0" class="form-label">Scope</label>
+                                            <select id="scope0" name="scope_0" class="form-select" required>
+                                                <option value="">-- Sélectionnez --</option>
+                                                <!-- Options dynamiques -->
+                                            </select>
+                                            </div>
+
+                                            <div class="col-md-2 text-end">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeService(this)">
+                                                ✗
+                                            </button>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                </div>
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm mt-3 btn-add"
+                                    onclick="addService()">
+                                + Ajouter un service
+                            </button>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="reset" class="btn btn-outline-secondary">
+                                Réinitialiser
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                Soumettre
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    
+    <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            const MAX_SERVICES = 4;
+
+            // === Données backend ===
+            const modules = [];
+            /*[# th:each="module : ${T(com.education_service.apiKeygateway.enums.Module).values()}"]*/
+            modules.push({
+                name: /*[[${module.name()}]]*/ '',
+                value: /*[[${module.value}]]*/ ''
+            });
+            /*[/]*/
+
+            const scopes = [];
+            /*[# th:each="scope : ${T(com.education_service.apiKeygateway.enums.Scope).values()}"]*/
+            scopes.push(/*[[${scope.name()}]]*/ '');
+            /*[/]*/
+
+            // === Helpers ===
+            function getServiceCount() {
+                return document.querySelectorAll('#servicesContainer .service-scope-group').length;
+            }
+
+            function updateAddButtonState() {
+                const addBtn = document.querySelector('.btn-add');
+                addBtn.disabled = getServiceCount() >= MAX_SERVICES;
+                addBtn.style.opacity = addBtn.disabled ? '0.6' : '1';
+            }
+
+            // === Ajout service ===
+            function addService() {
+
+                if (getServiceCount() >= MAX_SERVICES) {
+                    return; // sécurité
+                }
+
+                const index = getServiceCount();
+                const container = document.getElementById('servicesContainer');
+
+                const serviceDiv = document.createElement('div');
+                serviceDiv.className = 'service-scope-group';
+
+                let moduleOptions = '<option value="">-- Sélectionnez --</option>';
+                modules.forEach(m =>
+                    moduleOptions += `<option value="${m.name}">${m.value}</option>`
+                );
+
+                let scopeOptions = '<option value="">-- Sélectionnez --</option>';
+                scopes.forEach(s =>
+                    scopeOptions += `<option value="${s}">${s}</option>`
+                );
+
+                serviceDiv.innerHTML = `
+                    <div>
+                        <label>Module</label>
+                        <select name="module_${index}" required>
+                            ${moduleOptions}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Scope</label>
+                        <select name="scope_${index}" required>
+                            ${scopeOptions}
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn-remove" onclick="removeService(this)">✗</button>
+                `;
+
+                container.appendChild(serviceDiv);
+                updateAddButtonState();
+            }
+
+            // === Suppression service ===
+            function removeService(button) {
+                button.closest('.service-scope-group').remove();
+                updateAddButtonState();
+            }
+
+            // === Alert UX ===
+            function closeAlert() {
+                const alert = document.getElementById('alertMessage');
+                if (alert) {
+                    alert.style.animation = 'slideUp 0.3s ease-out';
+                    setTimeout(() => alert.remove(), 300);
+                }
+            }
+
+            window.onload = function () {
+                updateAddButtonState();
+
+                const alert = document.getElementById('alertMessage');
+                if (alert && alert.classList.contains('alert-success')) {
+                    setTimeout(closeAlert, 5000);
+                }
+            };
+
+            /*]]>*/
+</script>
+
+</body>
+
+</html>

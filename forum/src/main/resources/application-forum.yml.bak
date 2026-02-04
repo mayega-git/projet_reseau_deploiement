@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: forum
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/forum_new
+    username: billnelson
+    password: Billnelson
+  sql:
+    init:
+      mode: never
+  liquibase:
+    url: jdbc:postgresql://localhost:5433/forum_new
+    user: postgres
+    password: password
+    change-log: "classpath:db/changelog/db.changelog-master.yaml"
+
+server:
+  port: 8083
+
+jwt:
+  secret: "a4s545c45xy56cyx4c87dc546ojisiaciduu8454d45"
+
+validation:
+  url: "http://localhost:8080/api/public/auth/validate"
+
+security:
+  apikey:
+    enabled: false

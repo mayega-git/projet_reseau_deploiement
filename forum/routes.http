@@ -1,0 +1,196 @@
+# Base configuration (replace sample UUIDs with real ones from your database)
+@baseUrl = http://localhost:8081
+@keyId = 00000000-0000-0000-0000-000000000001
+@creatorId = 00000000-0000-0000-0000-000000000002
+@memberId = 00000000-0000-0000-0000-000000000003
+@userId = 00000000-0000-0000-0000-000000000003
+@groupId = 17916a6c-5b13-48fc-9acf-ba88e85282e9
+@categorieId = b14ccf80-b5e5-4e39-83c8-0d1bee21ad9f
+@postId = 54bb2464-43ff-4905-94f7-dfc83c5f41e9
+@commentaireId = 52c8a621-be53-44da-b571-513093dd158b
+@postAuteurId = 00000000-0000-0000-0000-000000000008
+@apiKey = DEMO-API-KEY
+
+###
+# DiscussionGroupController
+POST {{baseUrl}}/api/public/operation/groups?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "keyId": "{{keyId}}",
+  "creatorId": "{{creatorId}}",
+  "creatorName": "Demo creator",
+  "name": "Groupe de test",
+  "type": "COMMUNITY",
+  "description": "Cree via routes.http",
+  "members": ["{{memberId}}", "{{creatorId}}"]
+}
+
+###
+GET {{baseUrl}}/api/public/operation/groups/{{groupId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+GET {{baseUrl}}/api/public/operation/groups/key/{{keyId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+PUT {{baseUrl}}/api/public/operation/groups/{{groupId}}?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "keyId": "{{keyId}}",
+  "creatorId": "{{creatorId}}",
+  "creatorName": "Demo creator",
+  "name": "Groupe mis a jour",
+  "type": "FORUM",
+  "description": "Mise a jour via routes.http",
+  "members": ["{{memberId}}", "{{creatorId}}"]
+}
+
+###
+DELETE {{baseUrl}}/api/public/operation/groups/{{groupId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+POST {{baseUrl}}/api/public/operation/groups/{{groupId}}/members?memberId={{memberId}}&userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+# CategorieController
+POST {{baseUrl}}/api/public/operation/categories/{{groupId}}?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "categorieName": "Annonces",
+  "postsIds": []
+}
+
+###
+GET {{baseUrl}}/api/public/operation/categories/{{categorieId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+GET {{baseUrl}}/api/public/operation/categories/groupe/{{groupId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+PUT {{baseUrl}}/api/public/operation/categories/{{categorieId}}?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "categorieId": "{{categorieId}}",
+  "categorieName": "Annonces mises a jour",
+  "groupeId": "{{groupId}}",
+  "postsIds": []
+}
+
+###
+DELETE {{baseUrl}}/api/public/operation/categories/{{categorieId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+# PostController
+POST {{baseUrl}}/api/public/operation/posts/?userid={{userId}}&memberId={{memberId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "authorId": "{{postAuteurId}}",
+  "groupId": "{{groupId}}",
+  "title": "Titre de post",
+  "content": "Contenu de demonstration",
+  "categoriesIds": ["{{categorieId}}"],
+  "postLikes": [],
+  "postDislikes": []
+}
+
+###
+GET {{baseUrl}}/api/public/operation/posts/{{postId}}?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+GET {{baseUrl}}/api/public/operation/posts/groupe/{{groupId}}?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+GET {{baseUrl}}/api/public/operation/posts/auteur/{{postAuteurId}}?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+GET {{baseUrl}}/api/public/operation/posts/categorie/{{categorieId}}?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+PUT {{baseUrl}}/api/public/operation/posts/{{postId}}?userid={{userId}}&memberId={{memberId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "postId": "{{postId}}",
+  "authorId": "{{postAuteurId}}",
+  "groupId": "{{groupId}}",
+  "title": "Titre mis a jour",
+  "content": "Contenu mis a jour",
+  "categoriesIds": ["{{categorieId}}"],
+  "postLikes": [],
+  "postDislikes": []
+}
+
+###
+POST {{baseUrl}}/api/public/operation/posts/{{postId}}/like?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+DELETE {{baseUrl}}/api/public/operation/posts/{{postId}}/like?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+POST {{baseUrl}}/api/public/operation/posts/{{postId}}/dislike?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+DELETE {{baseUrl}}/api/public/operation/posts/{{postId}}/dislike?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+DELETE {{baseUrl}}/api/public/operation/posts/{{postId}}?userid={{userId}}&memberId={{memberId}}
+X-API-KEY: {{apiKey}}
+
+###
+# CommentaireController
+POST {{baseUrl}}/api/public/operation/commentaires/?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "content": "Premier commentaire",
+  "authorId": "{{memberId}}",
+  "postId": "{{postId}}",
+  "commentaireParentId": null
+}
+
+###
+GET {{baseUrl}}/api/public/operation/commentaires/post/{{postId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}
+
+###
+PUT {{baseUrl}}/api/public/operation/commentaires/{{commentaireId}}?userid={{userId}}
+Content-Type: application/json
+X-API-KEY: {{apiKey}}
+
+{
+  "commentaireId": "{{commentaireId}}",
+  "content": "Commentaire edite",
+  "authorId": "{{memberId}}",
+  "postId": "{{postId}}",
+  "commentaireParentId": null
+}
+
+###
+DELETE {{baseUrl}}/api/public/operation/commentaires/{{commentaireId}}?userid={{userId}}
+X-API-KEY: {{apiKey}}

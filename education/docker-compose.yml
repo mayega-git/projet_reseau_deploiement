@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+   image: postgres:latest
+   container_name: container-postgres
+   restart: always
+   volumes: 
+      - pg_data:/var/lib/postgresql/data # Montage du volume nommé
+   ports:
+      - "5433:5432"
+   environment:
+      POSTGRES_DB: education-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminuser
+
+  education-service:
+    build: .
+    container_name: education-service-app
+    restart: always
+    ports:
+      - "8083:8080" # Mappe le port de l'hôte (8083) vers le port du conteneur (8080)
+    environment:
+      # L'URL de connexion R2DBC DOIT utiliser le nom du service Docker Compose
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/education-service
+    depends_on:
+      - postgres
+
+volumes:
+    pg_data:

@@ -1,0 +1,256 @@
+# ========================================
+# application.yml - Bases de données SÉPARÉES
+# ========================================
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: education-service-monolith
+    ping:
+      host: https://gateway.yowyob.com/media-service
+    datasource:
+      username: postgres
+      password: adminuser
+  main:
+    allow-bean-definition-overriding: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+
+    # JWT (Gateway)
+  app:
+    secret-key-jwt: 942faeb8l7276e4b49tb248sd291a1c69caa
+    expiration-time: 3600
+    authorized-services: "EDUCATION,NEWSLETTER,RATINGS,FORUM,USER,APIKEYGATEWAY"
+    header-api-key: "X-API-KEY-GATEWAY"
+    header-api-key-client: "X-API-KEY-GATEWAY-CLIENT"
+    public-paths: /swagger-ui/**,/v3/api-docs/**,/auth/refresh,/actuator/**,/health,/education-service/apikeygateway/**,/admin/**,/request/** #exclure des chemins du webfilter
+
+  # ========================================
+  # BASE DE DONNÉES PRINCIPALE (Gateway)
+  # ========================================
+
+  # MAIL
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tsaffotagouffomegane@gmail.com
+    password: psgl txqb ovbu rdmt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+        acks: all
+        retries: 3
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+
+  # ========================================
+  # LIQUIBASE PRINCIPAL (Gateway)
+  # ========================================
+  gateway:
+    r2dbc:
+      url: r2dbc:postgresql://localhost:5433/apikeygateway
+
+    liquibase:
+      enabled: true
+      url: jdbc:postgresql://localhost:5433/apikeygateway
+      change-log: classpath:db/changelog/gateway/db.changelog-master.yaml
+      default-schema: public
+      drop-first: false
+
+  # ========================================
+  # EDUCATION
+  # ========================================
+
+  education:
+    datasource:
+      url: r2dbc:postgresql://localhost:5433/education-service
+     
+
+    liquibase:
+      url: jdbc:postgresql://localhost:5433/education-service
+      change-log: classpath:db/changelog/education/db.changelog-master.yaml
+      enabled: true
+
+    ping:
+      host: https://gateway.yowyob.com/media-service
+
+    webflux:
+    multipart:
+      max-in-memory-size: 100MB
+      max-request-size: 100MB
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:/path/to/podcasts/
+  media:
+    api:
+      url: https://gateway.yowyob.com/media-service
+
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      enabled: true
+
+  # ========================================
+  # RATINGS
+  # ========================================
+
+  ratings:
+    datasource:
+      url: r2dbc:postgresql://localhost:5433/review-service
+      driver-class-name: org.postgresql.Driver
+    liquibase:
+      enabled: true
+      url: jdbc:postgresql://localhost:5433/review-service
+      change-log: classpath:db/changelog/ratings/db.changelog-main.yaml
+
+    sql:
+    init:
+      mode: always
+      continue-on-error: true
+
+  # ========================================
+  # NEWSLETTER
+  # ========================================
+
+  forum:
+    datasource:
+      url: r2dbc:postgresql://localhost:5433/forum_new
+      
+    liquibase:
+      enabled: true
+      url: jdbc:postgresql://localhost:5433/forum_new
+      change-log: classpath:db/changelog/forum/db.changelog-master.yaml
+      default-schema: public
+    jwt:
+      secret: "a4s545c45xy56cyx4c87dc546ojisiaciduu8454d45"
+    validation:
+      url: "http://localhost:8080/api/public/auth/validate"
+    security:
+      apikey:
+        enabled: false
+
+  # BASE DE DONNÉES NEWSLETTER (SÉPARÉE)
+  newsletter:
+    datasource:
+      url: r2dbc:postgresql://localhost:5433/newsletter
+      username: postgres
+      password: adminuser
+    liquibase:
+      enabled: true
+      url: jdbc:postgresql://localhost:5433/newsletter
+      username: postgres
+      password: adminuser
+      change-log: classpath:db/changelog/newsletter/db.changelog-main3.yaml
+      default-schema: public
+    kafka:
+      topic-prefix: "news"
+      num-partitions: 3
+      replication-factor: 1
+      consumer-group-prefix: "cg"
+
+  # ========================================
+  # FORUM
+  # ========================================
+
+
+
+
+# ========================================
+# BASE DE DONNÉES USERS (SÉPARÉE) - Exemple
+# ========================================
+#users:
+#  datasource:
+#    url: r2dbc:postgresql://localhost:5433/users_db
+#    username: postgres
+#    password: adminuser
+#  liquibase:
+#    enabled: true
+#    url: jdbc:postgresql://localhost:5433/users_db
+#    user: postgres
+#    password: adminuser
+#    change-log: classpath:db/changelog/users/db.changelog-master.yaml
+
+# ========================================
+# CONFIGURATION MODULES
+# ========================================
+
+# ========================================
+# OpenAPI
+# ========================================
+api-docs:
+  enabled: true
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Client-Id
+
+  # ========================================
+  # SÉCURITÉ
+  # ========================================
+  security:
+    user:
+      name: apiKeyUser
+      password: password123
+
+# ========================================
+# LOGGING
+# ========================================
+logging:
+  file.name: ${LOG_FILE:app.log}
+  level:
+    #root: DEBUG
+    com.education.apigateway: DEBUG
+    com.example.newsletter_service: DEBUG
+    com.newsletter: DEBUG
+    org:
+      springdoc: DEBUG
+      springframework:
+        kafka: INFO
+        security: TRACE
+        web:
+      
+        server.handler: TRACE
+       
+     # r2dbc: DEBUG
+    #io.r2dbc.postgresql:
+    #  QUERY: DEBUG
+    #  PARAM: DEBUG
+    #  ERROR: DEBUG
+    org.thymeleaf: TRACE
+    org.thymeleaf.spring6: TRACE

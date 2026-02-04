@@ -1,0 +1,33 @@
+Ce micro-service Spring Boot (WebFlux + R2DBC) expose les fonctionnalités de ratings/reviews.
+L'application est branchée sur **PostgreSQL** : aucun composant Scylla/Cassandra n'est nécessaire.
+
+## Prérequis
+- Java 21
+- Maven 3.9+
+- Docker (optionnel mais recommandé pour démarrer PostgreSQL rapidement)
+
+## Démarrer PostgreSQL localement
+1. `docker compose up -d postgres`
+2. Les identifiants sont définis dans `docker-compose.yml` et correspondent à ceux de `src/main/resources/application.yml`.
+
+## Lancer l'application
+```bash
+./mvnw spring-boot:run
+```
+
+L'API écoute sur `http://localhost:8082` et la documentation OpenAPI est accessible sur `/swagger-ui.html`.
+
+## Important : Modification du schema 
+
+IL est possible de modifier le schema pour une persistence plus stricte ou moins stricte.
+
+### Exemple :
+
+1.    `entity_type designe l'entite qui est evaluer (livreur ,vehicule,blog)`
+
+2.    `CONSTRAINT comments_entity_type_check CHECK (entity_type IN ('<ENTITE1>','<ENTITE>'))` est une contrainte pour verifier que les valeurs a enregistrer dans le champ entity_type corresponde exactement aux entités à évaluer.
+
+3.    `Cette contrainte peut etre supprimer toutes fois si vous voulez la conserver remplacer <ENTITE> par vos entites correspondantes`.
+
+## swagger
+ `http:localhost:8082/swagger-ui.html`

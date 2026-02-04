@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "media.storage.oauth2.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'media.storage.oauth2.client-id'"
+  },
+  {
+    "name": "media.storage.oauth2.token-url",
+    "type": "java.lang.String",
+    "description": "A description for 'media.storage.oauth2.token-url'"
+  },
+  {
+    "name": "media.storage.oauth2.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'media.storage.oauth2.client-secret'"
+  },
+  {
+    "name": "media.storage.oauth2.scope",
+    "type": "java.lang.String",
+    "description": "A description for 'media.storage.oauth2.scope'"
+  },
+  {
+    "name": "media.storage.api.url",
+    "type": "java.lang.String",
+    "description": "A description for 'media.storage.api.url'"
+  },
+  {
+    "name": "media.mappings.default.service",
+    "type": "java.lang.String",
+    "description": "A description for 'media.mappings.default.service'"
+  },
+  {
+    "name": "media.mappings.image.type",
+    "type": "java.lang.String",
+    "description": "A description for 'media.mappings.image.type'"
+  },
+  {
+    "name": "media.mappings.audio.type",
+    "type": "java.lang.String",
+    "description": "A description for 'media.mappings.audio.type'"
+  },
+  {
+    "name": "media.mappings.image.path",
+    "type": "java.lang.String",
+    "description": "A description for 'media.mappings.image.path'"
+  },
+  {
+    "name": "media.mappings.audio.path",
+    "type": "java.lang.String",
+    "description": "A description for 'media.mappings.audio.path'"
+  }
+]}

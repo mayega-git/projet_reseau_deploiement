@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-apikeygateway-schema
+      author: mayega
+      preConditions:
+        onFail: MARK_RAN
+        onError: HALT
+        not:
+          tableExists:
+            tableName: comments
+      changes:
+        - sqlFile:
+            path: sql/V1__create_apikeygateway_schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: false

@@ -1,0 +1,74 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: education-service
+
+    ping:
+      host: https://gateway.yowyob.com/media-service 
+  
+  r2dbc:
+     
+    url: r2dbc:postgresql://localhost:5433/education-service 
+    username: postgres
+    password: adminuser 
+
+  liquibase:
+    url: jdbc:postgresql://localhost:5433/education-service
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    user: postgres
+    password: adminuser
+    enabled: true
+
+
+  webflux:
+    multipart:
+      max-in-memory-size: 100MB
+      max-request-size: 100MB
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:/path/to/podcasts/
+  media:
+    api:
+      url: https://gateway.yowyob.com/media-service
+        
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      enabled: true
+
+  logging:
+    level:
+      org.springframework:
+        http.codec.json: DEBUG
+        web.reactive.result.method.annotation: DEBUG
+        web.reactive.function.server: DEBUG
+        web.reactive.function.client: DEBUG
+        http.codec.multipart: DEBUG
+        web: DEBUG
+        r2dbc: DEBUG
+        reactor.netty.http.client.HttpClient: DEBUG
+        com.fasterxml.jackson: DEBUG
+      
+      io.r2dbc.postgresql:
+        QUERY: DEBUG
+        PARAM: DEBUG
+        ERROR: DEBUG
+
+server:
+  port: 8081
+
+
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics # Expose le point de terminaison /actuator/health
+  endpoint:
+    health:
+      show-details: always # Afficher les détails de tous les composants, y compris la BD

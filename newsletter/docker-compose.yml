@@ -1,0 +1,84 @@
+services:
+  zookeeper-new:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper-new
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181" # Using different port from the stuck container
+    networks:
+      - newsletter-network
+
+  kafka-new:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka-new
+    depends_on:
+      - zookeeper-new
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-new:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka-new:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+    networks:
+      - newsletter-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  #postgres:
+  #  image: postgres:15-alpine
+  #  container_name: newsletter-postgres
+  #  environment:
+  #    POSTGRES_DB: mybd
+  #    POSTGRES_USER: myuser
+  #    POSTGRES_PASSWORD: mypassword
+  # ports:
+  #   - "5434:5432"
+  #  volumes:
+  #    - postgres_data:/var/lib/postgresql/data
+  #    - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  #  networks:
+  #   - newsletter-network
+  #  healthcheck:
+  #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #    interval: 10s
+  #    timeout: 5s
+  #    retries: 5
+
+  # pgAdmin (optional - for database management UI)
+  #pgadmin:
+  #  image: dpage/pgadmin4:latest
+  #  container_name: newsletter-pgadmin
+  #  environment:
+  #    PGADMIN_DEFAULT_EMAIL: admin@newsletter.com
+  #    PGADMIN_DEFAULT_PASSWORD: admin
+  #   PGADMIN_CONFIG_SERVER_MODE: 'False'
+  # ports:
+  #    - "5050:80"
+  # volumes:
+  #   - pgadmin_data:/var/lib/pgadmin
+  #  networks:
+  #   - newsletter-network
+  #  depends_on:
+  #    - postgres
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  zookeeper_data:
+  zookeeper_logs:
+  kafka_data:
+
+networks:
+  newsletter-network:
+    driver: bridge
