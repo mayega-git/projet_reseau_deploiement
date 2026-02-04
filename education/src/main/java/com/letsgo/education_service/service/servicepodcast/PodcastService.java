@@ -296,6 +296,11 @@ public class PodcastService {
         return podcastRepository.findAll();
     }
 
+    public Flux<Podcast_entity> getTagsByBlogs(UUID fromString) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTagsByBlogs'");
+    }
+
 
 
 

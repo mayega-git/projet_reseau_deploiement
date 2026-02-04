@@ -51,6 +51,7 @@ public class EducationTagService {
 
     }
 
+    
     public Flux<String> getTagsByEducation(UUID id) {
         return educationTagRepository.getTagsByEducation(id);
     }

@@ -7,10 +7,14 @@ import com.letsgo.education_service.exception.BlogNotFoundException;
 import com.letsgo.education_service.models.Blog_entity;
 import com.letsgo.education_service.service.apiService.FileStorageService;
 import com.letsgo.education_service.service.blogservice.BlogService;
+import com.letsgo.education_service.service.educationCategoryService.EducationCategoryService;
+import com.letsgo.education_service.service.educationTagService.EducationTagService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,20 +36,19 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @CrossOrigin(originPatterns = "*")
 @RequestMapping("/education-service/education/blogs")
+@RequiredArgsConstructor
 public class BlogController {
 
     private final BlogService blogService;
     private final ObjectMapper objectMapper;
+     private final EducationCategoryService educationCategoryService;
+
+    private final EducationTagService educationTagService;
 
     @Autowired
     private final FileStorageService fileStorageService;
 
-    @Autowired
-    public BlogController(BlogService blogService, ObjectMapper objectMapper, FileStorageService fileStorageService) {
-        this.blogService = blogService;
-        this.objectMapper = objectMapper;
-        this.fileStorageService = fileStorageService;
-    }
+    
 
     @GetMapping("/test")
     public String getMethodName() {
@@ -204,13 +207,13 @@ public class BlogController {
     }
 
     @GetMapping(value = "/{idblogs}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<String>> getTagsByBlogs(@PathVariable String idblogs) {
-        return blogService.getTagsByBlogs(UUID.fromString(idblogs)).collectList();
+    public Mono<List<String>> getTagsByBlogs(@PathVariable("idblogs") String idblogs) {
+        return educationTagService.getTagsByEducation(UUID.fromString(idblogs)).collectList();
     }
 
     @GetMapping(value = "/{idblogs}/categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<String>> getCategoriesByBlogs(@PathVariable String idblogs) {
-        return blogService.getTagsByBlogs(UUID.fromString(idblogs)).collectList();
+    public Mono<List<String>> getCategoriesByBlogs(@PathVariable("idblogs") String idblogs) {
+        return educationCategoryService.getCategoriesByEducation(idblogs).collectList();
     }
 
     @PatchMapping("/{id}/archive")

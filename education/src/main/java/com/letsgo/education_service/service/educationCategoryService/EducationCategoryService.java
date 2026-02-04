@@ -47,6 +47,7 @@ public class EducationCategoryService {
                 return categoriesIdList.then();
 
     }
+    
 
     public Flux<String> getCategoriesByEducation(String id){
         return educationCategoriesRepository.getCategoriesByEducation(UUID.fromString(id));

@@ -8,11 +8,14 @@ import com.letsgo.education_service.enums.Domain;
 import com.letsgo.education_service.exception.BlogNotFoundException;
 import com.letsgo.education_service.models.Blog_entity;
 import com.letsgo.education_service.models.Podcast_entity;
+import com.letsgo.education_service.service.educationCategoryService.EducationCategoryService;
+import com.letsgo.education_service.service.educationTagService.EducationTagService;
 import com.letsgo.education_service.service.servicepodcast.PodcastService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,16 +37,17 @@ import java.util.UUID;
 @RestController
 @CrossOrigin(originPatterns = "*")
 @RequestMapping("/education-service/education/podcasts")
+@RequiredArgsConstructor
 public class PodcastController {
 
     private final PodcastService podcastService;
     private final ObjectMapper objectMapper;
 
-    @Autowired
-    public PodcastController(PodcastService podcastService, ObjectMapper objectMapper) {
-        this.podcastService = podcastService;
-        this.objectMapper = objectMapper;
-    }
+     private final EducationCategoryService educationCategoryService;
+
+    private final EducationTagService educationTagService;
+
+   
 
     /*
      * 
@@ -205,6 +209,18 @@ public class PodcastController {
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
                         .body(file.getBody()));
     }
+
+    @GetMapping(value = "/{idpodcast}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<List<String>> getTagsByBlogs(@PathVariable("idpodcast") String idpodcast) {
+        return educationTagService.getTagsByEducation(UUID.fromString(idpodcast)).collectList();
+    }
+
+    @GetMapping(value = "/{idpodcast}/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<List<String>> getCategoriesByBlogs(@PathVariable("idpodcast") String idpodcast) {
+        return educationCategoryService.getCategoriesByEducation(idpodcast).collectList();
+    }
+
+    
 
     /*
      * 
