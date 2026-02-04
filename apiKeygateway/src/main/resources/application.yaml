@@ -19,6 +19,10 @@ spring:
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:adminuser}
 
+  media:
+    api:
+      url: ${MEDIA_API_URL:https://gateway.yowyob.com/media-service}
+
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
