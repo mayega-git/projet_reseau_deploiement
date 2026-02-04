@@ -28,6 +28,10 @@ export default async function PodcastPostPage({
   const PodcastImage = await fetchPodcastImage(id);
   const UserData = await fetchUserData(PodcastPost.authorId);
 
+  if (!UserData) {
+    return <NotFoundPage />;
+  }
+
   // server api call
   // const blogPost = await getBlogPostById(params.id);
 
