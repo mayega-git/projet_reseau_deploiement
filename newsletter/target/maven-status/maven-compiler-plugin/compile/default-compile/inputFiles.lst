@@ -6,6 +6,7 @@
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/NewsletterApplication.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/NewsletterCreateRequest.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/UpdateCategoriesRequest.java
+/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/ResendEmailSender.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/SubscribeRequest.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/models/Redacteur.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/config/MailConfig.java
@@ -19,6 +20,7 @@
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/exception/ResourceNotFoundException.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/LecteurResponse.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/services/NewsletterService.java
+/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/SmtpEmailSender.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/enums/StatutNewsletter.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/enums/Domain.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/repositories/RedacteurRepository.java
@@ -43,6 +45,7 @@
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/services/LecteurService.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/kafka/KafkaConfig.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/RedacteurRequestSubmission.java
+/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/EmailProperties.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/RedacteurRequestResponse.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/RedacteurResponse.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/repositories/LecteurNewsletterDesabonnementRepository.java
@@ -54,6 +57,7 @@
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/exception/DuplicateResourceException.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/repositories/NewsletterRepository.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/EmailService2.java
+/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/EmailSender.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/EmailService.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/models/Categorie.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/RedacteurStatusChangeEvent.java

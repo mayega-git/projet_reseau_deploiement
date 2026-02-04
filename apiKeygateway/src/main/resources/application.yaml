@@ -34,19 +34,27 @@ spring:
 
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
-    port: ${SPRING_MAIL_PORT:587}
+    port: ${SPRING_MAIL_PORT:465}
     username: ${SPRING_MAIL_USERNAME:your-email@gmail.com}
     password: ${SPRING_MAIL_PASSWORD:your-app-password}
     properties:
       mail:
         smtp:
           auth: true
+          ssl:
+            enable: ${SPRING_MAIL_SSL_ENABLE:true}
           starttls:
-            enable: true
-            required: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+            enable: ${SPRING_MAIL_STARTTLS_ENABLE:false}
+            required: false
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+
+app:
+  email:
+    provider: ${EMAIL_PROVIDER:smtp}
+    resend-api-key: ${RESEND_API_KEY:}
+    default-from: ${EMAIL_DEFAULT_FROM:noreply@newsletter.com}
 
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
