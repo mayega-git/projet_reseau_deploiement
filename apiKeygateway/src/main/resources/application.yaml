@@ -54,12 +54,6 @@ spring:
           timeout: 10000
           writetimeout: 10000
 
-app:
-  email:
-    provider: ${EMAIL_PROVIDER:smtp}
-    resend-api-key: ${RESEND_API_KEY:}
-    default-from: ${EMAIL_DEFAULT_FROM:noreply@newsletter.com}
-
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
@@ -101,19 +95,12 @@ app:
       enabled: true
     ping:
       host: ${PING_HOST:https://gateway.yowyob.com/media-service}
-    webflux:
-    multipart:
-      max-in-memory-size: 100MB
-      max-request-size: 100MB
 
   web:
     resources:
       static-locations:
         - classpath:/static/
         - file:/path/to/podcasts/
-  media:
-    api:
-      url: ${MEDIA_API_URL:https://gateway.yowyob.com/media-service}
 
   springdoc:
     api-docs:
@@ -130,10 +117,6 @@ app:
       url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
       change-log: classpath:db/changelog/ratings/db.changelog-main.yaml
       default-schema: ratings
-    sql:
-    init:
-      mode: always
-      continue-on-error: true
 
   forum:
     datasource:
@@ -168,6 +151,12 @@ app:
       num-partitions: 3
       replication-factor: 1
       consumer-group-prefix: "cg"
+
+app:
+  email:
+    provider: ${EMAIL_PROVIDER:smtp}
+    resend-api-key: ${RESEND_API_KEY:}
+    default-from: ${EMAIL_DEFAULT_FROM:noreply@newsletter.com}
 
 api-docs:
   enabled: true
