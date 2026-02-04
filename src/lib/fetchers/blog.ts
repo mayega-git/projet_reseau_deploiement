@@ -48,9 +48,12 @@ export async function fetchBlogImages(
   await Promise.all(
     blogs.map(async (blog) => {
       try {
-        imageMap[blog.id] = await authFetchBinary(
+        const bin = await authFetchBinary(
           `${EducationRoutes.blogs}/${blog.id}/coverblog`,
         );
+        if (bin) {
+          imageMap[blog.id] = bin;
+        }
       } catch (err) {
         console.error(`Error fetching image for blog ${blog.id}:`, err);
       }
@@ -64,9 +67,12 @@ export async function fetchBlogImage(
 ): Promise<Record<string, number[]>> {
   const imageMap: Record<string, number[]> = {};
   try {
-    imageMap[blogId] = await authFetchBinary(
+    const bin = await authFetchBinary(
       `${EducationRoutes.blogs}/${blogId}/coverblog`,
     );
+    if (bin) {
+      imageMap[blogId] = bin;
+    }
   } catch (err) {
     console.error(`Error fetching image for blog ${blogId}:`, err);
   }
@@ -78,9 +84,12 @@ export async function fetchBlogAudio(
 ): Promise<Record<string, number[]>> {
   const audioMap: Record<string, number[]> = {};
   try {
-    audioMap[blogId] = await authFetchBinary(
-      `${EducationRoutes.blogs}/${blogId}/audio`,
+    const bin = await authFetchBinary(
+      `${EducationRoutes.blogs}/${blogId}/blogpodcast`,
     );
+    if (bin) {
+      audioMap[blogId] = bin;
+    }
   } catch (err) {
     console.error(`Error fetching audio for blog ${blogId}:`, err);
   }
@@ -133,9 +142,12 @@ export async function fetchPodcastImages(
   await Promise.all(
     podcasts.map(async (podcast) => {
       try {
-        imageMap[podcast.id] = await authFetchBinary(
+        const bin = await authFetchBinary(
           `${EducationRoutes.podcasts}/${podcast.id}/coverpodcast`,
         );
+        if (bin) {
+          imageMap[podcast.id] = bin;
+        }
       } catch (err) {
         console.error(`Error fetching image for podcast ${podcast.id}:`, err);
       }
@@ -149,9 +161,12 @@ export async function fetchPodcastImage(
 ): Promise<Record<string, number[]>> {
   const imageMap: Record<string, number[]> = {};
   try {
-    imageMap[podcastId] = await authFetchBinary(
+    const bin = await authFetchBinary(
       `${EducationRoutes.podcasts}/${podcastId}/coverpodcast`,
     );
+    if (bin) {
+      imageMap[podcastId] = bin;
+    }
   } catch (err) {
     console.error(`Error fetching image for podcast ${podcastId}:`, err);
   }
@@ -163,9 +178,12 @@ export async function fetchPodcastAudio(
 ): Promise<Record<string, number[]>> {
   const audioMap: Record<string, number[]> = {};
   try {
-    audioMap[podcastId] = await authFetchBinary(
-      `${EducationRoutes.podcasts}/${podcastId}/stream`,
+    const bin = await authFetchBinary(
+      `${EducationRoutes.podcasts}/${podcastId}/audiopodcast`,
     );
+    if (bin) {
+      audioMap[podcastId] = bin;
+    }
   } catch (err) {
     console.error(`Error fetching audio for podcast ${podcastId}:`, err);
   }

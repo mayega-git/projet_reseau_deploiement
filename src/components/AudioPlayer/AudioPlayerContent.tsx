@@ -29,7 +29,12 @@ const AudioPlayerContent: React.FC<AudioPlayerContentProps> = ({
         const audio = await fetchAudio(audioId); // Fetch the audio data (number[])
 
         // Extract the audio data for the specific ID
-        const currentAudio: number[] = audio[audioId];
+        const currentAudio: number[] | undefined = audio[audioId];
+
+        if (!currentAudio) {
+          setError('Audio data is empty or missing.');
+          return;
+        }
 
         // Convert the number array into a typed array of bytes (Uint8Array)
         const byteArray = new Uint8Array(currentAudio);

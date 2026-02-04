@@ -94,12 +94,13 @@ export async function authFetchData<T>(
 
 /**
  * Authenticated fetch for binary data (images, audio).
- * Returns the body as a number[] (Uint8Array contents).
+ * Returns the body as a number[] (Uint8Array contents), or null if the fetch fails.
  */
-export async function authFetchBinary(url: string): Promise<number[]> {
+export async function authFetchBinary(url: string): Promise<number[] | null> {
   const res = await authFetch(url);
   if (!res.ok) {
-    throw new Error(`Failed to fetch binary from ${url}: ${res.status}`);
+    // Return null instead of throwing to allow graceful handling of missing assets
+    return null;
   }
   const buf = await res.arrayBuffer();
   return Array.from(new Uint8Array(buf));

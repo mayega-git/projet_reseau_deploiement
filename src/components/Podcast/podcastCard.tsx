@@ -64,10 +64,14 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ data, images }) => {
             <div className="flex flex-col gap-1">
               <p className="content-date flex items-center gap-1">
                 {formatDateOrRelative(podcast.publishedAt)}
-                <span className="text-center font-semibold text-[18px]">
-                  ·
-                </span>{' '}
-                {formatHumanReadableDuration(podcast.audioLength)}
+                {podcast.audioLength && (
+                  <>
+                    <span className="text-center font-semibold text-[18px]">
+                      ·
+                    </span>{' '}
+                    {formatHumanReadableDuration(podcast.audioLength)}
+                  </>
+                )}
               </p>
 
               <div className="flex flex-col gap-0 max-h-[100px] overflow-hidden">

@@ -148,7 +148,7 @@ const BlogContent: React.FC<BlogContentParams> = ({
           </div>
 
           <div className="flex flex-col gap-4 mt-2">
-            {blog.audioUrl && (
+            {(blog.audioUrl || blog.id_ressource) && (
               <AudioPlayerContent id={blog.id} type="blog" />
             )}
 

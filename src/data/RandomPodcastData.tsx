@@ -12,7 +12,10 @@ export const coverPodcastData: PodcastInterface = {
   createdAt: '2024-08-08T08:45:00.000Z', // ISO format
   publishedAt: '2024-10-08T09:00:00.000Z',
   tags: ['travel', 'history', 'dangerous roads'],
-  categoryId: '1256',
+  categories: [],
+  organisationId: null,
+  domain: '',
+  contentType: ''
 };
 
 // export const AllPodcastData: PodcastInterface[] = [

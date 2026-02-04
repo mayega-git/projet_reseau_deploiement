@@ -138,8 +138,14 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
                   {podcast?.publishedAt && (
                     <>
                       <p>{formatDateOrRelative(podcast?.publishedAt)}</p>
-                      <p>·</p>
-                      <p>{formatHumanReadableDuration(podcast?.audioLength)}</p>
+                      {podcast?.audioLength && (
+                        <>
+                          <p>·</p>
+                          <p>
+                            {formatHumanReadableDuration(podcast?.audioLength)}
+                          </p>
+                        </>
+                      )}
                     </>
                   )}
                 </div>
@@ -178,7 +184,7 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
           {/* blog interactions */}
           <div className="flex flex-col gap-4 mt-2">
             {/* Audio Player */}
-            {podcast.audioUrl && (
+            {(podcast.audioUrl || podcast.id_ressource) && (
               <AudioPlayerContent type="podcast" id={podcast.id} />
             )}
             <div className="border-y border-t py-3 border-grey-300 flex gap-6 items-center">

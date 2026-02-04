@@ -17,6 +17,7 @@ export interface BlogInterface {
   readingTime: number;
   tags: string[]; // id of tags
   category: string[]; //id of category
+  id_ressource?: string; // resource ID for audio/image
 }
 
 //frontend request body for creation

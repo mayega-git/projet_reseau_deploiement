@@ -14,6 +14,8 @@ export interface PodcastInterface {
   domain: string;
   contentType: string;
   categories: string [];
+  id_ressource?: string; // resource ID for audio/image
+  audioDuration?: string; // duration from backend
 }
 
 export interface CreatePodcastInterface {
