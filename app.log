@@ -13992,3 +13992,325 @@ Original Stack Trace:
 2026-02-04T08:43:43.843+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : matched
 2026-02-04T08:43:43.843+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-5] a.DelegatingReactiveAuthorizationManager : Checking authorization on '/education-service/ratings/hasDisliked' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00007f08bc812430@3300e9fb
 2026-02-04T08:43:43.843+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-5] o.s.s.w.s.a.AuthorizationWebFilter       : Authorization successful
+2026-02-04T08:48:12.073+01:00  INFO 51173 --- [education-service-monolith] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-02-04T08:48:12.075+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-04T08:48:12.076+01:00  INFO 51173 --- [education-service-monolith] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2026-02-04T08:48:12.079+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-20 - Shutdown initiated...
+2026-02-04T08:48:12.084+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-20 - Shutdown completed.
+2026-02-04T08:48:12.085+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-19 - Shutdown initiated...
+2026-02-04T08:48:12.086+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-19 - Shutdown completed.
+2026-02-04T08:48:12.086+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-18 - Shutdown initiated...
+2026-02-04T08:48:12.089+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-18 - Shutdown completed.
+2026-02-04T08:48:12.089+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-17 - Shutdown initiated...
+2026-02-04T08:48:12.091+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-17 - Shutdown completed.
+2026-02-04T08:48:12.092+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-16 - Shutdown initiated...
+2026-02-04T08:48:12.095+01:00  INFO 51173 --- [education-service-monolith] [Thread-47] com.zaxxer.hikari.HikariDataSource       : HikariPool-16 - Shutdown completed.
+2026-02-04T08:48:12.228+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : Starting ApiKeygatewayApplication using Java 21.0.8 with PID 51173 (/home/mayega/Documents/education-service/apiKeygateway/target/classes started by mayega in /home/mayega/Documents/education-service)
+2026-02-04T08:48:12.229+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-02-04T08:48:12.475+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:12.491+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 10 R2DBC repository interfaces.
+2026-02-04T08:48:12.491+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:12.503+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 4 R2DBC repository interfaces.
+2026-02-04T08:48:12.503+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:12.511+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 3 R2DBC repository interfaces.
+2026-02-04T08:48:12.512+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:12.529+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 7 R2DBC repository interfaces.
+2026-02-04T08:48:12.530+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:12.539+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 4 R2DBC repository interfaces.
+2026-02-04T08:48:12.540+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'corsWebFilter' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=webFluxCorsConfig; factoryMethodName=corsWebFilter; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/example/user_interactive_service/config/WebFluxCorsConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=corsConfig; factoryMethodName=corsWebFilter; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/forum/configuration/CorsConfig.class]]
+2026-02-04T08:48:13.171+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.l.education_service.config.PingAPI     : ========== CONSTRUCTEUR PingAPI APPELÉ ==========
+2026-02-04T08:48:13.172+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.l.education_service.config.PingAPI     : URL reçue: https://gateway.yowyob.com/media-service
+2026-02-04T08:48:13.378+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Starting...
+2026-02-04T08:48:13.389+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-21 - Added connection org.postgresql.jdbc.PgConnection@654ac240
+2026-02-04T08:48:13.389+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Start completed.
+2026-02-04T08:48:13.409+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:13.439+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:13.445+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:13.446+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:13.449+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.452+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.454+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:13.456+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Starting...
+2026-02-04T08:48:13.464+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-22 - Added connection org.postgresql.jdbc.PgConnection@24c74eec
+2026-02-04T08:48:13.465+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Start completed.
+2026-02-04T08:48:13.482+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:13.506+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               2
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            2
+
+2026-02-04T08:48:13.524+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:13.527+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.533+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.534+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:13.537+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-23 - Starting...
+2026-02-04T08:48:13.548+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-23 - Added connection org.postgresql.jdbc.PgConnection@14b48de
+2026-02-04T08:48:13.548+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-23 - Start completed.
+2026-02-04T08:48:13.567+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:13.570+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] liquibase.integration                    : Found 2 files with the path 'classpath:db/changelog/newsletter/db.changelog-main3.yaml':
+    - file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+    - file:/home/mayega/Documents/education-service/newsletter/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+  Search Path: 
+    - Spring classpath
+  You can limit the search path to remove duplicates with the liquibase.searchPath setting.
+  To fail when duplicates are found, set liquibase.duplicateFileMode=ERROR
+  Choosing: file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+2026-02-04T08:48:13.587+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:13.591+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] liquibase.integration                    : Found 2 files with the path 'db/changelog/newsletter/db.changelog-main3.yaml':
+    - file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+    - file:/home/mayega/Documents/education-service/newsletter/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+  Search Path: 
+    - Spring classpath
+  You can limit the search path to remove duplicates with the liquibase.searchPath setting.
+  To fail when duplicates are found, set liquibase.duplicateFileMode=ERROR
+  Choosing: file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:13.601+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:13.603+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.608+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.609+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:13.611+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-24 - Starting...
+2026-02-04T08:48:13.626+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-24 - Added connection org.postgresql.jdbc.PgConnection@1d5509b5
+2026-02-04T08:48:13.626+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-24 - Start completed.
+2026-02-04T08:48:13.646+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:13.663+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:13.671+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:13.674+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.683+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.685+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:13.688+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-25 - Starting...
+2026-02-04T08:48:13.704+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-25 - Added connection org.postgresql.jdbc.PgConnection@5975a018
+2026-02-04T08:48:13.705+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-25 - Start completed.
+2026-02-04T08:48:13.723+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:13.752+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:13.795+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          5
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               0
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            5
+
+2026-02-04T08:48:13.797+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:13.806+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.816+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:13.818+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:13.945+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] o.s.w.r.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: classpath:/META-INF/resources/webjars/swagger-ui/5.18.3/
+2026-02-04T08:48:14.010+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-02-04T08:48:14.113+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-02-04T08:48:14.153+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8081 (http)
+2026-02-04T08:48:14.180+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : Started ApiKeygatewayApplication in 1.989 seconds (process running for 2069.609)
+2026-02-04T08:48:14.183+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-02-04T08:48:19.643+01:00  INFO 51173 --- [education-service-monolith] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-02-04T08:48:19.646+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-04T08:48:19.646+01:00  INFO 51173 --- [education-service-monolith] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2026-02-04T08:48:19.650+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-25 - Shutdown initiated...
+2026-02-04T08:48:19.652+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-25 - Shutdown completed.
+2026-02-04T08:48:19.652+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-24 - Shutdown initiated...
+2026-02-04T08:48:19.660+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-24 - Shutdown completed.
+2026-02-04T08:48:19.660+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-23 - Shutdown initiated...
+2026-02-04T08:48:19.665+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-23 - Shutdown completed.
+2026-02-04T08:48:19.665+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Shutdown initiated...
+2026-02-04T08:48:19.676+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-22 - Shutdown completed.
+2026-02-04T08:48:19.677+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Shutdown initiated...
+2026-02-04T08:48:19.684+01:00  INFO 51173 --- [education-service-monolith] [Thread-59] com.zaxxer.hikari.HikariDataSource       : HikariPool-21 - Shutdown completed.
+2026-02-04T08:48:19.824+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : Starting ApiKeygatewayApplication using Java 21.0.8 with PID 51173 (/home/mayega/Documents/education-service/apiKeygateway/target/classes started by mayega in /home/mayega/Documents/education-service)
+2026-02-04T08:48:19.824+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-02-04T08:48:20.130+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:20.149+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 10 R2DBC repository interfaces.
+2026-02-04T08:48:20.150+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:20.161+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 4 R2DBC repository interfaces.
+2026-02-04T08:48:20.161+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:20.169+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 3 R2DBC repository interfaces.
+2026-02-04T08:48:20.170+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:20.189+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 7 R2DBC repository interfaces.
+2026-02-04T08:48:20.190+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2026-02-04T08:48:20.200+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 4 R2DBC repository interfaces.
+2026-02-04T08:48:20.202+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'corsWebFilter' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=webFluxCorsConfig; factoryMethodName=corsWebFilter; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/example/user_interactive_service/config/WebFluxCorsConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=corsConfig; factoryMethodName=corsWebFilter; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/forum/configuration/CorsConfig.class]]
+2026-02-04T08:48:20.802+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.l.education_service.config.PingAPI     : ========== CONSTRUCTEUR PingAPI APPELÉ ==========
+2026-02-04T08:48:20.802+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.l.education_service.config.PingAPI     : URL reçue: https://gateway.yowyob.com/media-service
+2026-02-04T08:48:21.072+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-26 - Starting...
+2026-02-04T08:48:21.085+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-26 - Added connection org.postgresql.jdbc.PgConnection@18b890bc
+2026-02-04T08:48:21.085+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-26 - Start completed.
+2026-02-04T08:48:21.107+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:21.129+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:21.136+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:21.137+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:21.140+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.144+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.146+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:21.149+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-27 - Starting...
+2026-02-04T08:48:21.162+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-27 - Added connection org.postgresql.jdbc.PgConnection@5759f6d6
+2026-02-04T08:48:21.162+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-27 - Start completed.
+2026-02-04T08:48:21.179+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:21.202+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               2
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            2
+
+2026-02-04T08:48:21.222+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:21.225+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.229+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.231+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:21.233+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-28 - Starting...
+2026-02-04T08:48:21.244+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-28 - Added connection org.postgresql.jdbc.PgConnection@76e1cdeb
+2026-02-04T08:48:21.244+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-28 - Start completed.
+2026-02-04T08:48:21.260+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:21.263+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] liquibase.integration                    : Found 2 files with the path 'classpath:db/changelog/newsletter/db.changelog-main3.yaml':
+    - file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+    - file:/home/mayega/Documents/education-service/newsletter/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+  Search Path: 
+    - Spring classpath
+  You can limit the search path to remove duplicates with the liquibase.searchPath setting.
+  To fail when duplicates are found, set liquibase.duplicateFileMode=ERROR
+  Choosing: file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+2026-02-04T08:48:21.288+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:21.296+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] liquibase.integration                    : Found 2 files with the path 'db/changelog/newsletter/db.changelog-main3.yaml':
+    - file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+    - file:/home/mayega/Documents/education-service/newsletter/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+  Search Path: 
+    - Spring classpath
+  You can limit the search path to remove duplicates with the liquibase.searchPath setting.
+  To fail when duplicates are found, set liquibase.duplicateFileMode=ERROR
+  Choosing: file:/home/mayega/Documents/education-service/apiKeygateway/target/classes/db/changelog/newsletter/db.changelog-main3.yaml
+2026-02-04T08:48:21.311+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:21.311+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:21.312+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:21.313+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:21.313+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:21.313+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:21.313+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:21.321+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.333+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.339+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:21.342+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-29 - Starting...
+2026-02-04T08:48:21.356+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-29 - Added connection org.postgresql.jdbc.PgConnection@68e576b7
+2026-02-04T08:48:21.357+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-29 - Start completed.
+2026-02-04T08:48:21.388+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:21.408+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:21.428+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:21.428+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          0
+2026-02-04T08:48:21.428+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               1
+2026-02-04T08:48:21.428+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:21.429+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:21.430+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            1
+
+2026-02-04T08:48:21.430+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:21.434+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.439+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.441+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:21.445+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-30 - Starting...
+2026-02-04T08:48:21.478+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-30 - Added connection org.postgresql.jdbc.PgConnection@48b7bce0
+2026-02-04T08:48:21.478+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-30 - Start completed.
+2026-02-04T08:48:21.519+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully acquired change log lock
+2026-02-04T08:48:21.559+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.changelog                      : Reading from public.databasechangelog
+2026-02-04T08:48:21.590+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : UPDATE SUMMARY
+2026-02-04T08:48:21.590+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Run:                          5
+2026-02-04T08:48:21.590+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Previously run:               0
+2026-02-04T08:48:21.590+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Filtered out:                 0
+2026-02-04T08:48:21.590+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : -------------------------------
+2026-02-04T08:48:21.591+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Total change sets:            5
+
+2026-02-04T08:48:21.591+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.util                           : Update summary generated
+2026-02-04T08:48:21.630+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.637+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.lockservice                    : Successfully released change log lock
+2026-02-04T08:48:21.639+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] liquibase.command                        : Command execution complete
+2026-02-04T08:48:21.763+01:00  WARN 51173 --- [education-service-monolith] [restartedMain] o.s.w.r.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: classpath:/META-INF/resources/webjars/swagger-ui/5.18.3/
+2026-02-04T08:48:21.845+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-02-04T08:48:22.000+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-02-04T08:48:22.047+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8081 (http)
+2026-02-04T08:48:22.055+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] c.e.a.ApiKeygatewayApplication           : Started ApiKeygatewayApplication in 2.264 seconds (process running for 2077.483)
+2026-02-04T08:48:22.057+01:00  INFO 51173 --- [education-service-monolith] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-02-04T08:48:24.788+01:00  INFO 51173 --- [education-service-monolith] [boundedElastic-12] c.l.education_service.config.PingAPI     : =======hostname======false
+2026-02-04T08:48:27.064+01:00  INFO 51173 --- [education-service-monolith] [boundedElastic-13] c.l.education_service.config.PingAPI     : =======hostname======false
+2026-02-04T08:48:29.835+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2026-02-04T08:48:29.835+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'POST /logout'
+2026-02-04T08:48:29.836+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : No matches found
+2026-02-04T08:48:29.836+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2026-02-04T08:48:29.836+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /swagger-ui/**'
+2026-02-04T08:48:29.836+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /swagger-ui.html'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /v3/api-docs/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /webjars/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/css/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /css/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/js/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /js/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/images/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /images/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Checking match of request : '/education-service/apikeygateway/refresh'; against '/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/admin/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /admin/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/apikeygateway/**', method=null}
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/refresh' doesn't match 'null /apikeygateway/**'
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : matched
+2026-02-04T08:48:29.837+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] a.DelegatingReactiveAuthorizationManager : Checking authorization on '/education-service/apikeygateway/refresh' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00007f08bc812430@3300e9fb
+2026-02-04T08:48:29.838+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-8] o.s.s.w.s.a.AuthorizationWebFilter       : Authorization successful
+2026-02-04T08:48:29.878+01:00  INFO 51173 --- [education-service-monolith] [reactor-http-epoll-3] c.e.a.controller.ApiKeyRestController    : 🔄 Réception requête de renouvellement de token
+2026-02-04T08:48:29.879+01:00  INFO 51173 --- [education-service-monolith] [reactor-http-epoll-3] c.e.apiKeygateway.config.JwtUtils        : 🔄 Tentative de renouvellement des tokens
+2026-02-04T08:48:29.962+01:00  WARN 51173 --- [education-service-monolith] [reactor-tcp-epoll-4] o.s.s.c.bcrypt.BCryptPasswordEncoder     : Encoded password does not look like BCrypt
+2026-02-04T08:48:29.963+01:00 ERROR 51173 --- [education-service-monolith] [reactor-tcp-epoll-4] c.e.apiKeygateway.config.JwtUtils        : ❌ Refresh token invalide pour clientId: ca37169d-41a9-4864-b19d-94f9c2a38d29
+2026-02-04T08:48:29.966+01:00 ERROR 51173 --- [education-service-monolith] [reactor-tcp-epoll-4] c.e.apiKeygateway.config.JwtUtils        : Erreur renouvellement tokens: Refresh token invalide
+2026-02-04T08:48:29.967+01:00 ERROR 51173 --- [education-service-monolith] [reactor-tcp-epoll-4] c.e.a.controller.ApiKeyRestController    : ❌ Erreur renouvellement token: Refresh token invalide
+2026-02-04T08:48:29.992+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2026-02-04T08:48:29.992+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'POST /logout'
+2026-02-04T08:48:29.992+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : No matches found
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /swagger-ui/**'
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /swagger-ui.html'
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /v3/api-docs/**'
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/**', method=null}
+2026-02-04T08:48:29.993+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /webjars/**'
+2026-02-04T08:48:29.995+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/css/**', method=null}
+2026-02-04T08:48:29.996+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /css/**'
+2026-02-04T08:48:29.997+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/js/**', method=null}
+2026-02-04T08:48:29.998+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /js/**'
+2026-02-04T08:48:29.998+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/images/**', method=null}
+2026-02-04T08:48:29.999+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /images/**'
+2026-02-04T08:48:30.000+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/**', method=null}
+2026-02-04T08:48:30.000+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Checking match of request : '/education-service/apikeygateway/generateFirstConnection/token'; against '/**'
+2026-02-04T08:48:30.001+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/admin/**', method=null}
+2026-02-04T08:48:30.002+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /admin/**'
+2026-02-04T08:48:30.003+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/apikeygateway/**', method=null}
+2026-02-04T08:48:30.003+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] athPatternParserServerWebExchangeMatcher : Request 'POST /education-service/apikeygateway/generateFirstConnection/token' doesn't match 'null /apikeygateway/**'
+2026-02-04T08:48:30.003+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher : matched
+2026-02-04T08:48:30.003+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] a.DelegatingReactiveAuthorizationManager : Checking authorization on '/education-service/apikeygateway/generateFirstConnection/token' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00007f08bc812430@3300e9fb
+2026-02-04T08:48:30.003+01:00 DEBUG 51173 --- [education-service-monolith] [parallel-1] o.s.s.w.s.a.AuthorizationWebFilter       : Authorization successful
+2026-02-04T08:48:30.019+01:00  INFO 51173 --- [education-service-monolith] [parallel-1] c.e.apiKeygateway.config.JwtUtils        :  Génération des tokens pour première connexion - clientId: ca37169d-41a9-4864-b19d-94f9c2a38d29
+2026-02-04T08:48:30.242+01:00  INFO 51173 --- [education-service-monolith] [reactor-tcp-epoll-5] c.e.apiKeygateway.config.JwtUtils        :  Tokens générés avec succès pour clientId: ca37169d-41a9-4864-b19d-94f9c2a38d29
