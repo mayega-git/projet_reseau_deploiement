@@ -3,35 +3,47 @@ package com.education_service.apiKeygateway.config;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.Statement;
 
 @Configuration
 public class CentralLiquibaseConfig {
 
-    @Value("${spring.application.datasource.username}")
+    @Value("${spring.datasource.url}")
+    private String jdbcUrl;
+    @Value("${spring.datasource.username}")
     private String username;
-    @Value("${spring.application.datasource.password}")
+    @Value("${spring.datasource.password}")
     private String password;
 
-    // --- GATEWAY ---
-    @Value("${spring.gateway.liquibase.url}")
-    private String gatewayUrl;
-
-    @Bean
-    public DataSource gatewayLiquibaseDataSource() {
-        System.out.println("DEBUG: Gateway Liquibase URL = " + gatewayUrl);
+    private DataSource createDataSource() {
         return DataSourceBuilder.create()
-                .url(gatewayUrl)
+                .url(jdbcUrl)
                 .username(username)
                 .password(password)
                 .build();
+    }
+
+    private void createSchemaIfNotExists(DataSource ds, String schemaName) {
+        try (Connection conn = ds.getConnection();
+                Statement stmt = conn.createStatement()) {
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create schema: " + schemaName, e);
+        }
+    }
+
+    @Bean
+    public DataSource gatewayLiquibaseDataSource() {
+        DataSource ds = createDataSource();
+        createSchemaIfNotExists(ds, "gateway");
+        return ds;
     }
 
     @Bean
@@ -40,23 +52,16 @@ public class CentralLiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
         liquibase.setChangeLog("classpath:db/changelog/gateway/db.changelog-master.yaml");
-        liquibase.setDefaultSchema("public");
+        liquibase.setDefaultSchema("gateway");
         liquibase.setShouldRun(true);
         return liquibase;
     }
 
-    // --- EDUCATION ---
-    @Value("${spring.education.liquibase.url}")
-    private String educationUrl;
-
     @Bean
     public DataSource educationLiquibaseDataSource() {
-        System.out.println("DEBUG: Education Liquibase URL = " + educationUrl);
-        return DataSourceBuilder.create()
-                .url(educationUrl)
-                .username(username)
-                .password(password)
-                .build();
+        DataSource ds = createDataSource();
+        createSchemaIfNotExists(ds, "education");
+        return ds;
     }
 
     @Bean
@@ -65,25 +70,16 @@ public class CentralLiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
         liquibase.setChangeLog("classpath:db/changelog/education/db.changelog-master.yaml");
-        liquibase.setDefaultSchema("public");
+        liquibase.setDefaultSchema("education");
         liquibase.setShouldRun(true);
         return liquibase;
     }
 
-    // --- NEWSLETTER ---
-    @Value("${spring.newsletter.liquibase.url}")
-    private String newsletterUrl;
-    @Value("${spring.newsletter.liquibase.change-log}")
-    private String newsletterChangelog;
-
     @Bean
     public DataSource newsletterLiquibaseDataSource() {
-        System.out.println("DEBUG: Newsletter Liquibase URL = " + newsletterUrl);
-        return DataSourceBuilder.create()
-                .url(newsletterUrl)
-                .username(username)
-                .password(password)
-                .build();
+        DataSource ds = createDataSource();
+        createSchemaIfNotExists(ds, "newsletter");
+        return ds;
     }
 
     @Bean
@@ -91,24 +87,17 @@ public class CentralLiquibaseConfig {
     public SpringLiquibase newsletterLiquibase(@Qualifier("newsletterLiquibaseDataSource") DataSource ds) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
-        liquibase.setChangeLog(newsletterChangelog);
-        liquibase.setDefaultSchema("public");
+        liquibase.setChangeLog("classpath:db/changelog/newsletter/db.changelog-main3.yaml");
+        liquibase.setDefaultSchema("newsletter");
         liquibase.setShouldRun(true);
         return liquibase;
     }
 
-    // --- RATINGS ---
-    @Value("${spring.ratings.liquibase.url}")
-    private String ratingsUrl;
-
     @Bean
     public DataSource ratingsLiquibaseDataSource() {
-        System.out.println("DEBUG: Ratings Liquibase URL = " + ratingsUrl);
-        return DataSourceBuilder.create()
-                .url(ratingsUrl)
-                .username(username)
-                .password(password)
-                .build();
+        DataSource ds = createDataSource();
+        createSchemaIfNotExists(ds, "ratings");
+        return ds;
     }
 
     @Bean
@@ -117,23 +106,16 @@ public class CentralLiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
         liquibase.setChangeLog("classpath:db/changelog/ratings/db.changelog-main.yaml");
-        liquibase.setDefaultSchema("public");
+        liquibase.setDefaultSchema("ratings");
         liquibase.setShouldRun(true);
         return liquibase;
     }
 
-    // ======FORUM===========//
-    @Value("${spring.forum.liquibase.url}")
-    private String forumUrl;
-
     @Bean
     public DataSource forumLiquibaseDataSource() {
-        System.out.println("DEBUG: Forum Liquibase URL = " + forumUrl);
-        return DataSourceBuilder.create()
-                .url(forumUrl)
-                .username(username)
-                .password(password)
-                .build();
+        DataSource ds = createDataSource();
+        createSchemaIfNotExists(ds, "forum");
+        return ds;
     }
 
     @Bean
@@ -142,7 +124,7 @@ public class CentralLiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
         liquibase.setChangeLog("classpath:db/changelog/forum/db.changelog-master.yaml");
-        liquibase.setDefaultSchema("public");
+        liquibase.setDefaultSchema("forum");
         liquibase.setShouldRun(true);
         return liquibase;
     }

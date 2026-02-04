@@ -1,7 +1,3 @@
-# ========================================
-# application.yml - Bases de données SÉPARÉES
-# ========================================
-
 server:
   port: ${PORT:8081}
 
@@ -10,36 +6,37 @@ spring:
     name: education-service-monolith
     ping:
       host: ${PING_HOST:https://gateway.yowyob.com/media-service}
-    datasource:
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:adminuser}
   main:
     allow-bean-definition-overriding: true
+
+  r2dbc:
+    url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:adminuser}
+
+  datasource:
+    url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:adminuser}
 
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     mode: HTML
 
-    # JWT (Gateway)
   app:
     secret-key-jwt: ${APP_SECRET_KEY_JWT:942faeb8l7276e4b49tb248sd291a1c69caa}
     expiration-time: ${APP_JWT_EXPIRATION:3600}
     authorized-services: "EDUCATION,NEWSLETTER,RATINGS,FORUM,USER,APIKEYGATEWAY"
     header-api-key: "X-API-KEY-GATEWAY"
     header-api-key-client: "X-API-KEY-GATEWAY-CLIENT"
-    public-paths: /swagger-ui/**,/v3/api-docs/**,/auth/refresh,/actuator/**,/health,/education-service/apikeygateway/**,/admin/**,/request/** #exclure des chemins du webfilter
+    public-paths: /swagger-ui/**,/v3/api-docs/**,/auth/refresh,/actuator/**,/health,/education-service/apikeygateway/**,/admin/**,/request/**
 
-  # ========================================
-  # BASE DE DONNÉES PRINCIPALE (Gateway)
-  # ========================================
-
-  # MAIL
   mail:
     host: ${SPRING_MAIL_HOST:smtp.gmail.com}
     port: ${SPRING_MAIL_PORT:587}
-    username: ${SPRING_MAIL_USERNAME:tsaffotagouffomegane@gmail.com}
-    password: ${SPRING_MAIL_PASSWORD:psgl txqb ovbu rdmt}
+    username: ${SPRING_MAIL_USERNAME:your-email@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:your-app-password}
     properties:
       mail:
         smtp:
@@ -72,36 +69,26 @@ spring:
       properties:
         bootstrap.servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
-  # ========================================
-  # LIQUIBASE PRINCIPAL (Gateway)
-  # ========================================
   gateway:
     r2dbc:
-      url: ${GATEWAY_R2DBC_URL:r2dbc:postgresql://localhost:5433/apikeygateway}
-
+      url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
     liquibase:
       enabled: true
-      url: ${GATEWAY_JDBC_URL:jdbc:postgresql://localhost:5433/apikeygateway}
+      url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
       change-log: classpath:db/changelog/gateway/db.changelog-master.yaml
-      default-schema: public
+      default-schema: gateway
       drop-first: false
-
-  # ========================================
-  # EDUCATION
-  # ========================================
 
   education:
     datasource:
-      url: ${EDUCATION_R2DBC_URL:r2dbc:postgresql://localhost:5433/education-service}
-
+      url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
     liquibase:
-      url: ${EDUCATION_JDBC_URL:jdbc:postgresql://localhost:5433/education-service}
+      url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
       change-log: classpath:db/changelog/education/db.changelog-master.yaml
+      default-schema: education
       enabled: true
-
     ping:
-      host: https://gateway.yowyob.com/media-service
-
+      host: ${PING_HOST:https://gateway.yowyob.com/media-service}
     webflux:
     multipart:
       max-in-memory-size: 100MB
@@ -122,37 +109,28 @@ spring:
     swagger-ui:
       enabled: true
 
-  # ========================================
-  # RATINGS
-  # ========================================
-
   ratings:
     datasource:
-      url: ${RATINGS_R2DBC_URL:r2dbc:postgresql://localhost:5433/review-service}
+      url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
       driver-class-name: org.postgresql.Driver
     liquibase:
       enabled: true
-      url: ${RATINGS_JDBC_URL:jdbc:postgresql://localhost:5433/review-service}
+      url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
       change-log: classpath:db/changelog/ratings/db.changelog-main.yaml
-
+      default-schema: ratings
     sql:
     init:
       mode: always
       continue-on-error: true
 
-  # ========================================
-  # NEWSLETTER
-  # ========================================
-
   forum:
     datasource:
-      url: ${FORUM_R2DBC_URL:r2dbc:postgresql://localhost:5433/forum_new}
-
+      url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
     liquibase:
       enabled: true
-      url: ${FORUM_JDBC_URL:jdbc:postgresql://localhost:5433/forum_new}
+      url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
       change-log: classpath:db/changelog/forum/db.changelog-master.yaml
-      default-schema: public
+      default-schema: forum
     jwt:
       secret: ${FORUM_JWT_SECRET:changeme}
     validation:
@@ -161,29 +139,23 @@ spring:
       apikey:
         enabled: ${FORUM_APIKEY_ENABLED:false}
 
-  # BASE DE DONNÉES NEWSLETTER (SÉPARÉE)
   newsletter:
     datasource:
-      url: ${NEWSLETTER_R2DBC_URL:r2dbc:postgresql://localhost:5433/newsletter}
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:adminuser}
+      url: ${DATABASE_R2DBC_URL:r2dbc:postgresql://localhost:5433/education_service}
+      username: ${DATABASE_USERNAME:postgres}
+      password: ${DATABASE_PASSWORD:adminuser}
     liquibase:
       enabled: true
-      url: ${NEWSLETTER_JDBC_URL:jdbc:postgresql://localhost:5433/newsletter}
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:adminuser}
+      url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
+      username: ${DATABASE_USERNAME:postgres}
+      password: ${DATABASE_PASSWORD:adminuser}
       change-log: classpath:db/changelog/newsletter/db.changelog-main3.yaml
-      default-schema: public
+      default-schema: newsletter
     kafka:
       topic-prefix: "news"
       num-partitions: 3
       replication-factor: 1
       consumer-group-prefix: "cg"
-
-  # ========================================
-  # FORUM
-  # ========================================
-
 
 api-docs:
   enabled: true
@@ -194,22 +166,14 @@ components:
       type: apiKey
       in: header
       name: X-Client-Id
-
-  # ========================================
-  # SÉCURITÉ
-  # ========================================
   security:
     user:
       name: ${SECURITY_USER_NAME:apiKeyUser}
       password: ${SECURITY_USER_PASSWORD:password123}
 
-# ========================================
-# LOGGING
-# ========================================
 logging:
   file.name: ${LOG_FILE:app.log}
   level:
-    #root: DEBUG
     com.education.apigateway: DEBUG
     com.example.newsletter_service: DEBUG
     com.newsletter: DEBUG
@@ -219,13 +183,6 @@ logging:
         kafka: INFO
         security: TRACE
         web:
-
         server.handler: TRACE
-
-      # r2dbc: DEBUG
-    #io.r2dbc.postgresql:
-    #  QUERY: DEBUG
-    #  PARAM: DEBUG
-    #  ERROR: DEBUG
     org.thymeleaf: TRACE
     org.thymeleaf.spring6: TRACE

@@ -3,6 +3,7 @@ package com.education_service.apiKeygateway.config;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
+import io.r2dbc.spi.Option;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,18 +16,14 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 @Configuration
 public class CentralR2dbcConfig {
 
-    // deleted static fields and setters
-
-    // GATEWAY CONFIGURATION
-
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.education_service.apiKeygateway.repository", entityOperationsRef = "gatewayEntityTemplate")
     public static class GatewayRepositoriesConfig {
         @Value("${spring.gateway.r2dbc.url}")
         private String url;
-        @Value("${spring.application.datasource.username}")
+        @Value("${spring.datasource.username}")
         private String username;
-        @Value("${spring.application.datasource.password}")
+        @Value("${spring.datasource.password}")
         private String password;
 
         @Bean
@@ -36,6 +33,7 @@ public class CentralR2dbcConfig {
                     .mutate()
                     .option(ConnectionFactoryOptions.USER, username)
                     .option(ConnectionFactoryOptions.PASSWORD, password)
+                    .option(Option.valueOf("schema"), "gateway")
                     .build();
             return ConnectionFactories.get(options);
         }
@@ -48,16 +46,14 @@ public class CentralR2dbcConfig {
         }
     }
 
-    // EDUCATION CONFIGURATION
-
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.letsgo.education_service.repository", entityOperationsRef = "educationEntityTemplate")
     public static class EducationRepositoriesConfig {
         @Value("${spring.education.datasource.url}")
         private String url;
-        @Value("${spring.application.datasource.username}")
+        @Value("${spring.datasource.username}")
         private String username;
-        @Value("${spring.application.datasource.password}")
+        @Value("${spring.datasource.password}")
         private String password;
 
         @Bean
@@ -66,6 +62,7 @@ public class CentralR2dbcConfig {
                     .mutate()
                     .option(ConnectionFactoryOptions.USER, username)
                     .option(ConnectionFactoryOptions.PASSWORD, password)
+                    .option(Option.valueOf("schema"), "education")
                     .build();
             return ConnectionFactories.get(options);
         }
@@ -78,16 +75,14 @@ public class CentralR2dbcConfig {
         }
     }
 
-    // NEWSLETTER CONFIGURATION
-
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.example.newsletter_service.repositories", entityOperationsRef = "newsletterEntityTemplate")
     public static class NewsletterRepositoriesConfig {
         @Value("${spring.newsletter.datasource.url}")
         private String url;
-        @Value("${spring.application.datasource.username}")
+        @Value("${spring.datasource.username}")
         private String username;
-        @Value("${spring.application.datasource.password}")
+        @Value("${spring.datasource.password}")
         private String password;
 
         @Bean
@@ -96,6 +91,7 @@ public class CentralR2dbcConfig {
                     .mutate()
                     .option(ConnectionFactoryOptions.USER, username)
                     .option(ConnectionFactoryOptions.PASSWORD, password)
+                    .option(Option.valueOf("schema"), "newsletter")
                     .build();
             return ConnectionFactories.get(options);
         }
@@ -108,16 +104,14 @@ public class CentralR2dbcConfig {
         }
     }
 
-    // 4. RATINGS CONFIGURATION
-
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.example.user_interactive_service.repository", entityOperationsRef = "ratingsEntityTemplate")
     public static class RatingsRepositoriesConfig {
         @Value("${spring.ratings.datasource.url}")
         private String url;
-        @Value("${spring.application.datasource.username}")
+        @Value("${spring.datasource.username}")
         private String username;
-        @Value("${spring.application.datasource.password}")
+        @Value("${spring.datasource.password}")
         private String password;
 
         @Bean
@@ -126,6 +120,7 @@ public class CentralR2dbcConfig {
                     .mutate()
                     .option(ConnectionFactoryOptions.USER, username)
                     .option(ConnectionFactoryOptions.PASSWORD, password)
+                    .option(Option.valueOf("schema"), "ratings")
                     .build();
             return ConnectionFactories.get(options);
         }
@@ -137,15 +132,14 @@ public class CentralR2dbcConfig {
         }
     }
 
-    // 4. FORUM CONFIGURATION
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.forum", entityOperationsRef = "forumEntityTemplate")
     public static class ForumRepositoriesConfig {
         @Value("${spring.forum.datasource.url}")
         private String url;
-        @Value("${spring.application.datasource.username}")
+        @Value("${spring.datasource.username}")
         private String username;
-        @Value("${spring.application.datasource.password}")
+        @Value("${spring.datasource.password}")
         private String password;
 
         @Bean
@@ -154,6 +148,7 @@ public class CentralR2dbcConfig {
                     .mutate()
                     .option(ConnectionFactoryOptions.USER, username)
                     .option(ConnectionFactoryOptions.PASSWORD, password)
+                    .option(Option.valueOf("schema"), "forum")
                     .build();
             return ConnectionFactories.get(options);
         }
