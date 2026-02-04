@@ -1,0 +1,11 @@
+src/components/Podcast/UpdatePodcastComponent.tsx(9,58): error TS2307: Cannot find module '@/types/podcast' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(10,38): error TS2307: Cannot find module '@/helper/calculateReadingTime' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(11,30): error TS2307: Cannot find module '@/types/tag' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(12,132): error TS2307: Cannot find module '@/actions/education' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(13,35): error TS2307: Cannot find module '@/types/category' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(15,25): error TS2307: Cannot find module '@/context/AuthContext' or its corresponding type declarations.
+src/components/Podcast/UpdatePodcastComponent.tsx(181,41): error TS2339: Property 'entries' does not exist on type 'FormData'.
+src/components/ui/MultiSelectDropdown.tsx(3,30): error TS2307: Cannot find module '@/types/tag' or its corresponding type declarations.
+src/components/ui/SingleComponentDropdown.tsx(3,35): error TS2307: Cannot find module '@/types/category' or its corresponding type declarations.
+src/components/ui/button.tsx(5,20): error TS2307: Cannot find module '@/lib/utils' or its corresponding type declarations.
+src/components/ui/customButton.tsx(3,20): error TS2307: Cannot find module '@/lib/utils' or its corresponding type declarations.

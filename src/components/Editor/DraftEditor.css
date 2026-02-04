@@ -1,0 +1,118 @@
+* {
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+/* body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  background: #ddd;
+} */
+
+.editor-wrapper {
+  width: 100%;
+
+  background: #fff;
+  
+ border: 1px solid hsl(0, 0%, 89.8%);
+ padding: 6px 8px;
+  
+ border-radius: 6px;
+  width: 100%; 
+  font-size: 15px;
+  color: var(--black-500)
+}
+/* ✅ Heading Styles */
+.editor-h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin: 16px 0;
+}
+
+.editor-h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 14px 0;
+}
+
+.editor-h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.editor-h4 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.editor-h5 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.editor-h6 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 6px 0;
+  color: #444;
+}
+.editor-container {
+  width: 100%;
+  border: 1px solid hsl(0, 0%, 89.8%);
+   border-radius: 6px;
+  padding: 1rem;
+}
+
+.toolbar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 1fr 1fr;
+}
+
+button {
+  margin-right: 8px;
+  font-size: 1rem;
+  padding: 10px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+}
+
+.superFancyBlockquote {
+  color: #999;
+  background: #fff;
+  font-family: "Hoefler Text", Georgia, serif;
+  font-style: italic;
+  border-left: 2px solid #999;
+  padding-left: 10px;
+}
+
+.codeBlock {
+  font-family: fira-code, monospace;
+  font-size: inherit;
+  background: #ffeff0;
+  font-style: italic;
+  word-wrap: normal;
+  word-wrap: break-word;
+  box-decoration-break: slice;
+  padding: 0.3rem 2rem;
+  border-radius: 0.2rem;
+}
+
+.leftAlign {
+  text-align: left;
+}
+.rightAlign {
+  text-align: right;
+}
+.centerAlign {
+  text-align: center;
+}
+.justifyAlign {
+  text-align: justify;
+}

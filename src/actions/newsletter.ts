@@ -1,0 +1,54 @@
+'use server';
+
+// src/actions/newsletter.ts
+// Server Actions exposing newsletter operations to Client Components.
+
+import {
+  fetchNewsletterCategories,
+  createNewsletterCategory,
+  updateNewsletterCategory,
+  deleteNewsletterCategory,
+  fetchNewslettersByStatus,
+  fetchNewslettersByRedacteur,
+  createNewsletter,
+  updateNewsletter,
+  submitNewsletter,
+  validateNewsletter,
+  rejectNewsletter,
+  publishNewsletter,
+  registerLecteur,
+  subscribeLecteurToCategories,
+  fetchLecteurPreferences,
+  updateLecteurCategories,
+  fetchRedacteurRequests,
+  fetchRedacteurByEmail,
+  approveRedacteurRequest,
+  rejectRedacteurRequest,
+  submitRedacteurRequest,
+  fetchRedacteurRequestStatus,
+} from '@/lib/fetchers/newsletter';
+
+export {
+  fetchNewsletterCategories,
+  createNewsletterCategory,
+  updateNewsletterCategory,
+  deleteNewsletterCategory,
+  fetchNewslettersByStatus,
+  fetchNewslettersByRedacteur,
+  createNewsletter,
+  updateNewsletter,
+  submitNewsletter,
+  validateNewsletter,
+  rejectNewsletter,
+  publishNewsletter,
+  registerLecteur,
+  subscribeLecteurToCategories,
+  fetchLecteurPreferences,
+  updateLecteurCategories,
+  fetchRedacteurRequests,
+  fetchRedacteurByEmail,
+  approveRedacteurRequest,
+  rejectRedacteurRequest,
+  submitRedacteurRequest,
+  fetchRedacteurRequestStatus,
+};

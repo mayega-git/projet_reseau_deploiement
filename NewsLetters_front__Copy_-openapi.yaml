@@ -1,0 +1,762 @@
+openapi: "3.1.0"
+info:
+  title: "NewsLetters_front__Copy_ API"
+  description: "NewsLetters_front__Copy_ API"
+  version: "1.0.0"
+servers:
+  - url: "https://NewsLetters_front__Copy_"
+paths:
+  /api/admin/redacteurs/requests/{id}/approve:
+    post:
+      summary: "POST api/admin/redacteurs/requests/{id}/approve"
+      operationId: "approveRequest"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApprovalRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/admin/redacteurs/requests/{id}/reject:
+    post:
+      summary: "POST api/admin/redacteurs/requests/{id}/reject"
+      operationId: "rejectRequest"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RejectionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/admin/redacteurs/pending:
+    get:
+      summary: "GET api/admin/redacteurs/pending"
+      operationId: "getPendingRequests"
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "size"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/admin/redacteurs/pending/count:
+    get:
+      summary: "GET api/admin/redacteurs/pending/count"
+      operationId: "countPendingRequests"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int64"
+  /api/admin/redacteurs/requests:
+    get:
+      summary: "GET api/admin/redacteurs/requests"
+      operationId: "getAllRequests"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/admin/redacteurs/requests/{id}:
+    get:
+      summary: "GET api/admin/redacteurs/requests/{id}"
+      operationId: "getRequest"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/categorie/{id}:
+    put:
+      summary: "PUT api/categorie/{id}"
+      operationId: "updateCategorie"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "description"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategorieResponse"
+    delete:
+      summary: "DELETE api/categorie/{id}"
+      operationId: "deleteCategorie"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Void"
+    get:
+      summary: "GET api/categorie/{id}"
+      operationId: "getCategorieById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategorieResponse"
+  /api/categorie:
+    post:
+      summary: "POST api/categorie"
+      operationId: "createCategorie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategorieRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategorieResponse"
+    get:
+      summary: "GET api/categorie"
+      operationId: "getAllCategories"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CategorieResponse"
+  /api/categorie/nom/{nom}:
+    get:
+      summary: "GET api/categorie/nom/{nom}"
+      operationId: "getCategorieByNom"
+      parameters:
+        - name: "nom"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategorieResponse"
+  /api/emails/send:
+    post:
+      summary: "POST api/emails/send"
+      operationId: "envoyerEmail"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailRequestDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/redacteurs/request:
+    post:
+      summary: "POST api/redacteurs/request"
+      operationId: "submitRegistrationRequest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RedacteurRequestSubmission"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/redacteurs/request/{id}:
+    get:
+      summary: "GET api/redacteurs/request/{id}"
+      operationId: "getRequestStatus"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RedacteurRequestResponse"
+  /api/lecteurs/{lecteurId}/categories:
+    put:
+      summary: "PUT api/lecteurs/{lecteurId}/categories"
+      operationId: "updateCategories"
+      parameters:
+        - name: "lecteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCategoriesRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LecteurResponse"
+    delete:
+      summary: "DELETE api/lecteurs/{lecteurId}/categories"
+      operationId: "unsubscribeFromAllCategories"
+      parameters:
+        - name: "lecteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LecteurResponse"
+  /api/lecteurs/register:
+    post:
+      summary: "POST api/lecteurs/register"
+      operationId: "register"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LecteurRegistrationRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LecteurResponse"
+  /api/lecteurs/{lecteurId}/subscribe:
+    post:
+      summary: "POST api/lecteurs/{lecteurId}/subscribe"
+      operationId: "subscribeToCategories"
+      parameters:
+        - name: "lecteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscribeRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LecteurResponse"
+  /api/lecteurs/{lecteurId}/unsubscribe/{newsletterId}:
+    post:
+      summary: "POST api/lecteurs/{lecteurId}/unsubscribe/{newsletterId}"
+      operationId: "unsubscribeFromNewsletter"
+      parameters:
+        - name: "lecteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "newsletterId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Void"
+  /api/lecteurs/{lecteurId}/preferences:
+    get:
+      summary: "GET api/lecteurs/{lecteurId}/preferences"
+      operationId: "getPreferences"
+      parameters:
+        - name: "lecteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LecteurResponse"
+  /api/newsletters/newsletters:
+    post:
+      summary: "POST api/newsletters/newsletters"
+      operationId: "createNewsletter"
+      parameters:
+        - name: "redacteurId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+    get:
+      summary: "GET api/newsletters/newsletters"
+      operationId: "getNewslettersByStatut"
+      parameters:
+        - name: "statut"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "BROUILLON"
+              - "PUBLIEE"
+              - "SOUMISE"
+              - "REJETEE"
+              - "VALIDEE"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/NewsletterResponse"
+  /api/newsletters/newsletters/{id}/submit:
+    post:
+      summary: "POST api/newsletters/newsletters/{id}/submit"
+      operationId: "submitNewsletter"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "redacteurId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+  /api/newsletters/newsletters/{id}/validate:
+    post:
+      summary: "POST api/newsletters/newsletters/{id}/validate"
+      operationId: "validateNewsletter"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+  /api/newsletters/newsletters/{id}/reject:
+    post:
+      summary: "POST api/newsletters/newsletters/{id}/reject"
+      operationId: "rejectNewsletter"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+  /api/newsletters/newsletters/{id}/publish:
+    post:
+      summary: "POST api/newsletters/newsletters/{id}/publish"
+      operationId: "publishNewsletter"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NewsletterResponse"
+  /api/newsletters/newsletters/redacteur/{redacteurId}:
+    get:
+      summary: "GET api/newsletters/newsletters/redacteur/{redacteurId}"
+      operationId: "getNewslettersByRedacteur"
+      parameters:
+        - name: "redacteurId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/NewsletterResponse"
+components:
+  schemas:
+    ApprovalRequest:
+      type: "object"
+      properties: { }
+    RedacteurRequestResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        nom:
+          type: "string"
+          nullable: true
+        prenom:
+          type: "string"
+          nullable: true
+        status:
+          type: "string"
+          nullable: true
+          enum:
+            - "PENDING"
+            - "APPROVED"
+            - "REJECTED"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        processedAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        rejectionReason:
+          type: "string"
+          nullable: true
+    RejectionRequest:
+      type: "object"
+      properties:
+        reason:
+          type: "string"
+          nullable: true
+    CategorieResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        nom:
+          type: "string"
+          nullable: true
+        description:
+          type: "string"
+          nullable: true
+    CategorieRequest:
+      type: "object"
+      properties:
+        nom:
+          type: "string"
+          nullable: true
+        description:
+          type: "string"
+          nullable: true
+    Void:
+      type: "object"
+      properties: { }
+    EmailRequestDto:
+      type: "object"
+      properties:
+        emailDestinataire:
+          type: "string"
+          nullable: true
+        sujet:
+          type: "string"
+          nullable: true
+        contenuEmail:
+          type: "string"
+          nullable: true
+    RedacteurRequestSubmission:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+          nullable: true
+        password:
+          type: "string"
+          nullable: true
+        nom:
+          type: "string"
+          nullable: true
+        prenom:
+          type: "string"
+          nullable: true
+    UpdateCategoriesRequest:
+      type: "object"
+      properties:
+        categorieIds:
+          type: "array"
+          nullable: true
+          items:
+            type: "string"
+            format: "uuid"
+    LecteurResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        userId:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        nom:
+          type: "string"
+          nullable: true
+        prenom:
+          type: "string"
+          nullable: true
+        categories:
+          type: "array"
+          nullable: true
+          items:
+            $ref: "#/components/schemas/CategorieResponse"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+    LecteurRegistrationRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+          nullable: true
+        nom:
+          type: "string"
+          nullable: true
+        prenom:
+          type: "string"
+          nullable: true
+    SubscribeRequest:
+      type: "object"
+      properties:
+        categorieIds:
+          type: "array"
+          nullable: true
+          items:
+            type: "string"
+            format: "uuid"
+    NewsletterCreateRequest:
+      type: "object"
+      properties:
+        titre:
+          type: "string"
+          nullable: true
+        contenu:
+          type: "string"
+          nullable: true
+        categorieIds:
+          type: "array"
+          nullable: true
+          items:
+            type: "string"
+            format: "uuid"
+    NewsletterResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        titre:
+          type: "string"
+          nullable: true
+        contenu:
+          type: "string"
+          nullable: true
+        statut:
+          type: "string"
+          nullable: true
+          enum:
+            - "BROUILLON"
+            - "PUBLIEE"
+            - "SOUMISE"
+            - "REJETEE"
+            - "VALIDEE"
+        redacteurId:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        redacteurNom:
+          type: "string"
+          nullable: true
+        categories:
+          type: "array"
+          nullable: true
+          items:
+            $ref: "#/components/schemas/CategorieResponse"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        publishedAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
