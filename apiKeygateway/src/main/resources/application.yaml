@@ -3,13 +3,13 @@
 # ========================================
 
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   application:
     name: education-service-monolith
     ping:
-      host: https://gateway.yowyob.com/media-service
+      host: ${PING_HOST:https://gateway.yowyob.com/media-service}
     datasource:
       username: ${SPRING_DATASOURCE_USERNAME:postgres}
       password: ${SPRING_DATASOURCE_PASSWORD:adminuser}
@@ -114,7 +114,7 @@ spring:
         - file:/path/to/podcasts/
   media:
     api:
-      url: https://gateway.yowyob.com/media-service
+      url: ${MEDIA_API_URL:https://gateway.yowyob.com/media-service}
 
   springdoc:
     api-docs:
@@ -154,12 +154,12 @@ spring:
       change-log: classpath:db/changelog/forum/db.changelog-master.yaml
       default-schema: public
     jwt:
-      secret: "a4s545c45xy56cyx4c87dc546ojisiaciduu8454d45"
+      secret: ${FORUM_JWT_SECRET:changeme}
     validation:
-      url: "http://localhost:8080/api/public/auth/validate"
+      url: ${FORUM_VALIDATION_URL:http://localhost:8080/api/public/auth/validate}
     security:
       apikey:
-        enabled: false
+        enabled: ${FORUM_APIKEY_ENABLED:false}
 
   # BASE DE DONNÉES NEWSLETTER (SÉPARÉE)
   newsletter:
@@ -184,28 +184,7 @@ spring:
   # FORUM
   # ========================================
 
-# ========================================
-# BASE DE DONNÉES USERS (SÉPARÉE) - Exemple
-# ========================================
-#users:
-#  datasource:
-#    url: r2dbc:postgresql://localhost:5433/users_db
-#    username: postgres
-#    password: adminuser
-#  liquibase:
-#    enabled: true
-#    url: jdbc:postgresql://localhost:5433/users_db
-#    user: postgres
-#    password: adminuser
-#    change-log: classpath:db/changelog/users/db.changelog-master.yaml
 
-# ========================================
-# CONFIGURATION MODULES
-# ========================================
-
-# ========================================
-# OpenAPI
-# ========================================
 api-docs:
   enabled: true
 
@@ -221,8 +200,8 @@ components:
   # ========================================
   security:
     user:
-      name: apiKeyUser
-      password: password123
+      name: ${SECURITY_USER_NAME:apiKeyUser}
+      password: ${SECURITY_USER_PASSWORD:password123}
 
 # ========================================
 # LOGGING
