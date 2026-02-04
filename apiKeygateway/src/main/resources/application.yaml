@@ -154,9 +154,9 @@ spring:
 
 app:
   email:
-    provider: ${EMAIL_PROVIDER:smtp}
-    resend-api-key: ${RESEND_API_KEY:}
-    default-from: ${EMAIL_DEFAULT_FROM:noreply@newsletter.com}
+    provider: ${EMAIL_PROVIDER:resend}
+    resend-api-key: ${RESEND_API_KEY:re_fcArM3rV_JmwQtDjehrGQGxhKNuRNbC4r}
+    default-from: ${EMAIL_DEFAULT_FROM:onboarding@resend.dev}
 
 api-docs:
   enabled: true
