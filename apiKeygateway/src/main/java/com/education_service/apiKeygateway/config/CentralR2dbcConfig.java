@@ -19,11 +19,11 @@ public class CentralR2dbcConfig {
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.education_service.apiKeygateway.repository", entityOperationsRef = "gatewayEntityTemplate")
     public static class GatewayRepositoriesConfig {
-        @Value("${spring.gateway.r2dbc.url}")
+        @Value("${spring.r2dbc.url}")
         private String url;
-        @Value("${spring.datasource.username}")
+        @Value("${spring.r2dbc.username}")
         private String username;
-        @Value("${spring.datasource.password}")
+        @Value("${spring.r2dbc.password}")
         private String password;
 
         @Bean
@@ -49,11 +49,11 @@ public class CentralR2dbcConfig {
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.letsgo.education_service.repository", entityOperationsRef = "educationEntityTemplate")
     public static class EducationRepositoriesConfig {
-        @Value("${spring.education.datasource.url}")
+        @Value("${spring.r2dbc.url}")
         private String url;
-        @Value("${spring.datasource.username}")
+        @Value("${spring.r2dbc.username}")
         private String username;
-        @Value("${spring.datasource.password}")
+        @Value("${spring.r2dbc.password}")
         private String password;
 
         @Bean
@@ -78,11 +78,11 @@ public class CentralR2dbcConfig {
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.example.newsletter_service.repositories", entityOperationsRef = "newsletterEntityTemplate")
     public static class NewsletterRepositoriesConfig {
-        @Value("${spring.newsletter.datasource.url}")
+        @Value("${spring.r2dbc.url}")
         private String url;
-        @Value("${spring.datasource.username}")
+        @Value("${spring.r2dbc.username}")
         private String username;
-        @Value("${spring.datasource.password}")
+        @Value("${spring.r2dbc.password}")
         private String password;
 
         @Bean
@@ -107,11 +107,11 @@ public class CentralR2dbcConfig {
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.example.user_interactive_service.repository", entityOperationsRef = "ratingsEntityTemplate")
     public static class RatingsRepositoriesConfig {
-        @Value("${spring.ratings.datasource.url}")
+        @Value("${spring.r2dbc.url}")
         private String url;
-        @Value("${spring.datasource.username}")
+        @Value("${spring.r2dbc.username}")
         private String username;
-        @Value("${spring.datasource.password}")
+        @Value("${spring.r2dbc.password}")
         private String password;
 
         @Bean
@@ -135,11 +135,11 @@ public class CentralR2dbcConfig {
     @Configuration
     @EnableR2dbcRepositories(basePackages = "com.forum", entityOperationsRef = "forumEntityTemplate")
     public static class ForumRepositoriesConfig {
-        @Value("${spring.forum.datasource.url}")
+        @Value("${spring.r2dbc.url}")
         private String url;
-        @Value("${spring.datasource.username}")
+        @Value("${spring.r2dbc.username}")
         private String username;
-        @Value("${spring.datasource.password}")
+        @Value("${spring.r2dbc.password}")
         private String password;
 
         @Bean
