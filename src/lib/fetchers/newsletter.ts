@@ -207,11 +207,11 @@ export async function fetchRedacteurRequests(): Promise<RedacteurRequestResponse
   return (await authFetchData<RedacteurRequestResponse[]>(NewsletterRoutes.redacteursAdminRequests)) ?? [];
 }
 
-export async function fetchRedacteurByEmail(email: string): Promise<RedacteurResponse | null> {
+export async function fetchRedacteurByEmail(email: string): Promise<RedacteurResponse | boolean | null> {
   if (!email) return null;
   const url = new URL(NewsletterRoutes.redacteursByEmail);
   url.searchParams.set('email', email);
-  return authFetchData<RedacteurResponse>(url.toString());
+  return authFetchData<RedacteurResponse | boolean>(url.toString());
 }
 
 export async function approveRedacteurRequest(requestId: string): Promise<RedacteurRequestResponse | null> {

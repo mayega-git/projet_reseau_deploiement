@@ -145,9 +145,10 @@ const CreateNewsLetterComponents = ({
   };
 
   const handleCreate = async () => {
-    const activeRedacteurId = user?.id || redacteurId;
+    // Use redacteurId from localStorage (newsletter module ID), NOT user?.id
+    const activeRedacteurId = redacteurId;
     if (!activeRedacteurId) {
-      GlobalNotifier('Utilisateur non authentifie.', 'error');
+      GlobalNotifier('Redacteur ID non trouve. Veuillez rafraichir la page.', 'error');
       return;
     }
 
@@ -200,9 +201,10 @@ const CreateNewsLetterComponents = ({
   };
 
   const handleSubmitNewsletter = async () => {
-    const activeRedacteurId = user?.id || redacteurId;
+    // Use redacteurId from localStorage (newsletter module ID), NOT user?.id
+    const activeRedacteurId = redacteurId;
     if (!activeRedacteurId || !initialNewsletter?.id) {
-      GlobalNotifier('Newsletter invalide.', 'error');
+      GlobalNotifier('Newsletter ou Redacteur ID invalide.', 'error');
       return;
     }
 

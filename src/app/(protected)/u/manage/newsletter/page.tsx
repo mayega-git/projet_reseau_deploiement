@@ -6,7 +6,15 @@ import NewsletterDataTable from '@/components/DataTable/NewsletterDataTable';
 import { fetchNewslettersByStatus } from '@/lib/fetchers/newsletter';
 
 const ManageNewsletters = async () => {
-  const newsletters = await fetchNewslettersByStatus();
+  // Fetch newsletters that need admin action:
+  // - SOUMISE: submitted, waiting for validation
+  // - VALIDEE: validated, waiting to be published
+  const [soumises, validees] = await Promise.all([
+    fetchNewslettersByStatus('SOUMISE'),
+    fetchNewslettersByStatus('VALIDEE'),
+  ]);
+
+  const newsletters = [...soumises, ...validees];
 
   if (!newsletters || newsletters.length === 0) {
     return (

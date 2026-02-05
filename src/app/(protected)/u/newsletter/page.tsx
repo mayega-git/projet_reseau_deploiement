@@ -29,7 +29,8 @@ const NewsletterDashboard = () => {
   }, []);
 
   const loadNewsletters = async () => {
-    const activeRedacteurId = user?.id || redacteurId;
+    // Use redacteurId from localStorage (newsletter module ID), NOT user?.id
+    const activeRedacteurId = redacteurId;
     if (!activeRedacteurId) {
       setLoading(false);
       return;
@@ -72,7 +73,7 @@ const NewsletterDashboard = () => {
               <NewsletterDataTable
                 data={newsletters}
                 variant="redacteur"
-                redacteurId={user?.id || redacteurId}
+                redacteurId={redacteurId}
                 onRefresh={loadNewsletters}
                 onEdit={(id) => router.push(`/newsletter/update?id=${id}`)}
               />

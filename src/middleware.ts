@@ -70,6 +70,8 @@ export async function middleware(request: NextRequest) {
   const authConfigHash = request.cookies.get('authConfigHash')?.value;
 
   // Check if server config (API_KEY / CLIENT_ID) has changed
+  const currentHash = getAuthConfigHash();
+  console.log('🔐 [Middleware] Hash comparison:', { clientHash: authConfigHash?.slice(0,10), serverHash: currentHash?.slice(0,10), match: authConfigHash === currentHash });
   if (shouldReinit(authConfigHash)) {
       console.log('⚠️ [Middleware] API Config changed or missing hash. Forcing re-init...');
       // Clear local variables to force the "No token" logic below
@@ -96,7 +98,7 @@ export async function middleware(request: NextRequest) {
         console.log('✅ [Middleware] Refresh successful, updating cookies.');
         setTokenCookies(response, tokens.accessToken, tokens.refreshToken);
       } else {
-        console.log('❌ [Middleware] Refresh failed, performing full init...');
+        console.log('❌ [Middleware] Refresh failed, performing full init...',tokens);
         // Refresh failed – full init
         const initTokens = await initGatewayToken();
         if (initTokens) {

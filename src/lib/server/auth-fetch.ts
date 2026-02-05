@@ -78,17 +78,30 @@ export async function authFetchData<T>(
   options: RequestInit = {},
 ): Promise<T | null> {
   const res = await authFetch(url, options);
-  if (!res.ok) return null;
+  
+  console.log('📦 [authFetchData] Response:', { 
+    url, 
+    status: res.status, 
+    ok: res.ok,
+    contentType: res.headers.get('content-type')
+  });
+  
+  if (!res.ok) {
+    console.log('❌ [authFetchData] Response not ok');
+    return null;
+  }
 
   const contentType = res.headers.get('content-type');
   if (contentType && contentType.includes('application/json')) {
     const json = await res.json();
+    console.log('📦 [authFetchData] JSON response:', JSON.stringify(json).slice(0, 200));
     if (json && typeof json === 'object' && 'data' in json) {
       return json.data as T;
     }
     return json as T;
   }
 
+  console.log('⚠️ [authFetchData] No JSON content type, returning null');
   return null;
 }
 

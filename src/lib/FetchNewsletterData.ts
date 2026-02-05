@@ -152,7 +152,7 @@ export const fetchRedacteurRequests = async (): Promise<RedacteurRequestResponse
   return fetchRedacteurRequestsAction();
 };
 
-export const fetchRedacteurByEmail = async (email: string): Promise<RedacteurResponse | null> => {
+export const fetchRedacteurByEmail = async (email: string): Promise<RedacteurResponse | boolean | null> => {
   return fetchRedacteurByEmailAction(email);
 };
 

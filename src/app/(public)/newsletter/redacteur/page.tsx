@@ -47,14 +47,11 @@ const RedacteurAccessPage = () => {
     const storedRedacteurId = localStorage.getItem(REDACTEUR_ID_KEY) || '';
     if (storedRedacteurId) {
       setRedacteurSessionId(storedRedacteurId);
+      // Don't redirect - just set the state. User can navigate manually.
     }
   }, []);
 
-  useEffect(() => {
-    if (redacteurSessionId) {
-      router.replace('/u/newsletter');
-    }
-  }, [redacteurSessionId, router]);
+  // Removed automatic redirect - user navigates manually
 
   useEffect(() => {
     if (user?.sub && user.sub.includes('@')) {
@@ -75,28 +72,41 @@ const RedacteurAccessPage = () => {
       }
 
       setChecking(true);
-      const result = await fetchRedacteurRequestStatus(requestId);
-      setChecking(false);
+      try {
+        const result = await fetchRedacteurRequestStatus(requestId);
+        setChecking(false);
 
-      if (!result) {
-        if (!silent) {
-          GlobalNotifier('Impossible de verifier la demande.', 'error');
+        if (!result) {
+          if (!silent) {
+            GlobalNotifier('Impossible de verifier la demande.', 'error');
+          }
+          return;
         }
-        return;
-      }
 
-      setRequest(result);
-      setStep('status');
+        setRequest(result);
+        setStep('status');
 
-      if (result.status === 'APPROVED') {
-        localStorage.setItem(REDACTEUR_ID_KEY, result.id || requestId);
-        router.push('/u/newsletter');
+        if (result.status === 'APPROVED') {
+          localStorage.setItem(REDACTEUR_ID_KEY, result.id || requestId);
+          // Don't redirect automatically - user navigates manually
+        }
+      } catch (error) {
+        setChecking(false);
+        console.error('[checkStatus] Error:', error);
+        if (!silent) {
+          GlobalNotifier('Erreur de connexion.', 'error');
+        }
       }
     },
-    [router]
+    []
   );
 
+  // Initial check on mount - only run once
+  const hasInitialCheck = React.useRef(false);
   useEffect(() => {
+    if (hasInitialCheck.current) return;
+    hasInitialCheck.current = true;
+
     const storedEmail = localStorage.getItem(REDACTEUR_EMAIL_KEY) || '';
     const storedRequestId = localStorage.getItem(REDACTEUR_REQUEST_ID_KEY) || '';
 
@@ -111,20 +121,25 @@ const RedacteurAccessPage = () => {
         if (status === 'APPROUVED' || status === 'APPROVED') {
           localStorage.setItem(REDACTEUR_ID_KEY, result?.id || '');
           localStorage.setItem(REDACTEUR_EMAIL_KEY, emailToCheck);
-          router.replace('/u/newsletter');
+          setRedacteurSessionId(result?.id || '');
+          // Don't redirect - set state and show access granted message
+          setRequest(result);
+          setStep('status');
           return;
         }
         if (result?.status) {
           setRequest(result);
           setStep('status');
         }
+      }).catch((error) => {
+        console.error('[Initial check] Error fetching redacteur:', error);
       });
     }
 
     if (storedRequestId) {
       void checkStatus(storedRequestId, true);
     }
-  }, [checkStatus, router, user?.sub]);
+  }, [user?.sub]);
 
   const handleLookup = async () => {
     if (!email.trim()) {
@@ -137,7 +152,10 @@ const RedacteurAccessPage = () => {
     if (existingStatus === 'APPROUVED' || existingStatus === 'APPROVED') {
       localStorage.setItem(REDACTEUR_ID_KEY, existing?.id || '');
       localStorage.setItem(REDACTEUR_EMAIL_KEY, email.trim());
-      router.replace('/u/newsletter');
+      setRedacteurSessionId(existing?.id || '');
+      setRequest(existing);
+      setStep('status');
+      // Don't redirect - show status
       return;
     }
     if (existing?.status) {
