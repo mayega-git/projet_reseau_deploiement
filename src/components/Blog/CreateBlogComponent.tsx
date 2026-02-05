@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import FileUpload from '../ui/FileUpload';
 
 import TextArea from '../ui/textarea';
@@ -25,11 +26,17 @@ import {
   RawDraftContentState,
   RichUtils,
 } from 'draft-js';
-import DraftEditor from '../Editor/DraftEditor';
 import { GlobalNotifier } from '../ui/GlobalNotifier';
 import Loader from '../Loader/Loader';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
+
+// Dynamic import with SSR disabled to prevent hydration mismatch
+// Draft.js generates random IDs that differ between server and client
+const DraftEditor = dynamic(() => import('../Editor/DraftEditor'), {
+  ssr: false,
+  loading: () => <div className="editor-wrapper" style={{ minHeight: '200px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px' }}>Loading editor...</div>,
+});
 
 const CreateBlogComponent = () => {
   const { user } = useAuth();

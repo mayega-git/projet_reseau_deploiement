@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -11,17 +11,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import CustomButton from '../ui/customButton';
-import { createCategory } from '@/actions/education';
+import { createCategory, fetchAllDomains } from '@/actions/education';
 import { useRouter } from 'next/navigation';
 import { GlobalNotifier } from '../ui/GlobalNotifier';
 import TextArea from '../ui/textarea';
 
-export type Domain = 'TAXI' | 'AGRICULTURE';
-
 export interface CreateCategoryInterface {
   name: string;
   description: string;
-  domain: Domain;
+  domain: string;
 }
 
 interface CreateCategoryDialogProps {
@@ -33,14 +31,35 @@ const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
   showTagDialog,
   setShowDialog,
 }) => {
+  const [domains, setDomains] = useState<string[]>([]);
+  const [loadingDomains, setLoadingDomains] = useState(true);
   const [form, setFormData] = useState<CreateCategoryInterface>({
     name: '',
     description: '',
-    domain: 'TAXI',
+    domain: '',
   });
 
   const [error, setError] = useState<{ [key: string]: string }>({});
   const router = useRouter();
+
+  // Fetch domains on mount
+  useEffect(() => {
+    const loadDomains = async () => {
+      try {
+        const fetchedDomains = await fetchAllDomains();
+        setDomains(fetchedDomains);
+        // Set default domain to first value if available
+        if (fetchedDomains.length > 0) {
+          setFormData((prev) => ({ ...prev, domain: fetchedDomains[0] }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch domains:', err);
+      } finally {
+        setLoadingDomains(false);
+      }
+    };
+    loadDomains();
+  }, []);
 
   const handleOnChange = (name: keyof CreateCategoryInterface, value: string) => {
     setFormData((prev) => ({
@@ -53,6 +72,7 @@ const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
     const newErrors: { [key: string]: string } = {};
     if (!form.name.trim()) newErrors.name = 'Name is required';
     if (!form.description.trim()) newErrors.description = 'Description is required';
+    if (!form.domain) newErrors.domain = 'Domain is required';
     setError(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -109,10 +129,21 @@ const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
               value={form.domain}
               onChange={(e) => handleOnChange('domain', e.target.value)}
               className="custom-input"
+              disabled={loadingDomains}
             >
-              <option value="TAXI">TAXI</option>
-              <option value="AGRICULTURE">AGRICULTURE</option>
+              {loadingDomains ? (
+                <option value="">Loading domains...</option>
+              ) : domains.length === 0 ? (
+                <option value="">No domains available</option>
+              ) : (
+                domains.map((domain) => (
+                  <option key={domain} value={domain}>
+                    {domain}
+                  </option>
+                ))
+              )}
             </select>
+            {error.domain && <p className="text-redTheme paragraph-xmedium-medium">{error.domain}</p>}
           </div>
 
           {/* Description */}
@@ -146,3 +177,4 @@ const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
 };
 
 export default CreateCategoryDialog;
+

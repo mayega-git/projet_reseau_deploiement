@@ -73,15 +73,21 @@ export function DataTable<TData>({ data, type }: DataTableProps<TData>) {
                   {row.description}
                 </td>
                 <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
-                  {new Intl.DateTimeFormat('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false,
-                  }).format(new Date(row.createdAt))}
+                  {(() => {
+                    console.log('Row createdAt:', row.createdAt); // Debug logging
+                    const date = new Date(row.createdAt);
+                    return !isNaN(date.getTime())
+                      ? new Intl.DateTimeFormat('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                        }).format(date)
+                      : 'N/A';
+                  })()}
                 </td>
                 <td className="text-start w-[10%] paragraph-xmedium-normal px-4 py-2 border-b">
                   <DropdownMenu>
@@ -89,7 +95,7 @@ export function DataTable<TData>({ data, type }: DataTableProps<TData>) {
                       <Button variant="ghost" className="h-8 w-8 p-0">
                         <span className="sr-only">Open menu</span>
                         <MoreHorizontal className="h-4 w-4" />
-                      </Button>*/
+                      </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel className="paragraph-medium-medium">

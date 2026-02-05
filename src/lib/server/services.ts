@@ -35,6 +35,7 @@ export const EducationRoutes = {
   blogs: `${ServiceURLs.education}/blogs`,
   podcasts: `${ServiceURLs.education}/podcasts`,
   favorites: `${ServiceURLs.education}/favorites`,
+  domains: `${ServiceURLs.education}/domains`,
 };
 
 export const ReviewRoutes = {

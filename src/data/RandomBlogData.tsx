@@ -4,6 +4,7 @@ export const coverBlogData: BlogInterface = {
   id: '90',
   coverImage: '/images/content/background1.jpg',
   authorId: '123e4567-e89b-12d3-a456-426614174000',
+  organisationId: null,
   title: 'Passengers Responsibilities',
   status: 'PUBLISHED',
   description:
@@ -14,9 +15,11 @@ export const coverBlogData: BlogInterface = {
   audioLength: 180, // 3 minutes
   createdAt: '2024-08-08T08:45:00.000Z', // ISO format
   publishedAt: '2024-10-08T09:00:00.000Z',
+  domain: 'education',
+  contentType: 'blog',
   readingTime: 7,
   tags: ['travel', 'history', 'dangerous roads'],
-  category: '1256',
+  category: ['1256'],
 };
 
 // export const AllBlogData: BlogInterface[] = [

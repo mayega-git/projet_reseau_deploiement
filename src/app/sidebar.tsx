@@ -23,7 +23,7 @@ import {
 import { ChevronDown, LogOut, Star, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Logout from '@/components/Dialogs/LogoutDialog';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RatingModal from '@/components/Dialogs/RateApp.dialog';
 
 export const AppSidebar = () => {
@@ -37,6 +37,17 @@ export const AppSidebar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const [showRateApp, setShowRateApp] = useState(false);
   const { user } = useAuth();
+  
+  // Prevent hydration mismatch with Radix UI components
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Return null on server to avoid hydration mismatch with Radix UI's random IDs
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>

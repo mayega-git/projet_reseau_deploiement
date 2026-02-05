@@ -27,6 +27,16 @@ export async function fetchAllCategories(): Promise<unknown[]> {
 }
 
 // ---------------------------------------------------------------------------
+// Fetch all domains
+// ---------------------------------------------------------------------------
+
+export async function fetchAllDomains(): Promise<string[]> {
+  const res = await authFetch(EducationRoutes.domains, { method: 'GET' });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+// ---------------------------------------------------------------------------
 // Publish blog / podcast
 // ---------------------------------------------------------------------------
 
