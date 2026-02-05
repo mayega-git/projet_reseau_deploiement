@@ -8,7 +8,7 @@ import EmptyState from '@/components/EmptyState/EmptyState';
 import StatusTag from '@/components/ui/StatusTag';
 import {
   approveRedacteurRequest,
-  fetchRedacteurRequests,
+  fetchPendingRedacteurRequests,
   rejectRedacteurRequest,
 } from '@/lib/FetchNewsletterData';
 import type {
@@ -57,7 +57,7 @@ const RedacteursAdminPage = () => {
 
   const loadRequests = async () => {
     setLoading(true);
-    const data = await fetchRedacteurRequests();
+    const data = await fetchPendingRedacteurRequests();
     setRequests(data);
     setLoading(false);
   };

@@ -16,6 +16,7 @@ import {
   fetchLecteurPreferences as fetchLecteurPreferencesAction,
   updateLecteurCategories as updateLecteurCategoriesAction,
   fetchRedacteurRequests as fetchRedacteurRequestsAction,
+  fetchPendingRedacteurRequests as fetchPendingRedacteurRequestsAction,
   fetchRedacteurByEmail as fetchRedacteurByEmailAction,
   approveRedacteurRequest as approveRedacteurRequestAction,
   rejectRedacteurRequest as rejectRedacteurRequestAction,
@@ -150,6 +151,10 @@ export const updateLecteurCategories = async (
 
 export const fetchRedacteurRequests = async (): Promise<RedacteurRequestResponse[]> => {
   return fetchRedacteurRequestsAction();
+};
+
+export const fetchPendingRedacteurRequests = async (): Promise<RedacteurRequestResponse[]> => {
+  return fetchPendingRedacteurRequestsAction();
 };
 
 export const fetchRedacteurByEmail = async (email: string): Promise<RedacteurResponse | boolean | null> => {

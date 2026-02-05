@@ -57,6 +57,7 @@ export const NewsletterRoutes = {
   newsletters: `${ServiceURLs.newsletter}/newsletters/newsletters`,
   redacteursRequest: `${ServiceURLs.newsletter}/redacteurs/request`,
   redacteursAdminRequests: `${ServiceURLs.newsletter}/admin/redacteurs/requests`,
+  redacteursAdminPending: `${ServiceURLs.newsletter}/admin/redacteurs/pending`,
   redacteurs: `${ServiceURLs.newsletter}/redacteurs`,
   redacteursByEmail: `${ServiceURLs.newsletter}/redacteurs/email`,
 

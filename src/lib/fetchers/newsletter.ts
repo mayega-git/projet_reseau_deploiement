@@ -207,6 +207,10 @@ export async function fetchRedacteurRequests(): Promise<RedacteurRequestResponse
   return (await authFetchData<RedacteurRequestResponse[]>(NewsletterRoutes.redacteursAdminRequests)) ?? [];
 }
 
+export async function fetchPendingRedacteurRequests(): Promise<RedacteurRequestResponse[]> {
+  return (await authFetchData<RedacteurRequestResponse[]>(NewsletterRoutes.redacteursAdminPending)) ?? [];
+}
+
 export async function fetchRedacteurByEmail(email: string): Promise<RedacteurResponse | boolean | null> {
   if (!email) return null;
   const url = new URL(NewsletterRoutes.redacteursByEmail);
