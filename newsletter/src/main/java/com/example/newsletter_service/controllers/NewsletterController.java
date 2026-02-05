@@ -38,14 +38,14 @@ public class NewsletterController {
 
     @PostMapping("/newsletters/{id}/submit")
     public Mono<NewsletterResponse> submitNewsletter(
-            @PathVariable UUID id,
+            @PathVariable("id")  UUID id,
             @RequestParam(name = "redacteurId") UUID redacteurId) {
         return newsletterService.submitNewsletter(id, redacteurId);
     }
 
     @GetMapping("/newsletters/redacteur/{redacteurId}")
     public Flux<NewsletterResponse> getNewslettersByRedacteur(
-            @PathVariable UUID redacteurId) {
+            @PathVariable("redacteurId") UUID redacteurId) {
         return newsletterService.getNewslettersByRedacteur(redacteurId);
     }
 
@@ -59,17 +59,17 @@ public class NewsletterController {
     }
 
     @PostMapping("/newsletters/{id}/validate")
-    public Mono<NewsletterResponse> validateNewsletter(@PathVariable UUID id) {
+    public Mono<NewsletterResponse> validateNewsletter(@PathVariable("id") UUID id) {
         return newsletterService.validateNewsletter(id);
     }
 
     @PostMapping("/newsletters/{id}/reject")
-    public Mono<NewsletterResponse> rejectNewsletter(@PathVariable UUID id) {
+    public Mono<NewsletterResponse> rejectNewsletter(@PathVariable("id") UUID id) {
         return newsletterService.rejectNewsletter(id);
     }
 
     @PostMapping("/newsletters/{id}/publish")
-    public Mono<NewsletterResponse> publishNewsletter(@PathVariable UUID id) {
+    public Mono<NewsletterResponse> publishNewsletter(@PathVariable("id") UUID id) {
         return newsletterService.publishNewsletter(id);
     }
 }
