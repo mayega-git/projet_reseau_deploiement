@@ -16,7 +16,7 @@ import {
   deleteUser as deleteUserAction,
   getAllUsersWithBlogCount as getAllUsersWithBlogCountAction,
 } from '@/actions/user';
-import type { UserWithBlogCount } from '@/lib/fetchers/user';
+import type { UserWithBlogCount } from '@/types/User';
 
 // function to fetch user data by id
 export const fetchUserData = async (authorId: string) => {

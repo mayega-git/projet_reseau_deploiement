@@ -31,3 +31,7 @@ export interface CreateRoles {
   roleName: string;
   description: string;
 }
+
+export interface UserWithBlogCount extends GetUser {
+  blogCount?: number;
+}

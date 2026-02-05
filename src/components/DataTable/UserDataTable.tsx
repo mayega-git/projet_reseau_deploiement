@@ -19,11 +19,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { GetUser } from '@/types/User';
 import { AppRoles } from '@/constants/roles';
 import EditUserRolesDialog from '@/components/Dialogs/EditUserRolesDialog';
 import DeleteUserDialog from '@/components/Dialogs/DeleteUserDialog';
-import { UserWithBlogCount } from '@/actions/user';
+import { UserWithBlogCount } from '@/types/User';
 
 interface UserDataTableProps {
   data: UserWithBlogCount[];

@@ -5,7 +5,7 @@ import SidebarPageHeading from '@/components/ui/SidebarPageHeading';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import UserDataTable from '@/components/DataTable/UserDataTable';
 import { getAllUsersWithBlogCount } from '@/actions/user';
-import type { UserWithBlogCount } from '@/actions/user';
+import type { UserWithBlogCount } from '@/types/User';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState<UserWithBlogCount[]>([]);

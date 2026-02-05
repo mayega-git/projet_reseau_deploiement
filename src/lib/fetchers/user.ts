@@ -1,7 +1,7 @@
 // src/lib/fetchers/user.ts
 // Server-only user service fetchers using authFetch.
 
-import { GetUser } from '@/types/User';
+import { GetUser, UserWithBlogCount } from '@/types/User';
 import { BlogInterface } from '@/types/blog';
 import { PodcastInterface } from '@/types/podcast';
 import { UserRoutes } from '@/lib/server/services';
@@ -57,9 +57,8 @@ export async function getAllUsers(): Promise<GetUser[]> {
   return (await authFetchData<GetUser[]>(UserRoutes.base)) ?? [];
 }
 
-export interface UserWithBlogCount extends GetUser {
-  blogCount?: number;
-}
+// ---------------------------------------------------------------------------
+// Connections (follow / unfollow)
 
 export async function getAllUsersWithBlogCount(): Promise<UserWithBlogCount[]> {
   const users = await getAllUsers();
