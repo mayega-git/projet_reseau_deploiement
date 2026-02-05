@@ -39,13 +39,24 @@ public class MailjetEmailSender implements EmailSender {
         String credentials = emailProperties.getMailjetApiKey() + ":" + emailProperties.getMailjetSecretKey();
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
 
+        // Masquage des clés pour les logs
+        String maskedKey = (emailProperties.getMailjetApiKey() != null
+                && emailProperties.getMailjetApiKey().length() > 4)
+                        ? emailProperties.getMailjetApiKey().substring(0, 4) + "****"
+                        : "NULL/SHORT";
+
+        boolean hasSecret = emailProperties.getMailjetSecretKey() != null
+                && !emailProperties.getMailjetSecretKey().isBlank();
+
+        log.info("🔐 [Mailjet Init] API Key chargée: {} | Secret Key présente: {}", maskedKey, hasSecret);
+
         this.webClient = WebClient.builder()
                 .baseUrl("https://api.mailjet.com")
                 .defaultHeader("Authorization", "Basic " + encodedCredentials)
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 
-        log.info("[Mailjet] WebClient initialisé avec succès");
+        log.info("✅ [Mailjet] WebClient initialisé avec succès");
     }
 
     @Override
