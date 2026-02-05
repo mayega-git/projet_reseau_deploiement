@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { AppRoles } from '@/constants/roles';
 import EditUserRolesDialog from '@/components/Dialogs/EditUserRolesDialog';
 import DeleteUserDialog from '@/components/Dialogs/DeleteUserDialog';
-import { UserWithBlogCount } from '@/types/User';
+import type { UserWithBlogCount } from '@/types/User';
 
 interface UserDataTableProps {
   data: UserWithBlogCount[];

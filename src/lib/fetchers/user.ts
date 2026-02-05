@@ -1,7 +1,7 @@
 // src/lib/fetchers/user.ts
 // Server-only user service fetchers using authFetch.
 
-import { GetUser, UserWithBlogCount } from '@/types/User';
+import type { GetUser, UserWithBlogCount } from '@/types/User';
 import { BlogInterface } from '@/types/blog';
 import { PodcastInterface } from '@/types/podcast';
 import { UserRoutes } from '@/lib/server/services';
