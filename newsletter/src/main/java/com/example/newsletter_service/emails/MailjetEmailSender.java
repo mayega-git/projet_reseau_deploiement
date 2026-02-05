@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * Implémentation de l'envoi d'emails via l'API Mailjet.
@@ -39,25 +40,22 @@ public class MailjetEmailSender implements EmailSender {
         String apiKey = emailProperties.getMailjetApiKey();
         String secretKey = emailProperties.getMailjetSecretKey();
 
-        // FALLBACK: Si Spring n'a pas résolu la variable (ex: "${MAILJET_API_KEY}"), on
-        // lit l'env direct
+        // FALLBACK INTELLIGENT
         if (apiKey != null && apiKey.startsWith("${")) {
-            log.warn("⚠️ Spring n'a pas résolu la variable. Tentative de lecture ENV.");
-            apiKey = System.getenv("MAILJET_API_KEY");
-
-            // DIAGNOSTIC VARIABLES
-            if (apiKey == null) {
-                log.error("😱 Variable MAILJET_API_KEY introuvable dans l'ENV !");
-                log.info("🔍 Variables disponibles : {}", System.getenv().keySet());
-            }
+            log.warn("⚠️ Spring n'a pas résolu MAILJET_API_KEY. Recherche intelligente dans l'ENV...");
+            apiKey = findEnvVarFuzzy("MAILJET_API_KEY");
         }
+
         if (secretKey != null && secretKey.startsWith("${")) {
-            secretKey = System.getenv("MAILJET_SECRET_KEY");
+            secretKey = findEnvVarFuzzy("MAILJET_SECRET_KEY");
         }
 
         if (apiKey == null || secretKey == null) {
-            log.error("❌ Clés API Mailjet manquantes !");
-            throw new IllegalStateException("Clés API Mailjet manquantes");
+            log.error("❌ ECHEC TOTAL : Clés API Mailjet introuvables même après recherche approfondie.");
+            // Au lieu de crasher, on log juste l'erreur pour ne pas bloquer le démarrage de
+            // tout le backend
+            // Mais l'envoi d'email échouera plus tard.
+            return;
         }
 
         apiKey = apiKey.trim();
@@ -115,6 +113,10 @@ public class MailjetEmailSender implements EmailSender {
                 escapeJson(subject),
                 toJsonString(htmlContent));
 
+        if (webClient == null) {
+            return Mono.error(new IllegalStateException("Mailjet WebClient not initialized (Keys missing)"));
+        }
+
         return webClient.post()
                 .uri("/v3.1/send")
                 .bodyValue(requestBody)
@@ -138,5 +140,20 @@ public class MailjetEmailSender implements EmailSender {
 
     private String toJsonString(String html) {
         return "\"" + escapeJson(html) + "\"";
+    }
+
+    private String findEnvVarFuzzy(String exactKey) {
+        String val = System.getenv(exactKey);
+        if (val != null)
+            return val;
+
+        // Search for keys with trailing whitespace
+        for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
+            if (entry.getKey().trim().equals(exactKey)) {
+                log.warn("✅ Correction automatique: Variable trouvée avec espaces : '{}'", entry.getKey());
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 }
