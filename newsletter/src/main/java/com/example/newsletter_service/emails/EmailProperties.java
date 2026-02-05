@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Propriétés de configuration pour l'envoi d'emails.
+ * Propriétés de configuration pour l'envoi d'emails via Mailjet.
  */
 @Data
 @Component
@@ -13,17 +13,22 @@ import org.springframework.stereotype.Component;
 public class EmailProperties {
 
     /**
-     * Provider d'email: "smtp" ou "resend"
+     * Provider d'email: "smtp" ou "mailjet"
      */
-    private String provider = "smtp";
+    private String provider = "mailjet";
 
     /**
-     * Clé API Resend (uniquement si provider = resend)
+     * Clé API Mailjet (publique)
      */
-    private String resendApiKey;
+    private String mailjetApiKey;
+
+    /**
+     * Clé secrète Mailjet
+     */
+    private String mailjetSecretKey;
 
     /**
      * Adresse email par défaut de l'expéditeur
      */
-    private String defaultFrom = "noreply@example.com";
+    private String defaultFrom = "newsletter@example.com";
 }

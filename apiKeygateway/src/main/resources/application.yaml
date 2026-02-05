@@ -154,9 +154,10 @@ spring:
 
 app:
   email:
-    provider: ${EMAIL_PROVIDER:resend}
-    resend-api-key: ${RESEND_API_KEY:re_fcArM3rV_JmwQtDjehrGQGxhKNuRNbC4r}
-    default-from: ${EMAIL_DEFAULT_FROM:onboarding@resend.dev}
+    provider: mailjet
+    mailjet-api-key: ${MAILJET_API_KEY}
+    mailjet-secret-key: ${MAILJET_SECRET_KEY}
+    default-from: ${EMAIL_DEFAULT_FROM:newsletter@example.com}
 
 api-docs:
   enabled: true

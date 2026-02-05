@@ -18,7 +18,7 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.email.provider", havingValue = "smtp", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.email.provider", havingValue = "smtp", matchIfMissing = false)
 public class SmtpEmailSender implements EmailSender {
 
     private final JavaMailSender mailSender;

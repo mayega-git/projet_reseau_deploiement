@@ -53,10 +53,12 @@ public class NewsletterCategorieController {
      * Crée une nouvelle catégorie (ADMIN uniquement)
      * Crée automatiquement le topic Kafka associé
      */
-    @PostMapping  // ✅ FIXED - removed "/api/categorie"
+    @PostMapping  // FIXED - removed "/api/categorie"
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<CategorieResponse> createCategorie(
             @Valid @RequestBody CategorieRequest request) {
+
+                System.out.println("createCategorie :"+request);
         return categorieService.createCategorie(request);
     }
     
