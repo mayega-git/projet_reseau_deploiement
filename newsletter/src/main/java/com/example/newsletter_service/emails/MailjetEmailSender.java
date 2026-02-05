@@ -42,15 +42,21 @@ public class MailjetEmailSender implements EmailSender {
         // FALLBACK: Si Spring n'a pas résolu la variable (ex: "${MAILJET_API_KEY}"), on
         // lit l'env direct
         if (apiKey != null && apiKey.startsWith("${")) {
-            log.warn("⚠️ La variable MAILJET_API_KEY n'a pas été résolue par Spring. Lecture directe de l'ENV.");
+            log.warn("⚠️ Spring n'a pas résolu la variable. Tentative de lecture ENV.");
             apiKey = System.getenv("MAILJET_API_KEY");
+
+            // DIAGNOSTIC VARIABLES
+            if (apiKey == null) {
+                log.error("😱 Variable MAILJET_API_KEY introuvable dans l'ENV !");
+                log.info("🔍 Variables disponibles : {}", System.getenv().keySet());
+            }
         }
         if (secretKey != null && secretKey.startsWith("${")) {
             secretKey = System.getenv("MAILJET_SECRET_KEY");
         }
 
         if (apiKey == null || secretKey == null) {
-            log.error("❌ Clés API Mailjet introuvables (null) !");
+            log.error("❌ Clés API Mailjet manquantes !");
             throw new IllegalStateException("Clés API Mailjet manquantes");
         }
 
