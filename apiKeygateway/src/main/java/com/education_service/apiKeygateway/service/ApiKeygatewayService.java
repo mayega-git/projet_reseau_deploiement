@@ -37,6 +37,7 @@ public class ApiKeygatewayService {
 
     //Evitez le cle > 72 bytes
     String rawApiKey = DigestUtils.sha256Hex(generateSecureKey());
+    System.out.println("RAW API KEY :"+rawApiKey);
     log.info(" createApiKey appelée pour {}", requestToken.getEmail());
 
     return Mono.fromCallable(() -> {

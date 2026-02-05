@@ -154,7 +154,7 @@ spring:
 
 app:
   email:
-    provider: mailjet
+    provider: ${EMAIL_PROVIDER:mailjet}
     mailjet-api-key: ${MAILJET_API_KEY}
     mailjet-secret-key: ${MAILJET_SECRET_KEY}
     default-from: ${EMAIL_DEFAULT_FROM:newsletter@example.com}
