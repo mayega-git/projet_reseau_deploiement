@@ -36,8 +36,26 @@ public class MailjetEmailSender implements EmailSender {
     @PostConstruct
     public void init() {
         // Créer le WebClient une seule fois au démarrage
-        String apiKey = emailProperties.getMailjetApiKey().trim();
-        String secretKey = emailProperties.getMailjetSecretKey().trim();
+        String apiKey = emailProperties.getMailjetApiKey();
+        String secretKey = emailProperties.getMailjetSecretKey();
+
+        // FALLBACK: Si Spring n'a pas résolu la variable (ex: "${MAILJET_API_KEY}"), on
+        // lit l'env direct
+        if (apiKey != null && apiKey.startsWith("${")) {
+            log.warn("⚠️ La variable MAILJET_API_KEY n'a pas été résolue par Spring. Lecture directe de l'ENV.");
+            apiKey = System.getenv("MAILJET_API_KEY");
+        }
+        if (secretKey != null && secretKey.startsWith("${")) {
+            secretKey = System.getenv("MAILJET_SECRET_KEY");
+        }
+
+        if (apiKey == null || secretKey == null) {
+            log.error("❌ Clés API Mailjet introuvables (null) !");
+            throw new IllegalStateException("Clés API Mailjet manquantes");
+        }
+
+        apiKey = apiKey.trim();
+        secretKey = secretKey.trim();
 
         String credentials = apiKey + ":" + secretKey;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
