@@ -36,19 +36,18 @@ public class MailjetEmailSender implements EmailSender {
     @PostConstruct
     public void init() {
         // Créer le WebClient une seule fois au démarrage
-        String credentials = emailProperties.getMailjetApiKey() + ":" + emailProperties.getMailjetSecretKey();
+        String apiKey = emailProperties.getMailjetApiKey().trim();
+        String secretKey = emailProperties.getMailjetSecretKey().trim();
+
+        String credentials = apiKey + ":" + secretKey;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
 
-        // Masquage des clés pour les logs
-        String maskedKey = (emailProperties.getMailjetApiKey() != null
-                && emailProperties.getMailjetApiKey().length() > 4)
-                        ? emailProperties.getMailjetApiKey().substring(0, 4) + "****"
-                        : "NULL/SHORT";
+        // Masquage des logs
+        String maskedKey = (apiKey.length() > 4) ? apiKey.substring(0, 4) + "****" : "SHORT";
+        String maskedAuth = (encodedCredentials.length() > 6) ? encodedCredentials.substring(0, 6) + "******" : "SHORT";
 
-        boolean hasSecret = emailProperties.getMailjetSecretKey() != null
-                && !emailProperties.getMailjetSecretKey().isBlank();
-
-        log.info("🔐 [Mailjet Init] API Key chargée: {} | Secret Key présente: {}", maskedKey, hasSecret);
+        log.info("🔐 [Mailjet Init] API Key: {} | Secret len: {} | Auth Header: Basic {}", maskedKey,
+                secretKey.length(), maskedAuth);
 
         this.webClient = WebClient.builder()
                 .baseUrl("https://api.mailjet.com")
