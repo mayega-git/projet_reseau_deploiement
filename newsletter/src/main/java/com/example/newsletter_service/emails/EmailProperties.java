@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Propriétés de configuration pour l'envoi d'emails via Mailjet.
+ * Propriétés de configuration pour l'envoi d'emails via Brevo.
  */
 @Data
 @Component
@@ -13,19 +13,14 @@ import org.springframework.stereotype.Component;
 public class EmailProperties {
 
     /**
-     * Provider d'email: "smtp" ou "mailjet"
+     * Provider d'email: "smtp" ou "brevo"
      */
-    private String provider = "mailjet";
+    private String provider = "brevo";
 
     /**
-     * Clé API Mailjet (publique)
+     * Clé API Brevo
      */
-    private String mailjetApiKey;
-
-    /**
-     * Clé secrète Mailjet
-     */
-    private String mailjetSecretKey;
+    private String brevoApiKey;
 
     /**
      * Adresse email par défaut de l'expéditeur
