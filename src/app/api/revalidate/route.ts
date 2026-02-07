@@ -16,11 +16,11 @@ export async function POST(request: Request) {
   }
 
   if (tag) {
-    revalidateTag(`/tags/${tag}`);  
+    revalidateTag(`/tags/${tag}`, { expire: 0 });  
   }
 
   if (category) {
-    revalidateTag(`/categories/${category}`); 
+    revalidateTag(`/categories/${category}`, { expire: 0 }); 
   }
 
   return NextResponse.json({

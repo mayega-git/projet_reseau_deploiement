@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Suspense } from 'react';
+export const dynamic = 'force-dynamic';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import { EducationRoutes } from '@/lib/server/services';
 import { TagInterface } from '@/types/tag';
@@ -34,7 +35,7 @@ export default async function ManageTags() {
   // Server Action
   async function create() {
     'use server';
-    revalidateTag('tags');
+    revalidateTag('tags', { expire: 0 });
     // Mutate data
   }
   const tags = await fetchAllTags();

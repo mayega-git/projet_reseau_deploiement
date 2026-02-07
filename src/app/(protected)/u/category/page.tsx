@@ -2,6 +2,7 @@ import React from 'react';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Suspense } from 'react';
+export const dynamic = 'force-dynamic';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import { EducationRoutes } from '@/lib/server/services';
 import { authFetchJson } from '@/lib/server/auth-fetch';
@@ -41,7 +42,7 @@ export default async function ManageCategories() {
   // Server Action
   async function create() {
     'use server';
-    revalidateTag('categories');
+    revalidateTag('categories', { expire: 0 });
     // Mutate data
   }
   const categories = await fetchAllCategories();
