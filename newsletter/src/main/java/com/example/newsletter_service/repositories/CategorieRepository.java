@@ -14,9 +14,13 @@ import java.util.UUID;
 
 @Repository
 public interface CategorieRepository extends R2dbcRepository<Categorie, UUID> {
-    
+
   Mono<Categorie> findByNom(String nom);
+
   Mono<Categorie> findByKafkaTopic(String kafkaTopic);
+
   Flux<Categorie> findByIdIn(Collection<UUID> ids);
-    
+
+  Flux<Categorie> findByKafkaTopicIn(Collection<String> kafkaTopics);
+
 }

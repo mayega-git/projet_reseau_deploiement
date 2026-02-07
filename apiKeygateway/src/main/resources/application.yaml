@@ -55,7 +55,7 @@ spring:
           writetimeout: 10000
 
   kafka:
-    enabled: false
+    enabled: true
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -155,10 +155,10 @@ spring:
 
 app:
   email:
-    provider: ${EMAIL_PROVIDER:mailjet}
+    provider: ${EMAIL_PROVIDER:brevo}
     brevo-api-key: ${BREVO_API_KEY}
-    #mailjet-secret-key: ${MAILJET_SECRET_KEY}
-    default-from: ${EMAIL_DEFAULT_FROM:newsletter@example.com}
+    default-from: maybalock@gmail.com
+    default-from-name: Credantials
 
 api-docs:
   enabled: true

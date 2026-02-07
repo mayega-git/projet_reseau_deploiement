@@ -13,9 +13,12 @@ import reactor.core.publisher.Mono;
  * Recrée tous les listeners pour les lecteurs existants qui ont des
  * abonnements.
  */
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "spring.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaConsumerInitializer {
 
     private final ConsumerGroupManager consumerGroupManager;

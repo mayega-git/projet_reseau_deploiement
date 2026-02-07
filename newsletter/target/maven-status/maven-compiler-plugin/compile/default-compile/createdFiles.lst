@@ -9,8 +9,10 @@ com/example/newsletter_service/services/RedacteurService.class
 com/example/newsletter_service/dto/LecteurResponse.class
 com/example/newsletter_service/repositories/LecteurNewsletterDesabonnementRepository.class
 com/example/newsletter_service/dto/RedacteurResponse$RedacteurResponseBuilder.class
+com/example/newsletter_service/emails/BrevoEmailSender.class
 com/example/newsletter_service/config/JacksonConfig.class
 com/example/newsletter_service/dto/RedacteurRequestSubmission.class
+com/example/newsletter_service/emails/EmailSender.class
 com/example/newsletter_service/dto/ApprovalRequest.class
 com/example/newsletter_service/models/Newsletter.class
 com/example/newsletter_service/services/RedacteurApprovalService.class
@@ -19,8 +21,10 @@ com/example/newsletter_service/controllers/EmailController.class
 com/example/newsletter_service/dto/KafkaMessage.class
 com/example/newsletter_service/exception/NewsletterGlobalExceptionHandler.class
 com/example/newsletter_service/repositories/CategorieRepository.class
+com/example/newsletter_service/kafka/KafkaConsumerInitializer.class
 com/example/newsletter_service/dto/LecteurResponse$LecteurResponseBuilder.class
 com/example/newsletter_service/models/LecteurNewsletterDesabonnement.class
+com/example/newsletter_service/emails/EmailProperties.class
 com/example/newsletter_service/dto/RedacteurResponse.class
 com/example/newsletter_service/dto/CategorieRequest.class
 com/example/newsletter_service/kafka/KafkaProducerService.class
@@ -76,6 +80,7 @@ com/example/newsletter_service/models/LecteurCategorieAbonnement$LecteurCategori
 com/example/newsletter_service/models/Categorie.class
 com/example/newsletter_service/models/Redacteur.class
 com/example/newsletter_service/services/LecteurService.class
+com/example/newsletter_service/emails/SmtpEmailSender.class
 com/example/newsletter_service/models/Newsletter$NewsletterBuilder.class
 com/example/newsletter_service/models/Categorie$CategorieBuilder.class
 com/example/newsletter_service/dto/RedacteurRequestResponse$RedacteurRequestResponseBuilder.class

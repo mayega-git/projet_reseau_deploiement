@@ -54,7 +54,8 @@ public class ApiKeygatewayService {
                         .envoyerEmail(
                                 requestToken.getEmail(),
                                 "API Key créée ! Bienvenu sur education service",
-                                new String("Voici votre API Key  : " + rawApiKey + "\n" + "votre Client id est : " + savedApikey.getClientId().toString())
+                                "<p> Voici votre API Key : <strong>"+rawApiKey+"</strong><br>"+
+                                    "votre Client id est : <strong>"+savedApikey.getClientId().toString()+"</strong></p>"
                         )
                         .doOnSubscribe(s -> log.info(" Appel HTTP email déclenché"))
                         .doOnSuccess(v -> log.info("Email envoyé avec succès"))

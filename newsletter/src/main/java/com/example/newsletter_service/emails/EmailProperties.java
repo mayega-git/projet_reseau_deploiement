@@ -25,5 +25,8 @@ public class EmailProperties {
     /**
      * Adresse email par défaut de l'expéditeur
      */
-    private String defaultFrom = "newsletter@example.com";
+    private String defaultFrom = "maybalock@gmail.com";
+    
+
+    private String defaultFromName = "Newsletter";
 }

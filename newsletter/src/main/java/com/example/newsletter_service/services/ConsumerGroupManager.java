@@ -85,36 +85,58 @@ public class ConsumerGroupManager {
      * @return Flux de tuples (groupId, topics)
      */
     public Flux<reactor.util.function.Tuple2<String, List<String>>> initializeAllConsumerGroups() {
-        log.info("🔍 Recherche de tous les consumer groups à initialiser...");
+        log.info("🔍 Recherche de tous les consumer groups à initialiser basé sur les abonnements existants...");
 
-        // Récupérer toutes les catégories avec des abonnements et créer les consumer
-        // groups
-        return categorieRepository.findAll()
-                .filter(categorie -> categorie.getKafkaTopic() != null)
-                .collectList()
-                .flatMapMany(categories -> {
-                    if (categories.isEmpty()) {
-                        log.warn("⚠️ Aucune catégorie avec topic Kafka trouvée");
-                        return Flux.empty();
-                    }
+        // 1. Récupérer tous les abonnements pour identifier les combinaisons uniques
+        // existantes
+        return abonnementRepository.findAll()
+                .groupBy(abonnement -> abonnement.getLecteurId())
+                .flatMap(groupedFlux -> groupedFlux.collectList()
+                        .flatMap(abonnements -> {
+                            List<UUID> categorieIds = abonnements.stream()
+                                    .map(a -> a.getCategorieId())
+                                    .sorted() // Important: trier pour que combo {A,B} == {B,A}
+                                    .collect(java.util.stream.Collectors.toList());
 
-                    // Créer un consumer group global pour toutes les catégories
-                    List<String> allTopics = categories.stream()
-                            .map(Categorie::getKafkaTopic)
-                            .toList();
+                            if (categorieIds.isEmpty())
+                                return Mono.empty();
 
-                    List<String> allNames = categories.stream()
-                            .map(Categorie::getNom)
-                            .sorted()
-                            .map(name -> name.toLowerCase().replaceAll("[^a-z0-9]", ""))
-                            .toList();
+                            return Mono.just(categorieIds);
+                        }))
+                // Nous avons maintenant un Flux<List<UUID>> représentant les abonnements de
+                // chaque utilsateur
+                // Nous devons trouver les combinaisons UNIQUES de ces listes
+                .distinct()
+                .flatMap(categorieIds -> {
+                    // Pour chaque combinaison unique, récupérer les infos de catégorie (noms,
+                    // topics)
+                    return categorieRepository.findByIdIn(categorieIds)
+                            .collectList()
+                            .map(categories -> {
 
-                    String globalGroupId = "group_" + String.join("_", allNames);
+                                // Générer le groupId
+                                List<String> validNames = categories.stream()
+                                        .map(Categorie::getNom)
+                                        .sorted()
+                                        .map(n -> n.toLowerCase().replaceAll("[^a-z0-9]", ""))
+                                        .collect(java.util.stream.Collectors.toList());
 
-                    log.info("📢 Consumer group global créé: {} avec {} topics",
-                            globalGroupId, allTopics.size());
+                                String groupId = "group_" + String.join("_", validNames);
 
-                    return Flux.just(reactor.util.function.Tuples.of(globalGroupId, allTopics));
-                });
+                                // Récupérer les topics
+                                List<String> topics = categories.stream()
+                                        .map(Categorie::getKafkaTopic)
+                                        .filter(t -> t != null && !t.isEmpty())
+                                        .collect(java.util.stream.Collectors.toList());
+
+                                if (topics.isEmpty()) {
+                                    return null; // Should not happen ideally but handling it
+                                }
+
+                                log.info("📢 Consumer group identifié: {} avec listeners sur {}", groupId, topics);
+                                return reactor.util.function.Tuples.of(groupId, topics);
+                            });
+                })
+                .filter(tuple -> tuple != null);
     }
 }

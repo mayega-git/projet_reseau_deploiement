@@ -5,19 +5,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import sendinblue.ApiClient;
+import sendinblue.Configuration;
+import sendinblue.auth.ApiKeyAuth;
+import sibApi.TransactionalEmailsApi;
+import sibModel.CreateSmtpEmail;
+import sibModel.SendSmtpEmail;
+import sibModel.SendSmtpEmailSender;
+import sibModel.SendSmtpEmailTo;
+
+import java.util.Collections;
 import java.util.Map;
 
 /**
  * Implémentation de l'envoi d'emails via l'API Brevo (ex-Sendinblue).
- * 
- * AVANTAGES:
- * - 300 emails/jour sur le plan gratuit
- * - API simple avec une seule clé
- * - Pas de vérification d'entreprise requise
- * 
+ * Utilise le SDK officiel Brevo pour une meilleure fiabilité et maintenabilité.
  * Pour activer: app.email.provider=brevo
  * Variable d'environnement: BREVO_API_KEY
  */
@@ -28,7 +32,7 @@ import java.util.Map;
 public class BrevoEmailSender implements EmailSender {
 
     private final EmailProperties emailProperties;
-    private WebClient webClient;
+    private TransactionalEmailsApi apiInstance;
 
     @PostConstruct
     public void init() {
@@ -42,7 +46,9 @@ public class BrevoEmailSender implements EmailSender {
 
         if (apiKey == null || apiKey.isBlank()) {
             log.error("❌ ECHEC: Clé API Brevo introuvable. Définissez BREVO_API_KEY");
-            return;
+            throw new IllegalStateException(
+                "BREVO_API_KEY est obligatoire. Configurez-la dans Railway ou application.yml"
+            );
         }
 
         apiKey = apiKey.trim();
@@ -54,86 +60,104 @@ public class BrevoEmailSender implements EmailSender {
 
         log.info("🔐 [Brevo Init] API Key: {}", maskedKey);
 
-        this.webClient = WebClient.builder()
-                .baseUrl("https://api.brevo.com")
-                .defaultHeader("api-key", apiKey)
-                .defaultHeader("Content-Type", "application/json")
-                .defaultHeader("Accept", "application/json")
-                .build();
-
-        log.info("✅ [Brevo] WebClient initialisé avec succès");
-    }
-
-    @Override
-    public Mono<Void> sendHtmlEmail(String to, String subject, String htmlContent, String from) {
-        log.info("[Brevo] Envoi d'email à : {}", to);
-
-        String senderEmail = from != null ? from : emailProperties.getDefaultFrom();
-        String senderName = "Newsletter";
-
-        // Corps de la requête Brevo API v3
-        String requestBody = """
-                {
-                    "sender": {
-                        "email": "%s",
-                        "name": "%s"
-                    },
-                    "to": [
-                        {
-                            "email": "%s"
-                        }
-                    ],
-                    "subject": "%s",
-                    "htmlContent": %s
-                }
-                """.formatted(
-                senderEmail,
-                senderName,
-                to,
-                escapeJson(subject),
-                toJsonString(htmlContent));
-
-        if (webClient == null) {
-            return Mono.error(new IllegalStateException("Brevo WebClient not initialized (API Key missing)"));
+        try {
+            // Initialisation du client API Brevo
+            ApiClient defaultClient = Configuration.getDefaultApiClient();
+            
+            // Configuration de l'authentification
+            ApiKeyAuth apiKeyAuth = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
+            apiKeyAuth.setApiKey(apiKey);
+            
+            // Configuration des timeouts (optionnel mais recommandé)
+            defaultClient.setConnectTimeout(30000); // 30 secondes
+            defaultClient.setReadTimeout(30000);
+            
+            // Initialisation de l'API transactionnelle
+            this.apiInstance = new TransactionalEmailsApi(defaultClient);
+            
+            log.info("✅ [Brevo] SDK initialisé avec succès");
+            
+        } catch (Exception e) {
+            log.error("❌ [Brevo] Erreur lors de l'initialisation du SDK", e);
+            throw new IllegalStateException("Impossible d'initialiser le SDK Brevo", e);
         }
-
-        return webClient.post()
-                .uri("/v3/smtp/email")
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(String.class)
-                .doOnSuccess(
-                        response -> log.info("[Brevo] ✅ Email envoyé avec succès à {} - Response: {}", to, response))
-                .doOnError(error -> log.error("[Brevo] ❌ Erreur d'envoi à {} : {}", to, error.getMessage()))
-                .then();
     }
 
-    private String escapeJson(String text) {
-        if (text == null)
-            return "";
-        return text.replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r")
-                .replace("\t", "\\t");
+@Override
+public Mono<Void> sendHtmlEmail(String to, String subject, String htmlContent, String from) {
+    log.info("[Brevo] Envoi d'email à : {}", to);
+
+    String senderEmail = (from != null && !from.isBlank())
+            ? from
+            : emailProperties.getDefaultFrom();
+
+    if (senderEmail == null || senderEmail.isBlank()) {
+        return Mono.error(new IllegalStateException(
+            "❌ Brevo exige un sender.email non nul. Vérifie app.email.default-from"
+        ));
     }
 
-    private String toJsonString(String html) {
-        return "\"" + escapeJson(html) + "\"";
+    String senderName = emailProperties.getDefaultFromName();
+    if (senderName == null || senderName.isBlank()) {
+        senderName = "Newsletter";
     }
 
+    if (apiInstance == null) {
+        return Mono.error(new IllegalStateException(
+            "Brevo SDK non initialisé"
+        ));
+    }
+
+    final String finalSenderEmail = senderEmail.trim();
+    final String finalSenderName = senderName.trim();
+
+    return Mono.fromCallable(() -> {
+        SendSmtpEmail email = new SendSmtpEmail();
+
+        // 🔴 sender OBLIGATOIRE et VALIDÉ chez Brevo
+        SendSmtpEmailSender sender = new SendSmtpEmailSender();
+        sender.setEmail(finalSenderEmail);
+        sender.setName(finalSenderName);
+        email.setSender(sender);
+
+        SendSmtpEmailTo recipient = new SendSmtpEmailTo();
+        recipient.setEmail(to);
+        email.setTo(Collections.singletonList(recipient));
+
+        email.setSubject(subject);
+        email.setHtmlContent(htmlContent);
+        email.setTags(Collections.singletonList("newsletter"));
+
+        CreateSmtpEmail response = apiInstance.sendTransacEmail(email);
+
+        log.info("✅ [Brevo] Email envoyé → {} | messageId={}",
+                to, response.getMessageId());
+
+        return response;
+    }).then();
+}
+
+
+
+    /**
+     * Recherche une variable d'environnement avec gestion des espaces
+     */
     private String findEnvVarFuzzy(String exactKey) {
         String val = System.getenv(exactKey);
-        if (val != null)
+        if (val != null) {
             return val;
+        }
 
-        // Recherche des clés avec espaces
+        // Recherche des clés avec espaces ou variations
         for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
             if (entry.getKey().trim().equals(exactKey)) {
-                log.warn("✅ Correction automatique: Variable trouvée avec espaces : '{}'", entry.getKey());
+                log.warn("✅ Correction automatique: Variable trouvée avec espaces : '{}'", 
+                    entry.getKey());
                 return entry.getValue();
             }
         }
+        
+        log.warn("❌ Variable {} introuvable dans l'environnement", exactKey);
         return null;
     }
 }

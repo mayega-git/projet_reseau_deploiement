@@ -10,8 +10,9 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class EmailService2 {
 
-    private final EmailSender emailSender;
     private final EmailProperties emailProperties;
+
+    private final EmailSender emailSender;
 
     public Mono<Void> envoyerEmail(String destinataire, String sujet, String contenu) {
         log.info("Tentative d'envoi d'email à : {}", destinataire);
@@ -25,4 +26,5 @@ public class EmailService2 {
                 .doOnError(
                         e -> log.error("Erreur lors de l'envoi de l'email à {} : {}", destinataire, e.getMessage(), e));
     }
+
 }
