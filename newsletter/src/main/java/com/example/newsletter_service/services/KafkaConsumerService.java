@@ -196,7 +196,16 @@ public class KafkaConsumerService {
                                                                                                                 .containsAll(listenerCategorieIds);
 
                                                                                 if (!matchesConsumerGroup) {
+                                                                                        log.debug("✕ Lecteur {} ignoré par ce groupe. (UserCats: {}, GroupCats: {})",
+                                                                                                        lecteurId,
+                                                                                                        userCategorieIds,
+                                                                                                        listenerCategorieIds);
                                                                                         return Mono.empty();
+                                                                                } else {
+                                                                                        log.debug("✓ Lecteur {} correspond au groupe ! (UserCats: {}, GroupCats: {})",
+                                                                                                        lecteurId,
+                                                                                                        userCategorieIds,
+                                                                                                        listenerCategorieIds);
                                                                                 }
 
                                                                                 // CHECK 2: Le lecteur est-il intéressé
@@ -209,6 +218,10 @@ public class KafkaConsumerService {
                                                                                                 .anyMatch(newsletterCategorieIds::contains);
 
                                                                                 if (!interestedInNewsletter) {
+                                                                                        log.debug("✕ Lecteur {} non intéressé par cette newsletter. (UserCats: {}, NewsCats: {})",
+                                                                                                        lecteurId,
+                                                                                                        userCategorieIds,
+                                                                                                        newsletterCategorieIds);
                                                                                         return Mono.empty();
                                                                                 }
 

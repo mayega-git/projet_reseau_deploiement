@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("/education-service/newsletter/newsletters")
+@RequestMapping("/education-service/newsletter")
 @RequiredArgsConstructor
 public class NewsletterController {
 
@@ -38,7 +38,7 @@ public class NewsletterController {
 
     @PostMapping("/newsletters/{id}/submit")
     public Mono<NewsletterResponse> submitNewsletter(
-            @PathVariable("id")  UUID id,
+            @PathVariable("id") UUID id,
             @RequestParam(name = "redacteurId") UUID redacteurId) {
         return newsletterService.submitNewsletter(id, redacteurId);
     }

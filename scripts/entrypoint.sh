@@ -41,6 +41,7 @@ CREATE SCHEMA IF NOT EXISTS education;
 CREATE SCHEMA IF NOT EXISTS ratings;
 CREATE SCHEMA IF NOT EXISTS forum;
 CREATE SCHEMA IF NOT EXISTS newsletter;
+CREATE SCHEMA IF NOT EXISTS users;
 EOF
 echo "Schemas initialized successfully."
 
