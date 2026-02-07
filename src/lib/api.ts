@@ -47,7 +47,7 @@ export const NewsletterServiceRoutes = {
   categories: `${BASE_URL_NEWSLETTER_API}/categorie`,
   lecteurs: `${BASE_URL_NEWSLETTER_API}/lecteurs`,
   lecteursRegister: `${BASE_URL_NEWSLETTER_API}/lecteurs/register`,
-  newsletters: `${BASE_URL_NEWSLETTER_API}/newsletters/newsletters`,
+  newsletters: `${BASE_URL_NEWSLETTER_API}/newsletters`,
   adminRedacteurs: `${BASE_URL_NEWSLETTER_API}/admin/redacteurs`,
   redacteursRequest: `${BASE_URL_NEWSLETTER_API}/admin/redacteurs`,
 
