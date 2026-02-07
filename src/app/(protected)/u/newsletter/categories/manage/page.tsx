@@ -121,30 +121,34 @@ const ManageNewsletterCategories = () => {
     setSaving(true);
     let result: NewsletterCategory | null = null;
 
-    if (formMode === 'create') {
-      result = await createNewsletterCategory({
-        nom: formData.nom,
-        description: formData.description,
-      });
-    } else if (activeCategory?.id) {
-      result = await updateNewsletterCategory(activeCategory.id, {
-        nom: formData.nom,
-        description: formData.description,
-      });
-    }
+    try {
+      if (formMode === 'create') {
+        result = await createNewsletterCategory({
+          nom: formData.nom,
+          description: formData.description,
+        });
+      } else if (activeCategory?.id) {
+        result = await updateNewsletterCategory(activeCategory.id, {
+          nom: formData.nom,
+          description: formData.description,
+        });
+      }
 
-    setSaving(false);
+      if (!result) {
+        throw new Error('Operation returned null');
+      }
 
-    if (!result) {
+      GlobalNotifier('Categorie enregistree.', 'success');
+      setFormOpen(false);
+      setFormData(emptyForm);
+      setActiveCategory(null);
+      loadCategories();
+    } catch (error) {
+      console.error('Error saving category:', error);
       GlobalNotifier('Operation impossible.', 'error');
-      return;
+    } finally {
+      setSaving(false);
     }
-
-    GlobalNotifier('Categorie enregistree.', 'success');
-    setFormOpen(false);
-    setFormData(emptyForm);
-    setActiveCategory(null);
-    loadCategories();
   };
 
   const handleDelete = async () => {
