@@ -215,7 +215,49 @@ export async function fetchRedacteurByEmail(email: string): Promise<RedacteurRes
   if (!email) return null;
   const url = new URL(NewsletterRoutes.redacteursByEmail);
   url.searchParams.set('email', email);
-  return authFetchData<RedacteurResponse | boolean>(url.toString());
+  
+  console.log('[fetchRedacteurByEmail] Requesting:', url.toString());
+
+  // Use authFetch directly to handle non-JSON responses (like "true" boolean)
+  const res = await authFetch(url.toString());
+  
+  console.log('[fetchRedacteurByEmail] Status:', res.status, 'Content-Type:', res.headers.get('content-type'));
+
+  if (!res.ok) {
+    console.error('[fetchRedacteurByEmail] Request failed with status:', res.status);
+    return null;
+  }
+
+  const contentType = res.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    try {
+      const json = await res.json();
+      console.log('[fetchRedacteurByEmail] JSON Response:', JSON.stringify(json));
+      if (json && typeof json === 'object' && 'data' in json) {
+        return json.data as RedacteurResponse;
+      }
+      return json as RedacteurResponse;
+    } catch (e) {
+      console.error('Error parsing JSON in fetchRedacteurByEmail:', e);
+      return null;
+    }
+  }
+
+  // Handle plain text response (e.g., "true" or "false")
+  const text = await res.text();
+  console.log('[fetchRedacteurByEmail] Text Response:', text);
+  
+  const trimmed = text.trim().toLowerCase();
+  
+  // Handle various boolean string representations
+  if (trimmed === 'true') return true;
+  if (trimmed === 'false') return false;
+  
+  // Handle quoted strings just in case
+  if (trimmed === '"true"') return true;
+  if (trimmed === '"false"') return false;
+
+  return null;
 }
 
 export async function approveRedacteurRequest(requestId: string): Promise<RedacteurRequestResponse | null> {
