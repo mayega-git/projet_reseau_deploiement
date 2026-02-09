@@ -84,7 +84,9 @@ public class KafkaConfig {
 
         // Configuration du listener
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
-        factory.setConcurrency(3);
+
+        // REDUCED CONCURRENCY TO 1 TO SAVE MEMORY
+        factory.setConcurrency(1);
 
         return factory;
     }

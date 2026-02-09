@@ -19,8 +19,9 @@ public interface LecteurRepository extends R2dbcRepository<Lecteur, UUID> {
 
     Mono<Boolean> existsByEmail(String email);
 
-  
-
-
+    @Query("SELECT DISTINCT l.* FROM lecteur l " +
+            "JOIN lecteur_categorie_abonnement a ON l.id = a.lecteur_id " +
+            "WHERE a.categorie_id IN (:categoryIds)")
+    Flux<Lecteur> findDistinctByCategoriesIn(java.util.List<UUID> categoryIds);
 
 }

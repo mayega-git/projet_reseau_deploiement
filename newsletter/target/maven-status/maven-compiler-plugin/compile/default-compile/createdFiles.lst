@@ -21,7 +21,6 @@ com/example/newsletter_service/controllers/EmailController.class
 com/example/newsletter_service/dto/KafkaMessage.class
 com/example/newsletter_service/exception/NewsletterGlobalExceptionHandler.class
 com/example/newsletter_service/repositories/CategorieRepository.class
-com/example/newsletter_service/kafka/KafkaConsumerInitializer.class
 com/example/newsletter_service/dto/LecteurResponse$LecteurResponseBuilder.class
 com/example/newsletter_service/models/LecteurNewsletterDesabonnement.class
 com/example/newsletter_service/emails/EmailProperties.class
@@ -34,7 +33,6 @@ com/example/newsletter_service/repositories/LecteurRepository.class
 com/example/newsletter_service/models/Lecteur.class
 com/example/newsletter_service/enums/Role.class
 com/example/newsletter_service/models/Redacteur$RedacteurBuilder.class
-com/example/newsletter_service/services/ConsumerGroupManager.class
 com/example/newsletter_service/controllers/RedacteurController.class
 com/example/newsletter_service/services/KafkaConsumerService.class
 com/example/newsletter_service/dto/RedacteurStatusChangeEvent$RedacteurStatusChangeEventBuilder.class
@@ -64,7 +62,6 @@ com/example/newsletter_service/enums/Domain.class
 com/example/newsletter_service/models/ConsumerGroup.class
 com/example/newsletter_service/controllers/NewsletterController.class
 com/example/newsletter_service/dto/LecteurRegistrationRequest.class
-com/example/newsletter_service/kafka/KafkaDynamicListenerManager.class
 com/example/newsletter_service/repositories/NewsletterCategorieRepository.class
 com/example/newsletter_service/models/ConsumerGroup$ConsumerGroupBuilder.class
 com/example/newsletter_service/dto/RedacteurStatusChangeEvent.class

@@ -20,15 +20,12 @@
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/exception/ResourceNotFoundException.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/LecteurResponse.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/services/NewsletterService.java
-/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/kafka/KafkaConsumerInitializer.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/SmtpEmailSender.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/enums/StatutNewsletter.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/enums/Domain.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/repositories/RedacteurRepository.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/models/LecteurNewsletterDesabonnement.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/emails/EmailService1.java
-/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/kafka/KafkaDynamicListenerManager.java
-/home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/services/ConsumerGroupManager.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/repositories/LecteurRepository.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/dto/NewsletterResponse.java
 /home/mayega/Documents/education-service/newsletter/src/main/java/com/example/newsletter_service/config/JacksonConfig.java

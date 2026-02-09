@@ -22,7 +22,7 @@ public class LecteurControlleur {
     private final LecteurService lecteurService;
 
     /**
-     * ✅ MODIFIÉ : Inscription SANS catégories
+     *  MODIFIÉ : Inscription SANS catégories
      * Le lecteur recevra TOUTES les newsletters par défaut
      */
     @PostMapping("/register")
@@ -33,7 +33,7 @@ public class LecteurControlleur {
     }
     
     /**
-     * ✅ NOUVEAU : S'abonner à des catégories (après inscription)
+     * NOUVEAU : S'abonner à des catégories (après inscription)
      * Une fois abonné, le lecteur ne recevra QUE ces catégories
      */
     @PostMapping("/{lecteurId}/subscribe")

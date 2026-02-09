@@ -3,7 +3,6 @@ package com.example.newsletter_service.services;
 import com.example.newsletter_service.dto.LecteurRegistrationRequest;
 import com.example.newsletter_service.dto.UpdateCategoriesRequest;
 import com.example.newsletter_service.dto.LecteurResponse;
-import com.example.newsletter_service.kafka.KafkaDynamicListenerManager;
 import com.example.newsletter_service.models.Lecteur;
 import com.example.newsletter_service.models.LecteurCategorieAbonnement;
 import com.example.newsletter_service.models.LecteurNewsletterDesabonnement;
@@ -19,13 +18,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**
- * Service de gestion des lecteurs avec création dynamique des consumer groups
+ * Service de gestion des lecteurs.
+ * Refactoré : Plus de gestion dynamique des consumer groups Kafka.
+ * Le ciblage se fait désormais à la lecture du message.
  */
 @Service
 @Slf4j
@@ -36,8 +35,6 @@ public class LecteurService {
     private final LecteurCategorieAbonnementRepository abonnementRepository;
     private final LecteurNewsletterDesabonnementRepository desabonnementRepository;
     private final CategorieRepository categorieRepository;
-    private final Optional<ConsumerGroupManager> consumerGroupManager;
-    private final Optional<KafkaDynamicListenerManager> dynamicListenerManager;
 
     /**
      * NOUVEAU : Inscription d'un lecteur SANS catégories
@@ -80,12 +77,11 @@ public class LecteurService {
                             })
                             .collectList()
                             .flatMap(abonnements -> {
-                                // Créer le consumer group dynamique
-                                return createConsumerGroupForLecteur(lecteurId)
-                                        .then(buildLecteurResponse(lecteur));
+                                // Plus de consumer group à gérer
+                                return buildLecteurResponse(lecteur);
                             });
                 })
-                .doOnSuccess(response -> log.info(" Lecteur {} abonné aux catégories avec succès - Consumer group créé",
+                .doOnSuccess(response -> log.info(" Lecteur {} abonné aux catégories avec succès",
                         lecteurId));
     }
 
@@ -125,9 +121,8 @@ public class LecteurService {
                             .then(Mono.just(lecteur));
                 })
                 .flatMap(lecteur -> {
-                    // 3. Recréer le consumer group avec les nouvelles catégories
-                    return createConsumerGroupForLecteur(lecteurId)
-                            .then(buildLecteurResponse(lecteur));
+                    // 3. Plus de gestion de consumer group
+                    return buildLecteurResponse(lecteur);
                 })
                 .doOnSuccess(response -> log.info(" Catégories mises à jour pour lecteur: {}", lecteurId));
     }
@@ -199,33 +194,6 @@ public class LecteurService {
         // lecteur
         // Pour l'instant, retourne true par défaut
         return Mono.just(true);
-    }
-
-    /**
-     * Crée ou met à jour le consumer group pour un lecteur
-     */
-    private Mono<Void> createConsumerGroupForLecteur(UUID lecteurId) {
-        if (consumerGroupManager.isEmpty() || dynamicListenerManager.isEmpty()) {
-            log.debug("Kafka désactivé: pas de création de consumer group pour le lecteur {}", lecteurId);
-            return Mono.empty();
-        }
-
-        return consumerGroupManager.get().getOrCreateConsumerGroupForLecteur(lecteurId)
-                .zipWith(consumerGroupManager.get().getTopicsForLecteur(lecteurId))
-                .doOnNext(tuple -> {
-                    String groupId = tuple.getT1();
-                    String[] topics = tuple.getT2().toArray(new String[0]);
-
-                    if (topics.length > 0) {
-                        // Créer ou mettre à jour le listener Kafka
-                        dynamicListenerManager.get().createOrGetListener(groupId, topics);
-                        log.info(" Lecteur {} ajouté/migré vers consumer group: {} - Topics: {}",
-                                lecteurId, groupId, String.join(", ", topics));
-                    } else {
-                        log.warn(" Lecteur {} n'a aucun topic à écouter", lecteurId);
-                    }
-                })
-                .then();
     }
 
     /**
