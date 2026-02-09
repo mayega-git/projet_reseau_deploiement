@@ -84,9 +84,15 @@ export async function createNewsletter(
   redacteurId: string,
   payload: NewsletterCreateRequest,
 ): Promise<NewsletterResponse | null> {
+  console.log('[createNewsletter] RedacteurID:', redacteurId);
+  console.log('[createNewsletter] Payload:', JSON.stringify(payload));
+
   if (!redacteurId) return null;
   const url = new URL(NewsletterRoutes.newsletters);
   url.searchParams.set('redacteurId', redacteurId);
+  
+  console.log('[createNewsletter] Requesting URL:', url.toString());
+  
   const res = await authFetch(url.toString(), {
     method: 'POST',
     body: JSON.stringify(payload),

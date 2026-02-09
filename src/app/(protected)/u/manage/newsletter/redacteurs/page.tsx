@@ -10,7 +10,7 @@ import {
   approveRedacteurRequest,
   fetchRedacteurRequests,
   rejectRedacteurRequest,
-} from '@/lib/FetchNewsletterData';
+} from '@/actions/newsletter';
 import type {
   RedacteurRequestResponse,
   RedacteurRequestStatus,
