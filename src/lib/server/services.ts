@@ -27,6 +27,8 @@ export const UserRoutes = {
   allFollowers: `${ServiceURLs.user}/api/connections/followers`,
   unfollow: `${ServiceURLs.user}/api/connections/unfollow`,
   role: `${ServiceURLs.user}/api/roles`,
+  organisation: `${ServiceURLs.user}/api/organisation`,
+  organisationLogin: `${ServiceURLs.user}/api/organisation/login`,
 };
 
 export const EducationRoutes = {
@@ -34,6 +36,7 @@ export const EducationRoutes = {
   category: `${ServiceURLs.education}/categories`,
   blogs: `${ServiceURLs.education}/blogs`,
   podcasts: `${ServiceURLs.education}/podcasts`,
+  cours: `${ServiceURLs.education}/cours`,
   favorites: `${ServiceURLs.education}/favorites`,
   domains: `${ServiceURLs.education}/domains`,
 };

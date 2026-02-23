@@ -77,7 +77,13 @@ export async function authFetchData<T>(
   url: string,
   options: RequestInit = {},
 ): Promise<T | null> {
-  const res = await authFetch(url, options);
+  let res: Response;
+  try {
+    res = await authFetch(url, options);
+  } catch (err) {
+    console.error('❌ [authFetchData] fetch failed (service unreachable?):', url, err);
+    return null;
+  }
   
   console.log('📦 [authFetchData] Response:', { 
     url, 

@@ -28,6 +28,7 @@ const Signup = () => {
     password: '',
     firstName: '',
     lastName: '',
+    bio: '',
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -85,6 +86,7 @@ const Signup = () => {
       const result = await signup(
         formData.firstName,
         formData.lastName,
+        formData.bio,
         formData.email,
         formData.password,
       );
@@ -169,6 +171,29 @@ const Signup = () => {
               )}
             </div>
 
+
+            <div className="w-full h-full flex flex-col gap-2">
+              <label htmlFor="lastName" className="form-label">
+                Bio
+              </label>
+              <Input
+                type="text"
+                placeholder=""
+                name="bio"
+                className={`${
+                  error.bio && `border-redTheme focus-visible:ring-0`
+                }`}
+                value={formData.bio}
+                onChange={handleInputChange}
+              />
+              {error.bio && (
+                <p className="text-redTheme paragraph-xmedium-medium">
+                  {error.bio}
+                </p>
+              )}
+            </div>
+
+
             <div className="w-full h-full flex flex-col gap-2 relative">
               <label htmlFor="password" className="form-label">
                 Password
@@ -211,6 +236,7 @@ const Signup = () => {
             <Button type="submit" className="primary">
               Create account
             </Button>
+           
             <p
               onClick={() => router.push('/auth/login')}
               className="paragraph-small-medium text-center text-black-300"
@@ -221,6 +247,19 @@ const Signup = () => {
                 Sign in
               </span>
             </p>
+
+            <p
+              onClick={() => router.push('/auth/signup/organisation')}
+              className="paragraph-small-medium text-center text-black-300"
+            >
+              Are you an organisation ?
+              <span className="cursor-pointer text-primaryPurple-500 hover:underline transition duration-300">
+                {' '}
+                Create an account
+              </span>
+            </p>
+
+
           </div>
         </form>
       </main>

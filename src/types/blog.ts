@@ -36,3 +36,11 @@ export interface CreateBlogInterface {
   tags: string[]; // id of tags
   categories: string[]; // id of category
 }
+
+
+export interface CreateCourseInterface extends CreateBlogInterface {
+  formateur : string;
+  nombreHeures : string;
+  niveau : string;
+  
+}

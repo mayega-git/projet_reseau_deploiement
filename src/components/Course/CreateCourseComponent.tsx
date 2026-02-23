@@ -7,7 +7,7 @@ import TextArea from '../ui/textarea';
 import CustomButton from '../ui/customButton';
 import MultiSelectDropdown from '../ui/MultiSelectDropdown';
 import AudioPlayerPreview from '../AudioPlayer/AudioPlayerPreview';
-import { CreateBlogInterface } from '@/types/blog';
+import { CreateCourseInterface } from '@/types/blog';
 import { calculateReadingTime } from '@/helper/calculateReadingTime';
 import { TagInterface } from '@/types/tag';
 import { fetchAllTags as serverFetchTags, fetchAllCategories as serverFetchCategories, createBlog as serverCreateBlog } from '@/actions/education';
@@ -24,14 +24,13 @@ import Loader from '../Loader/Loader';
 import { Button } from '../ui/button';
 import { ContentPreview } from '../Content';
 
-// Dynamic import with SSR disabled to prevent hydration mismatch
-// Draft.js generates random IDs that differ between server and client
+
 const DraftEditor = dynamic(() => import('../Editor/DraftEditor'), {
   ssr: false,
   loading: () => <div className="editor-wrapper" style={{ minHeight: '200px', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px' }}>Loading editor...</div>,
 });
 
-const CreateBlogComponent = () => {
+const CreateCourseComponent = () => {
   const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +55,7 @@ const CreateBlogComponent = () => {
     },
   ]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [blogData, setBlogData] = useState<CreateBlogInterface>({
+  const [courseData, setCourseData] = useState<CreateCourseInterface>({
     coverImage: '',
     authorId: '',
     title: '',
@@ -66,7 +65,10 @@ const CreateBlogComponent = () => {
     readingTime: 0,
     domain: '',
     tags: [],
-    categories: [], // Replace with actual category selection
+    categories: [],
+    formateur: '',
+    nombreHeures: '',
+    niveau: '' 
   });
 
   const extractMimeType = (fileName: string, base64Data: string): string => {
@@ -194,24 +196,26 @@ const CreateBlogComponent = () => {
     const newErrors: { [key: string]: string } = {};
 
     console.log(
-      blogData,
+      courseData,
       'blog data logged when validate form or preview is clicked'
     );
 
-    if (!blogData.title.trim()) newErrors.title = 'Title is required';
-    if (!blogData.description.trim())
+    if (!courseData.title.trim()) newErrors.title = 'Title is required';
+    if (!courseData.description.trim())
       newErrors.description = 'Description is required';
-    if (!blogData.content || blogData.content === '{}')
+    if (!courseData.content || courseData.content === '{}')
       newErrors.content = 'Content is required';
-    if (!blogData.coverImage) newErrors.coverImage = 'Cover image is required';
-    if (blogData.tags.length === 0)
+    if (!courseData.coverImage) newErrors.coverImage = 'Cover image is required';
+    if (courseData.tags.length === 0)
       newErrors.tags = 'At least one tag is required';
-    if (blogData.categories.length === 0)
+    if (courseData.categories.length === 0)
       newErrors.categoryId = 'At least one category is required';
 
-    if (!blogData.domain || blogData.domain.trim() === '') 
+    if (!courseData.domain || courseData.domain.trim() === '') 
       newErrors.domain = 'Domain is required';
-  
+    if (!courseData.formateur || courseData.formateur.trim() === '') 
+      
+      courseData.formateur = user?.id ?? '';  
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -229,7 +233,7 @@ const CreateBlogComponent = () => {
     const readingTime = calculateReadingTime(rawText);
 
     //set blog
-    setBlogData((prev) => ({
+    setCourseData((prev) => ({
       ...prev,
       content: extractedContent,
       readingTime: readingTime,
@@ -245,27 +249,27 @@ const CreateBlogComponent = () => {
     formData.append(
       'data',
       JSON.stringify({
-        title: blogData.title,
-        description: blogData.description,
+        title: courseData.title,
+        description: courseData.description,
         content: sendEditorContentToBackend(editorState),
         authorId: user?.id,
-        readingTime: blogData.readingTime,
-        tags: blogData.tags,
-        categories: blogData.categories,
-        domain: blogData.domain,
+        readingTime: courseData.readingTime,
+        tags: courseData.tags,
+        categories: courseData.categories,
+        domain: courseData.domain,
         plateformeId:'e4d3d2e9-1a2b-3c4d-5e6f-7a8b9c0d1e2f'
       })
     );
     // Step 2: Add the file data
 
-    if (blogData.coverImage) {
+    if (courseData.coverImage) {
 
          const fileName = coverImageName || 'cover.jpg';
 
-    const mimeType = extractMimeType(fileName, blogData.coverImage);
+    const mimeType = extractMimeType(fileName, courseData.coverImage);
 
       const coverImageFile = base64ToFile(
-        blogData.coverImage,
+        courseData.coverImage,
        fileName,
         mimeType
       );
@@ -273,9 +277,9 @@ const CreateBlogComponent = () => {
       formData.append('cover', coverImageFile);
     }
 
-    if (blogData.audioUrl) {
+    if (courseData.audioUrl) {
       const audioFile = base64ToFile(
-        blogData.audioUrl,
+        courseData.audioUrl,
         'audio.mp3',
         'audio/mpeg'
       );
@@ -312,7 +316,7 @@ const CreateBlogComponent = () => {
     const readingTime = calculateReadingTime(rawText);
 
     //set blog
-    setBlogData((prev) => ({
+    setCourseData((prev) => ({
       ...prev,
       content: extractedContent,
       readingTime: readingTime,
@@ -329,7 +333,7 @@ const CreateBlogComponent = () => {
     <>
       {!preview ? (
         <div className="mt-12 create-blog-form-height  max-w-[2100px] w-[800px] flex flex-col gap-8">
-          <p className="h4-medium font-semibold">Create new blog</p>
+          <p className="h4-medium font-semibold">Create new course</p>
 
           {/* form for blog validation */}
           <form className="create-blog-form-height border border-grey-300  rounded-lg flex flex-col gap-4 w-full">
@@ -346,9 +350,9 @@ const CreateBlogComponent = () => {
                     height="30px"
                     placeholder=""
                     maxWords={50}
-                    value={blogData.title}
+                    value={courseData.title}
                     onChange={(value) =>
-                      setBlogData({ ...blogData, title: value })
+                      setCourseData({ ...courseData, title: value })
                     }
                   />
                   {errors.title && (
@@ -367,16 +371,34 @@ const CreateBlogComponent = () => {
                   <TextArea
                     label="Blog Description"
                     height="60px"
-                    value={blogData.description}
+                    value={courseData.description}
                     placeholder=""
                     maxWords={50}
                     onChange={(value) =>
-                      setBlogData({ ...blogData, description: value })
+                      setCourseData({ ...courseData, description: value })
                     }
                   />
                   {errors.description && (
                     <p className="mt-[-8px] text-redTheme paragraph-small-normal">
                       {errors.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <label className="form-label" htmlFor="title">
+                    Select Formateur
+                  </label>
+                  <MultiSelectDropdown
+                    choices={tags}
+                    selectedChoices={courseData.tags}
+                    setSelectedChoices={(selected) =>
+                      setCourseData({ ...courseData, tags: selected })
+                    }
+                  />
+                  {errors.tags && (
+                    <p className="mt-[-8px] text-redTheme paragraph-small-normal">
+                      {errors.tags}
                     </p>
                   )}
                 </div>
@@ -393,7 +415,7 @@ const CreateBlogComponent = () => {
                     maxSizeMB={10}
                     acceptedFormats={['image/jpeg', 'image/png']}
                     onFileSelect={(file) =>{
-                      setBlogData({ ...blogData, coverImage: file.data});
+                      setCourseData({ ...courseData, coverImage: file.data});
                       setCoverImageName(file.name); }
                     }
                   />
@@ -430,9 +452,9 @@ const CreateBlogComponent = () => {
                   </label>
                   <MultiSelectDropdown
                     choices={tags}
-                    selectedChoices={blogData.tags}
+                    selectedChoices={courseData.tags}
                     setSelectedChoices={(selected) =>
-                      setBlogData({ ...blogData, tags: selected })
+                      setCourseData({ ...courseData, tags: selected })
                     }
                   />
                   {errors.tags && (
@@ -451,10 +473,10 @@ const CreateBlogComponent = () => {
                   </label>
                   <SingleSelectDropdown
                     choices={availableDomains} // 
-                    selectedChoiceId={blogData.domain}
+                    selectedChoiceId={courseData.domain}
                     setSelectedChoiceId={(selected) => { 
                       
-                      setBlogData({ ...blogData, domain: selected });}
+                      setCourseData({ ...courseData, domain: selected });}
                     }
                   />
                   {errors.domain && (
@@ -472,10 +494,10 @@ const CreateBlogComponent = () => {
                   </label>
                   <MultiSelectDropdown
                     choices={categories}
-                    selectedChoices={blogData.categories}
+                    selectedChoices={courseData.categories}
                     setSelectedChoices={(selected) => {
                       
-                      setBlogData({ ...blogData, categories: selected });
+                      setCourseData({ ...courseData, categories: selected });
                     }}
                   />
                   {errors.category && (
@@ -494,13 +516,13 @@ const CreateBlogComponent = () => {
                     id="blog-audio-upload"
                     type="Audio"
                     onFileSelect={(file) =>
-                      setBlogData({ ...blogData, audioUrl: file.data })
+                      setCourseData({ ...courseData, audioUrl: file.data })
                     }
                     maxSizeMB={10}
                     acceptedFormats={['audio/mpeg', 'audio/wav', 'audio/ogg']}
                   />
-                  {blogData.audioUrl ? (
-                    <AudioPlayerPreview type="blog" data={blogData.audioUrl} />
+                  {courseData.audioUrl ? (
+                    <AudioPlayerPreview type="blog" data={courseData.audioUrl} />
                   ) : null}
                 </div>
               </div>
@@ -537,21 +559,21 @@ const CreateBlogComponent = () => {
               <ContentPreview
                 item={{
                   id: '',
-                  authorId: blogData.authorId,
-                  organisationId: blogData.organisationId ?? null,
-                  title: blogData.title,
-                  coverImage: blogData.coverImage,
-                  description: blogData.description,
+                  authorId: courseData.authorId,
+                  organisationId: courseData.organisationId ?? null,
+                  title: courseData.title,
+                  coverImage: courseData.coverImage,
+                  description: courseData.description,
                   status: 'DRAFT',
                   createdAt: new Date().toISOString(),
-                  publishedAt: blogData.publishedAt ?? '',
-                  domain: blogData.domain,
+                  publishedAt: courseData.publishedAt ?? '',
+                  domain: courseData.domain,
                   contentType: 'blog',
-                  tags: blogData.tags,
-                  content: blogData.content,
-                  readingTime: blogData.readingTime,
-                  audioUrl: blogData.audioUrl,
-                  categories: blogData.categories,
+                  tags: courseData.tags,
+                  content: courseData.content,
+                  readingTime: courseData.readingTime,
+                  audioUrl: courseData.audioUrl,
+                  categories: courseData.categories,
                 }}
                 contentType="blog"
               />
@@ -584,4 +606,4 @@ const CreateBlogComponent = () => {
   );
 };
 
-export default CreateBlogComponent;
+export default CreateCourseComponent;

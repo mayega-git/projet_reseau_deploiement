@@ -11,20 +11,25 @@ import { useAuth } from '@/context/AuthContext';
 interface Errors {
   email: string;
   password: string;
+  fullName: string;
 }
-const Login = () => {
-  const { login, loginOrganisation } = useAuth();
+const Signup = () => {
+  const { signupOrganisation } = useAuth();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const router = useRouter();
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const [error, setError] = useState<{ [key: string]: string }>({});
   const handlePasswordVisibility = () => {
     setPasswordIsVisible(!passwordIsVisible);
   };
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    name: '',
+    domain: '',
+    bio: '',
   });
-  const [isOrganisation, setIsOrganisation] = useState(false);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -35,36 +40,62 @@ const Login = () => {
 
   const validateForm = () => {
     // Initialize error object
-    const newErrors: { [key: string]: string } = {};
+    const newError: { [key: string]: string } = {};
 
     // Validate form fields
-    if (formData.password === '') {
-      newErrors.password = 'Password is required';
+    if (!formData.name.trim()) {
+      newError.name = 'Name is required';
+    }
+    if (!formData.domain.trim()) {
+      newError.domain = 'Domain is required';
     }
 
     if (formData.email === '') {
-      newErrors.email = 'Email is required';
+      newError.email = 'Email is required';
+    } else if (!emailRegex.test(formData.email)) {
+      newError.email = 'Invalid email format';
     }
 
-    setError(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    if (formData.password === '') {
+      newError.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newError.password = 'Password must be at least 6 characters long';
+    }
 
+    setError(newError);
+
+    return Object.keys(newError).length === 0;
+
+    // // Check if there are any errors
+    // const hasErrors = Object.values(newError).some((error) => error !== '');
+
+    // if (hasErrors) {
+    //   // Update state with errors
+    //   setError(newError);
+    //   return; // Exit early if there are errors
+    // }
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    //formvalidation
+    //validate form
     if (!validateForm()) return;
 
+    // If no errors, proceed with form submission
     try {
-      const result = isOrganisation
-        ? await loginOrganisation(formData.email, formData.password)
-        : await login(formData.email, formData.password);
+      const result = await signupOrganisation(
+        formData.name,
+        formData.domain,
+        formData.bio,
+        formData.email,
+        formData.password,
+      );
       if (!result.success) {
-        alert(result.error ?? 'Login failed');
+        alert(result.error ?? 'Signup failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Signup error:', error);
+      alert('An error occurred during signup');
     }
   };
 
@@ -76,7 +107,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="py-8 w-[460px] border border-grey-300 max-sm:w-full bg-white rounded-[8px] px-8 flex justify-center flex-col gap-10"
         >
-          <h4 className="h4-bold">Log in to your account</h4>
+          <h4 className="h4-bold">Create your organisation account</h4>
           <div className="flex flex-col gap-8">
             <div className="w-full h-full flex flex-col gap-2">
               <label htmlFor="email" className="form-label">
@@ -98,6 +129,70 @@ const Login = () => {
                 </p>
               )}
             </div>
+            <div className="w-full h-full flex flex-col gap-2">
+              <label htmlFor="firstName" className="form-label">
+                Name
+              </label>
+              <Input
+                type="text"
+                placeholder=""
+                name="name"
+                className={`${
+                  error.name && `border-redTheme focus-visible:ring-0`
+                }`}
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+              {error.name && (
+                <p className="text-redTheme paragraph-xmedium-medium">
+                  {error.name}
+                </p>
+              )}
+            </div>
+
+            <div className="w-full h-full flex flex-col gap-2">
+              <label htmlFor="domain" className="form-label">
+                Domain Name
+              </label>
+              <Input
+                type="text"
+                placeholder=""
+                name="domain"
+                className={`${
+                  error.domain && `border-redTheme focus-visible:ring-0`
+                }`}
+                value={formData.domain}
+                onChange={handleInputChange}
+              />
+              {error.domain && (
+                <p className="text-redTheme paragraph-xmedium-medium">
+                  {error.domain}
+                </p>
+              )}
+            </div>
+
+
+            <div className="w-full h-full flex flex-col gap-2">
+              <label htmlFor="lastName" className="form-label">
+                Bio
+              </label>
+              <Input
+                type="text"
+                placeholder=""
+                name="bio"
+                className={`${
+                  error.bio && `border-redTheme focus-visible:ring-0`
+                }`}
+                value={formData.bio}
+                onChange={handleInputChange}
+              />
+              {error.bio && (
+                <p className="text-redTheme paragraph-xmedium-medium">
+                  {error.bio}
+                </p>
+              )}
+            </div>
+
 
             <div className="w-full h-full flex flex-col gap-2 relative">
               <label htmlFor="password" className="form-label">
@@ -138,32 +233,35 @@ const Login = () => {
               )}
             </div>
 
-            <div className="w-full flex items-center gap-2">
-              <Input
-                type="checkbox"
-                id="isOrganisation"
-                name="isOrganisation"
-                className="w-4 h-4 cursor-pointer"
-                checked={isOrganisation}
-                onChange={(e) => setIsOrganisation(e.target.checked)}
-              />
-              <label htmlFor="isOrganisation" className="form-label cursor-pointer">
-                Organisation
-              </label>
-            </div>
-
             <Button type="submit" className="primary">
-              Sign in
+              Create account
             </Button>
             <p
+              onClick={() => router.push('/auth/login')}
+              className="paragraph-small-medium text-center text-black-300"
+            >
+              Already have an account ?
+              <span className="cursor-pointer text-primaryPurple-500 hover:underline transition duration-300">
+                {' '}
+                Sign in
+              </span>
+            </p>
+
+        
+
+             <p
               onClick={() => router.push('/auth/signup')}
               className="paragraph-small-medium text-center text-black-300"
             >
-              New to Let&apos;sGo?{' '}
+              Not an organisation ?
               <span className="cursor-pointer text-primaryPurple-500 hover:underline transition duration-300">
-                Create account
-              </span>{' '}
+                {' '}
+                Create an account
+              </span>
             </p>
+
+
+           
           </div>
         </form>
       </main>
@@ -171,4 +269,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

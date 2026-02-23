@@ -27,7 +27,14 @@ export default async function BlogPostPageFunction({
   if (!BlogPost) {
     return <NotFoundPage />;
   }
-  const UserData = await fetchUserData(BlogPost.authorId);
+  const UserData = await fetchUserData(BlogPost.authorId) ?? {
+    id: BlogPost.authorId,
+    firstName: 'Auteur',
+    lastName: 'Inconnu',
+    email: '',
+    roles: [],
+    token: null,
+  };
 
   return (
     <div className="flex flex-col justify-between min-h-screen">

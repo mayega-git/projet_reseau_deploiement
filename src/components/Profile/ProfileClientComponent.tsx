@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'; // Mark this as a Client Component
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/helper/getInitials';
 import Image from 'next/image';
@@ -54,8 +54,11 @@ export default function ProfileClientComponent({
   following,
 }: ProfileClientComponentProps) {
   const [activeTab, setActiveTab] = useState<
-    'blog' | 'podcast' | 'followers' | 'following' | 'edit'
+    'blog' | 'podcast' | 'course' | 'followers' | 'following' | 'edit'
   >('blog');
+  const [openDropdown, setOpenDropdown] = useState<'post' | 'follow' | null>(null);
+  const postDropdownRef = useRef<HTMLDivElement>(null);
+  const followDropdownRef = useRef<HTMLDivElement>(null);
 
   const [isFollowing, setIsFollowing] = useState(false);
   const [bio, setBio] = useState(
@@ -94,6 +97,23 @@ export default function ProfileClientComponent({
   useEffect(() => {
     checkFollowingStatus();
   }, [user?.id, userData?.id]);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        postDropdownRef.current && !postDropdownRef.current.contains(event.target as Node) &&
+        followDropdownRef.current && !followDropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const isPostTab = activeTab === 'blog' || activeTab === 'podcast' || activeTab === 'course';
+  const isFollowTab = activeTab === 'followers' || activeTab === 'following';
 
   return (
     <>
@@ -161,55 +181,104 @@ export default function ProfileClientComponent({
           {/* Navigation Tabs */}
           <div className="mt-8">
             <nav className="flex space-x-4 border-b border-gray-200">
-              <button
-                onClick={() => setActiveTab('blog')}
-                className={`px-4 py-2 text-sm font-medium ${
-                  activeTab === 'blog'
-                    ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
-                    : 'text-gray-500 hover:text-primaryPurple-500'
-                }`}
-              >
-                Blog Posts
-              </button>
-              <button
-                onClick={() => setActiveTab('podcast')}
-                className={`px-4 py-2 text-sm font-medium ${
-                  activeTab === 'podcast'
-                    ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
-                    : 'text-gray-500 hover:text-primaryPurple-500'
-                }`}
-              >
-                Podcast Posts
-              </button>
-              <button
-                onClick={() => setActiveTab('followers')}
-                className={`px-4 py-2 text-sm font-medium ${
-                  activeTab === 'followers'
-                    ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
-                    : 'text-gray-500 hover:text-primaryPurple-500'
-                }`}
-              >
-                Followers
-              </button>
-              <button
-                onClick={() => setActiveTab('following')}
-                className={`px-4 py-2 text-sm font-medium ${
-                  activeTab === 'following'
-                    ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
-                    : 'text-gray-500 hover:text-primaryPurple-500'
-                }`}
-              >
-                Following
-              </button>
+              {/* Post Dropdown */}
+              <div className="relative" ref={postDropdownRef}>
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'post' ? null : 'post')}
+                  className={`px-4 py-2 text-sm font-medium ${
+                    isPostTab
+                      ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
+                      : 'text-gray-500 hover:text-primaryPurple-500'
+                  }`}
+                >
+                  Post ▾
+                </button>
+                {openDropdown === 'post' && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px]">
+                    <ul className="py-1">
+                      <li>
+                        <button
+                          onClick={() => { setActiveTab('blog'); setOpenDropdown(null); }}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                            activeTab === 'blog' ? 'text-primaryPurple-500 font-medium' : 'text-gray-700'
+                          }`}
+                        >
+                          Blog
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => { setActiveTab('podcast'); setOpenDropdown(null); }}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                            activeTab === 'podcast' ? 'text-primaryPurple-500 font-medium' : 'text-gray-700'
+                          }`}
+                        >
+                          Podcast
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => { setActiveTab('course'); setOpenDropdown(null); }}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                            activeTab === 'course' ? 'text-primaryPurple-500 font-medium' : 'text-gray-700'
+                          }`}
+                        >
+                          Course
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* Follow Dropdown */}
+              <div className="relative" ref={followDropdownRef}>
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'follow' ? null : 'follow')}
+                  className={`px-4 py-2 text-sm font-medium ${
+                    isFollowTab
+                      ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
+                      : 'text-gray-500 hover:text-primaryPurple-500'
+                  }`}
+                >
+                  Follow ▾
+                </button>
+                {openDropdown === 'follow' && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px]">
+                    <ul className="py-1">
+                      <li>
+                        <button
+                          onClick={() => { setActiveTab('followers'); setOpenDropdown(null); }}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                            activeTab === 'followers' ? 'text-primaryPurple-500 font-medium' : 'text-gray-700'
+                          }`}
+                        >
+                          Followers
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => { setActiveTab('following'); setOpenDropdown(null); }}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+                            activeTab === 'following' ? 'text-primaryPurple-500 font-medium' : 'text-gray-700'
+                          }`}
+                        >
+                          Following
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
 
               {/* Conditionally render the Edit Profile tab */}
               {isCurrentUserProfile && (
                 <button
-                  onClick={() => setActiveTab('edit')}
+                  onClick={() => { setActiveTab('edit'); setOpenDropdown(null); }}
                   className={`px-4 py-2 text-sm font-medium ${
                     activeTab === 'edit'
-                      ? 'text-primaryPurple-500  border-b-2 border-primaryPurple-500 '
-                      : 'text-gray-500 hover:text-primaryPurple-500 '
+                      ? 'text-primaryPurple-500 border-b-2 border-primaryPurple-500'
+                      : 'text-gray-500 hover:text-primaryPurple-500'
                   }`}
                 >
                   Edit Profile
@@ -227,6 +296,15 @@ export default function ProfileClientComponent({
               {/* Podcast */}
               {activeTab === 'podcast' && (
                 <PodcastProfileCard post={podcastData} userData={userData} />
+              )}
+
+              {/* Course */}
+              {activeTab === 'course' && (
+                <div className="flex flex-col items-center gap-3 mt-24">
+                  <p className="paragraph-medium-normal font-normal text-black-300">
+                    No courses yet!
+                  </p>
+                </div>
               )}
 
               {activeTab === 'followers' && (

@@ -62,16 +62,50 @@ export async function login(email: string, password: string): Promise<AuthResult
   }
 }
 
+export async function loginOrganisation(email: string, password: string): Promise<AuthResult> {
+  try {
+    const res = await authFetch(UserRoutes.organisationLogin, {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: errorBody.message ?? `Login failed (${res.status})`,
+      };
+    }
+
+    const data = await res.json();
+    const token: string = data.token ?? data.data?.token ?? '';
+
+    if (!token) {
+      return { success: false, error: 'No token received from server' };
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set(USER_TOKEN_COOKIE, token, COOKIE_OPTIONS);
+
+    const decoded = jwtDecode<User>(token);
+    return { success: true, user: decoded };
+  } catch (err) {
+    console.error('[auth action] loginOrganisation error:', err);
+    return { success: false, error: 'An unexpected error occurred' };
+  }
+}
+
 export async function signup(
   firstName: string,
   lastName: string,
+  bio: string,
   email: string,
   password: string,
 ): Promise<AuthResult> {
   try {
     const res = await authFetch(UserRoutes.create, {
       method: 'POST',
-      body: JSON.stringify({ firstName, lastName, email, password }),
+      body: JSON.stringify({ firstName, lastName, bio, email, password }),
     });
 
     if (!res.ok) {
@@ -96,6 +130,45 @@ export async function signup(
     return { success: true };
   } catch (err) {
     console.error('[auth action] signup error:', err);
+    return { success: false, error: 'An unexpected error occurred' };
+  }
+}
+
+export async function signupOrganisation(
+  name: string,
+  domain: string,
+  bio: string,
+  email: string,
+  password: string,
+): Promise<AuthResult> {
+  try {
+    const res = await authFetch(UserRoutes.organisation, {
+      method: 'POST',
+      body: JSON.stringify({ name, domain, bio, email, password }),
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: errorBody.message ?? `Signup failed (${res.status})`,
+      };
+    }
+
+    const data = await res.json();
+    const token: string = data.token ?? data.data?.token ?? '';
+
+    if (token) {
+      const cookieStore = await cookies();
+      cookieStore.set(USER_TOKEN_COOKIE, token, COOKIE_OPTIONS);
+      const decoded = jwtDecode<User>(token);
+      return { success: true, user: decoded };
+    }
+
+    // Some backends don't return a token on signup, user has to login
+    return { success: true };
+  } catch (err) {
+    console.error('[auth action] signupOrganisation error:', err);
     return { success: false, error: 'An unexpected error occurred' };
   }
 }

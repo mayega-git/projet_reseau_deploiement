@@ -6,8 +6,10 @@ import { User } from '@/types/User';
 import { AppRoles } from '@/constants/roles';
 import {
   login as serverLogin,
+  loginOrganisation as serverLoginOrganisation,
   logout as serverLogout,
   signup as serverSignup,
+  signupOrganisation as serverSignupOrganisation,
   type AuthResult,
 } from '@/actions/auth';
 
@@ -25,10 +27,21 @@ interface AuthContextType {
   isLoading: boolean;
   /** Call the server action to log in, then update local state */
   login: (email: string, password: string) => Promise<AuthResult>;
+  /** Call the server action to log in as organisation */
+  loginOrganisation: (email: string, password: string) => Promise<AuthResult>;
   /** Call the server action to sign up */
   signup: (
     firstName: string,
     lastName: string,
+    bio: string,
+    email: string,
+    password: string,
+  ) => Promise<AuthResult>;
+  /** Call the server action to sign up an organisation */
+  signupOrganisation: (
+    name: string,
+    domain: string,
+    bio: string,
     email: string,
     password: string,
   ) => Promise<AuthResult>;
@@ -98,17 +111,62 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     [redirectByRole],
   );
 
+  // ---- Login Organisation ----
+  const loginOrganisation = useCallback(
+    async (email: string, password: string): Promise<AuthResult> => {
+      setIsLoading(true);
+      try {
+        const result = await serverLoginOrganisation(email, password);
+        if (result.success && result.user) {
+          setUser(result.user);
+          setRole(result.user.roles ?? null);
+          redirectByRole(result.user.roles ?? []);
+        }
+        return result;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [redirectByRole],
+  );
+
   // ---- Signup ----
   const signup = useCallback(
     async (
       firstName: string,
       lastName: string,
+      bio: string,
       email: string,
       password: string,
     ): Promise<AuthResult> => {
       setIsLoading(true);
       try {
-        const result = await serverSignup(firstName, lastName, email, password);
+        const result = await serverSignup(firstName, lastName, bio, email, password);
+        if (result.success && result.user) {
+          setUser(result.user);
+          setRole(result.user.roles ?? null);
+          redirectByRole(result.user.roles ?? []);
+        }
+        return result;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [redirectByRole],
+  );
+
+  // ---- Signup Organisation ----
+  const signupOrganisation = useCallback(
+    async (
+      name: string,
+      domain: string,
+      bio: string,
+      email: string,
+      password: string,
+    ): Promise<AuthResult> => {
+      setIsLoading(true);
+      try {
+        const result = await serverSignupOrganisation(name, domain, bio, email, password);
         if (result.success && result.user) {
           setUser(result.user);
           setRole(result.user.roles ?? null);
@@ -138,7 +196,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, role, isLoading, login, signup, logout, refreshUser }}
+      value={{ user, role, isLoading, login, loginOrganisation, signup, signupOrganisation, logout, refreshUser }}
     >
       {children}
     </AuthContext.Provider>
