@@ -14,13 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table("cours")
+@Table("course")
 public class Course extends Education_entity implements InterfaceEntity {
 
-    @Column("formateur")
+    @Column("trainer_name")
     private String trainerName;
 
-    @Column("nombre_heures")
+    @Column("duration")
     private String duration;
 
     @Column("niveau")

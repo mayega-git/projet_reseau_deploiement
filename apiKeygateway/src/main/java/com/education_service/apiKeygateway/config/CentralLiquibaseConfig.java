@@ -105,7 +105,7 @@ public class CentralLiquibaseConfig {
     public SpringLiquibase ratingsLiquibase(@Qualifier("ratingsLiquibaseDataSource") DataSource ds) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(ds);
-        liquibase.setChangeLog("classpath:db/changelog/ratings/db.changelog-main.yaml");
+        liquibase.setChangeLog("classpath:db/changelog/ratings/db.changelog-master.yaml");
         liquibase.setDefaultSchema("ratings");
         liquibase.setShouldRun(true);
         return liquibase;

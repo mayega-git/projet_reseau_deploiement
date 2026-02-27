@@ -19,6 +19,9 @@ spring:
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:adminuser}
 
+  liquibase:
+    enabled: false
+
   media:
     api:
       url: ${MEDIA_API_URL:https://gateway.yowyob.com/media-service}
@@ -116,7 +119,7 @@ spring:
     liquibase:
       enabled: true
       url: ${DATABASE_JDBC_URL:jdbc:postgresql://localhost:5433/education_service}
-      change-log: classpath:db/changelog/ratings/db.changelog-main.yaml
+      change-log: classpath:db/changelog/ratings/db.changelog-master.yaml
       default-schema: ratings
 
   forum:
@@ -189,3 +192,4 @@ logging:
         server.handler: TRACE
     org.thymeleaf: TRACE
     org.thymeleaf.spring6: TRACE
+    liquibase: DEBUG
