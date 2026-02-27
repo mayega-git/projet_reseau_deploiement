@@ -1,18 +1,30 @@
-version: '3.8'
-
 services:
   postgres:
-   image: postgres:latest
-   container_name: container-postgres
-   restart: always
-   volumes: 
-      - pg_data:/var/lib/postgresql/data # Montage du volume nommé
-   ports:
+    image: postgres:latest
+    container_name: container-postgres
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data # Montage du volume nomme
+    ports:
       - "5433:5432"
-   environment:
+    environment:
       POSTGRES_DB: education-service
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: adminuser
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: education-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
 
   education-service:
     build: .
@@ -23,8 +35,11 @@ services:
     environment:
       # L'URL de connexion R2DBC DOIT utiliser le nom du service Docker Compose
       SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/education-service
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
     depends_on:
       - postgres
+      - elasticsearch
 
 volumes:
-    pg_data:
+  pg_data:
+  elasticsearch_data:
