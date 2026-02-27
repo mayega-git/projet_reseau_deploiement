@@ -13,7 +13,7 @@ interface Errors {
   password: string;
 }
 const Login = () => {
-  const { login, loginOrganisation } = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const [error, setError] = useState<{ [key: string]: string }>({});
@@ -24,7 +24,6 @@ const Login = () => {
     email: '',
     password: '',
   });
-  const [isOrganisation, setIsOrganisation] = useState(false);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -57,9 +56,7 @@ const Login = () => {
     if (!validateForm()) return;
 
     try {
-      const result = isOrganisation
-        ? await loginOrganisation(formData.email, formData.password)
-        : await login(formData.email, formData.password);
+      const result = await login(formData.email, formData.password);
       if (!result.success) {
         alert(result.error ?? 'Login failed');
       }
@@ -136,20 +133,6 @@ const Login = () => {
                   {error.password}
                 </p>
               )}
-            </div>
-
-            <div className="w-full flex items-center gap-2">
-              <Input
-                type="checkbox"
-                id="isOrganisation"
-                name="isOrganisation"
-                className="w-4 h-4 cursor-pointer"
-                checked={isOrganisation}
-                onChange={(e) => setIsOrganisation(e.target.checked)}
-              />
-              <label htmlFor="isOrganisation" className="form-label cursor-pointer">
-                Organisation
-              </label>
             </div>
 
             <Button type="submit" className="primary">

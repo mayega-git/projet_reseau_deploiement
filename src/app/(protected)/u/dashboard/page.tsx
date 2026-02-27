@@ -147,7 +147,7 @@ const Dashboard = () => {
       );
     } else if (role && role.includes(AppRoles.ADMIN)) {
       // Fetch filtered data for admin
-    } else if (role && role.includes(AppRoles.AUTHOR)) {
+    } else if (role && (role.includes(AppRoles.AUTHOR) || role.includes(AppRoles.PENDING_ORGANISATION))) {
       // Fetch filtered data for author
     }
   };

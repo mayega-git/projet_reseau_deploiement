@@ -1,8 +1,45 @@
-import React from 'react'
+'use client';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@/styles/background.css';
 import SubscribeCardLandingPage from '../SubscribeCards/SubscribeCardLandingPage';
+import { useAuth } from '@/context/AuthContext';
+import { fetchLecteurByEmail, fetchRedacteurByEmail } from '@/actions/newsletter';
+
 const LandingPageWelcomeSection = () => {
+  const { user } = useAuth();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    const checkSubscription = async () => {
+      if (!user?.sub) return;
+      try {
+        const [isLecteur, isRedacteur] = await Promise.all([
+          fetchLecteurByEmail(user.sub),
+          fetchRedacteurByEmail(user.sub)
+        ]);
+        
+        if (isMounted && (isLecteur === true || isRedacteur === true)) {
+          setIsSubscribed(true);
+        }
+      } catch (err) {
+        console.error('Erreur lors de la vérification de l\'abonnement :', err);
+      }
+    };
+
+    checkSubscription();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
+
+  if (isSubscribed) {
+    return null;
+  }
+
   return (
     <section className="background-container">
       <div className="background-overlay" />

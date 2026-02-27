@@ -24,4 +24,6 @@ export interface ContentItem {
   audioLength?: number;       // podcast
   category?: string[];        // blog (ancien nom)
   categories?: string[];      // podcast, cours
+  level?: string;             // cours
+  duration?: string;          // cours
 }

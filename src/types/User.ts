@@ -17,14 +17,21 @@ export interface GetUser {
   email: string;
   roles: string[];
   token: null;
+  bio?: string;
 }
 
 export interface GetRoles {
+  id: string; // UUID of the role
+  name: string; // Name of the role (e.g., 'SUPER_ADMIN')
+}
+
+export interface UserOrganisation {
   id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
+  name?: string; // or firstName depending on what the backend uses for the org name
+  firstName?: string;
+  domain?: string;
+  bio?: string;
+  email?: string;
 }
 
 export interface CreateRoles {

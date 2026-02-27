@@ -10,10 +10,13 @@ import AudioPlayerPreview from '../AudioPlayer/AudioPlayerPreview';
 import { CreateCourseInterface } from '@/types/blog';
 import { calculateReadingTime } from '@/helper/calculateReadingTime';
 import { TagInterface } from '@/types/tag';
-import { fetchAllTags as serverFetchTags, fetchAllCategories as serverFetchCategories, createBlog as serverCreateBlog } from '@/actions/education';
+import { fetchAllTags as serverFetchTags, fetchAllCategories as serverFetchCategories, createCourse as serverCreateCourse } from '@/actions/education';
 import { CategoryInterface } from '@/types/category';
 import SingleSelectDropdown from '../ui/SingleComponentDropdown';
 import { useAuth } from '@/context/AuthContext';
+import { useGlobalState } from '@/context/GlobalStateContext';
+import { getOrganisationsForUser } from '@/actions/user';
+import { GetUser } from '@/types/User';
 import {
   convertFromRaw,
   convertToRaw,
@@ -32,6 +35,7 @@ const DraftEditor = dynamic(() => import('../Editor/DraftEditor'), {
 
 const CreateCourseComponent = () => {
   const { user } = useAuth();
+  const { domains } = useGlobalState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<TagInterface[]>([
@@ -58,6 +62,7 @@ const CreateCourseComponent = () => {
   const [courseData, setCourseData] = useState<CreateCourseInterface>({
     coverImage: '',
     authorId: '',
+    organisationId: '',
     title: '',
     description: '',
     content: '',
@@ -66,9 +71,9 @@ const CreateCourseComponent = () => {
     domain: '',
     tags: [],
     categories: [],
-    formateur: '',
-    nombreHeures: '',
-    niveau: '' 
+    trainerName: '',
+    duration: '',
+    level: '' 
   });
 
   const extractMimeType = (fileName: string, base64Data: string): string => {
@@ -159,7 +164,14 @@ const CreateCourseComponent = () => {
     return rawContentString;
   };
 
-  const [availableDomains, setAvailableDomains] = useState<string[]>([]);
+  const [organisations, setOrganisations] = useState<GetUser[]>([]);
+  const [selectedPublisherName, setSelectedPublisherName] = useState<string>('');
+
+  const userName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'My Profile';
+  const publishAsChoices = [
+    userName,
+    ...organisations.map(org => org.firstName || org.id)
+  ];
 
   //Function to convert file to base64 encoded
   const base64ToFile = (base64: string, filename: string, mimeType: string) => {
@@ -175,19 +187,18 @@ const CreateCourseComponent = () => {
   useEffect(() => {
     fetchAllTags();
     fetchAllCategories();
-  }, []);
-  //Recuperer les domaines
+    if (user?.id) {
+      getOrganisationsForUser(user.id)
+        .then(setOrganisations)
+        .catch(err => console.error('Error fetching organisations', err));
+    }
+  }, [user?.id]);
+
   useEffect(() => {
-  if (categories.length > 0) {
-    // Extraire tous les domaines des catégories
-    const domains = categories
-      .map(cat => cat.domain) // Extraire tous les domaines
-      .filter(domain => domain && domain.trim() !== '') // Supprimer les valeurs vides
-      .filter((domain, index, self) => self.indexOf(domain) === index); // Supprimer les doublons
-    
-    setAvailableDomains(domains);
-  }
-}, [categories]);
+    if (userName && !selectedPublisherName) {
+      setSelectedPublisherName(userName);
+    }
+  }, [userName, selectedPublisherName]);
 
   const [preview, setPreview] = useState<boolean>(false);
 
@@ -197,7 +208,7 @@ const CreateCourseComponent = () => {
 
     console.log(
       courseData,
-      'blog data logged when validate form or preview is clicked'
+      'course data logged when validate form or preview is clicked'
     );
 
     if (!courseData.title.trim()) newErrors.title = 'Title is required';
@@ -213,9 +224,16 @@ const CreateCourseComponent = () => {
 
     if (!courseData.domain || courseData.domain.trim() === '') 
       newErrors.domain = 'Domain is required';
-    if (!courseData.formateur || courseData.formateur.trim() === '') 
-      
-      courseData.formateur = user?.id ?? '';  
+
+    if (!selectedPublisherName) {
+      newErrors.publisher = 'Please select who is publishing this course.';
+    }
+
+    if (!courseData.level?.trim()) newErrors.level = 'Course level is required';
+    if (!courseData.duration?.trim()) newErrors.duration = 'Course duration is required';
+
+    if (!courseData.trainerName || courseData.trainerName.trim() === '') 
+      courseData.trainerName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim();  
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -232,7 +250,7 @@ const CreateCourseComponent = () => {
     const rawText = getPlainText(editorState);
     const readingTime = calculateReadingTime(rawText);
 
-    //set blog
+    //set course
     setCourseData((prev) => ({
       ...prev,
       content: extractedContent,
@@ -246,9 +264,7 @@ const CreateCourseComponent = () => {
     const formData = new FormData();
 
     // Add non-file data (stringify the data)
-    formData.append(
-      'data',
-      JSON.stringify({
+    const dataPayload = {
         title: courseData.title,
         description: courseData.description,
         content: sendEditorContentToBackend(editorState),
@@ -257,9 +273,15 @@ const CreateCourseComponent = () => {
         tags: courseData.tags,
         categories: courseData.categories,
         domain: courseData.domain,
+        level: courseData.level,
+        duration: courseData.duration,
+        trainerName: courseData.trainerName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim(),
+        organisationId: courseData.organisationId || undefined,
         plateformeId:'e4d3d2e9-1a2b-3c4d-5e6f-7a8b9c0d1e2f'
-      })
-    );
+    };
+    console.log('🚀 [DEBUG] Actual payload sent to backend:', JSON.stringify(dataPayload, null, 2));
+    console.log('🔑 [DEBUG] user?.id =', user?.id, '| user object =', user);
+    formData.append('data', JSON.stringify(dataPayload));
     // Step 2: Add the file data
 
     if (courseData.coverImage) {
@@ -289,16 +311,16 @@ const CreateCourseComponent = () => {
 
     try {
       setIsLoading(true);
-      const result = await serverCreateBlog(formData);
+      const result = await serverCreateCourse(formData);
 
       if (result.success) {
-        GlobalNotifier('Blog created successfully', 'success');
+        GlobalNotifier('Course created successfully', 'success');
         window.location.reload();
       } else {
-        GlobalNotifier(result.error ?? 'Error creating blog', 'error');
+        GlobalNotifier(result.error ?? 'Error creating course', 'error');
       }
     } catch (err) {
-      console.error('Error creating blog:', err);
+      console.error('Error creating course:', err);
       GlobalNotifier('An unexpected error occurred', 'error');
     } finally {
       setIsLoading(false);
@@ -315,7 +337,7 @@ const CreateCourseComponent = () => {
     const rawText = getPlainText(editorState);
     const readingTime = calculateReadingTime(rawText);
 
-    //set blog
+    //set course
     setCourseData((prev) => ({
       ...prev,
       content: extractedContent,
@@ -332,21 +354,21 @@ const CreateCourseComponent = () => {
   return (
     <>
       {!preview ? (
-        <div className="mt-12 create-blog-form-height  max-w-[2100px] w-[800px] flex flex-col gap-8">
+        <div className="mt-12 create-blog-form-height w-full max-w-[1200px] mx-auto flex flex-col gap-8">
           <p className="h4-medium font-semibold">Create new course</p>
 
           {/* form for blog validation */}
           <form className="create-blog-form-height border border-grey-300  rounded-lg flex flex-col gap-4 w-full">
             <div className="w-full h-full overflow-y-auto">
               <div className="w-full flex flex-col gap-6 px-6 py-8 ">
-                {/* Blog Title*/}
+                {/* Course Title*/}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
-                    Blog Title{' '}
+                    Course Title{' '}
                     <span className="content-date text-[14px]">(required)</span>
                   </label>
                   <TextArea
-                    label="Blog Title"
+                    label="Course Title"
                     height="30px"
                     placeholder=""
                     maxWords={50}
@@ -362,14 +384,14 @@ const CreateCourseComponent = () => {
                   )}
                 </div>
 
-                {/* Blog description */}
+                {/* Course description */}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
                     Description{' '}
                     <span className="content-date text-[14px]">(required)</span>
                   </label>
                   <TextArea
-                    label="Blog Description"
+                    label="Course Description"
                     height="60px"
                     value={courseData.description}
                     placeholder=""
@@ -385,23 +407,46 @@ const CreateCourseComponent = () => {
                   )}
                 </div>
 
+                {/* Course Level */}
                 <div className="flex flex-col gap-3">
-                  <label className="form-label" htmlFor="title">
-                    Select Formateur
+                  <label className="form-label">
+                    Course Level{' '}
+                    <span className="content-date text-[14px]">(required)</span>
                   </label>
-                  <MultiSelectDropdown
-                    choices={tags}
-                    selectedChoices={courseData.tags}
-                    setSelectedChoices={(selected) =>
-                      setCourseData({ ...courseData, tags: selected })
-                    }
+                  <SingleSelectDropdown
+                    choices={['beginner', 'intermediate', 'advanced']} 
+                    selectedChoiceId={courseData.level}
+                    setSelectedChoiceId={(selected) => setCourseData({ ...courseData, level: selected })}
                   />
-                  {errors.tags && (
+                  {errors.level && (
                     <p className="mt-[-8px] text-redTheme paragraph-small-normal">
-                      {errors.tags}
+                      {errors.level}
                     </p>
                   )}
                 </div>
+
+                {/* Course Duration */}
+                <div className="flex flex-col gap-3">
+                  <label className="form-label">
+                    Duration{' '}
+                    <span className="content-date text-[14px]">(required)</span>
+                  </label>
+                  <TextArea
+                    height="48px"
+                    rows={1}
+                    placeholder="e.g. 2 hours"
+                    maxWords={10}
+                    value={courseData.duration}
+                    onChange={(value) => setCourseData({ ...courseData, duration: value })}
+                  />
+                  {errors.duration && (
+                    <p className="mt-[-8px] text-redTheme paragraph-small-normal">
+                      {errors.duration}
+                    </p>
+                  )}
+                </div>
+
+
 
                 {/* Cover Image */}
                 <div className="flex flex-col gap-3">
@@ -426,7 +471,7 @@ const CreateCourseComponent = () => {
                   )}
                 </div>
 
-                {/* Blog Content */}
+                {/* Course Content */}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
                     Content{' '}
@@ -441,6 +486,28 @@ const CreateCourseComponent = () => {
                   {errors.content && (
                     <p className="mt-[-8px] text-redTheme paragraph-small-normal">
                       {errors.content}
+                    </p>
+                  )}
+                </div>
+
+                {/* Publish As Selector */}
+                <div className="flex flex-col gap-3">
+                  <label className="form-label" htmlFor="publisher">
+                    Publish As
+                    <span className="content-date text-[14px]"> (required)</span>
+                  </label>
+                  <SingleSelectDropdown
+                    choices={publishAsChoices} 
+                    selectedChoiceId={selectedPublisherName}
+                    setSelectedChoiceId={(selectedName) => { 
+                      setSelectedPublisherName(selectedName);
+                      const org = organisations.find(o => o.firstName === selectedName || o.id === selectedName);
+                      setCourseData({ ...courseData, organisationId: org ? org.id : '' });
+                    }}
+                  />
+                  {errors.publisher && (
+                    <p className="mt-[-8px] text-redTheme paragraph-small-normal">
+                      {errors.publisher}
                     </p>
                   )}
                 </div>
@@ -472,7 +539,7 @@ const CreateCourseComponent = () => {
                     <span className="content-date text-[14px]">(required)</span>
                   </label>
                   <SingleSelectDropdown
-                    choices={availableDomains} // 
+                    choices={domains} // 
                     selectedChoiceId={courseData.domain}
                     setSelectedChoiceId={(selected) => { 
                       
@@ -507,10 +574,10 @@ const CreateCourseComponent = () => {
                   )}
                 </div>
 
-                {/* Blog Audio */}
+                {/* Course Audio */}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
-                    Upload Blog Audio
+                    Upload Course Audio
                   </label>
                   <FileUpload
                     id="blog-audio-upload"
@@ -522,7 +589,7 @@ const CreateCourseComponent = () => {
                     acceptedFormats={['audio/mpeg', 'audio/wav', 'audio/ogg']}
                   />
                   {courseData.audioUrl ? (
-                    <AudioPlayerPreview type="blog" data={courseData.audioUrl} />
+                    <AudioPlayerPreview type="cours" data={courseData.audioUrl} />
                   ) : null}
                 </div>
               </div>
@@ -548,13 +615,13 @@ const CreateCourseComponent = () => {
           </form>
         </div>
       ) : (
-        // blog preview
-        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-[800px] px-4 mt-12">
+        // course preview
+        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-full max-w-[1200px] mx-auto px-4 mt-12">
           <div className="h-full w-full overflow-y-auto">
             <div className="w-full h-full flex flex-col gap-12 px-6 py-8 ">
               <p className="h4-medium font-semibold text-black-500">
                 {' '}
-                Blog preview
+                Course preview
               </p>
               <ContentPreview
                 item={{
@@ -568,14 +635,16 @@ const CreateCourseComponent = () => {
                   createdAt: new Date().toISOString(),
                   publishedAt: courseData.publishedAt ?? '',
                   domain: courseData.domain,
-                  contentType: 'blog',
+                  contentType: 'cours',
                   tags: courseData.tags,
                   content: courseData.content,
                   readingTime: courseData.readingTime,
                   audioUrl: courseData.audioUrl,
                   categories: courseData.categories,
+                  level: courseData.level,
+                  duration: courseData.duration
                 }}
-                contentType="blog"
+                contentType="cours"
               />
             </div>
           </div>

@@ -16,6 +16,11 @@ import {
   deleteUser,
   updateUserRoles,
   updateUser,
+  getUserByEmail,
+  getOrganisationsForUser,
+  getOrganisationMembers,
+  addUserToOrganisation,
+  deleteUserFromOrganisation,
 } from '@/lib/fetchers/user';
 
 
@@ -32,6 +37,11 @@ export {
   deleteUser,
   updateUserRoles,
   updateUser,
+  getUserByEmail,
+  getOrganisationsForUser,
+  getOrganisationMembers,
+  addUserToOrganisation,
+  deleteUserFromOrganisation,
 };
 
 import { cookies } from 'next/headers';

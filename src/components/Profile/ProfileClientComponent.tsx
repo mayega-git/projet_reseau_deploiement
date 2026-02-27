@@ -35,6 +35,7 @@ import BlogCard from '../Blog/blogCard';
 import PodcastCard from '../Podcast/podcastCard';
 import { AppRoles } from '@/constants/roles';
 import UpdateUserForm from '../AuthForms/UpdateUserForm';
+import OrganisationMembers from '../Organisation/OrganisationMembers';
 
 interface ProfileClientComponentProps {
   userData: GetUser;
@@ -54,16 +55,14 @@ export default function ProfileClientComponent({
   following,
 }: ProfileClientComponentProps) {
   const [activeTab, setActiveTab] = useState<
-    'blog' | 'podcast' | 'course' | 'followers' | 'following' | 'edit'
+    'blog' | 'podcast' | 'course' | 'followers' | 'following' | 'edit' | 'members'
   >('blog');
   const [openDropdown, setOpenDropdown] = useState<'post' | 'follow' | null>(null);
   const postDropdownRef = useRef<HTMLDivElement>(null);
   const followDropdownRef = useRef<HTMLDivElement>(null);
 
   const [isFollowing, setIsFollowing] = useState(false);
-  const [bio, setBio] = useState(
-    ' Software Engineer | Open Source Enthusiast | Cat Lover'
-  );
+  const userBio = userData?.bio || 'Software Engineer | Open Source Enthusiast | Cat Lover';
 
   //get current loggedIn user
   const { user, role } = useAuth();
@@ -154,7 +153,7 @@ export default function ProfileClientComponent({
                 </div>
                 <p className="text-black-500">{userData?.email}</p>
                 <p className="text-gray-700 mt-2">
-                  Software Engineer | Open Source Enthusiast | Cat Lover
+                  {userBio}
                 </p>
                 <div className="flex space-x-4 mt-4">
                   <p className="text-black-500">
@@ -270,6 +269,20 @@ export default function ProfileClientComponent({
                   </div>
                 )}
               </div>
+
+              {/* Members Tab (Only for Organisation Role) */}
+              {userData?.roles?.includes(AppRoles.ORGANISATION) && (
+                <button
+                  onClick={() => { setActiveTab('members'); setOpenDropdown(null); }}
+                  className={`px-4 py-2 text-sm font-medium border-b-2 ${
+                    activeTab === 'members'
+                      ? 'text-primaryPurple-500 border-primaryPurple-500'
+                      : 'text-gray-500 border-transparent hover:text-primaryPurple-500'
+                  }`}
+                >
+                  Members
+                </button>
+              )}
 
               {/* Conditionally render the Edit Profile tab */}
               {isCurrentUserProfile && (
@@ -388,6 +401,15 @@ export default function ProfileClientComponent({
                   )}
                 </div>
               )}
+
+              {/* Members Content */}
+              {activeTab === 'members' && userData?.roles?.includes(AppRoles.ORGANISATION) && (
+                <OrganisationMembers
+                  orgId={userData.id}
+                  isOwner={isCurrentUserProfile || role?.includes(AppRoles.SUPER_ADMIN) || role?.includes(AppRoles.ADMIN) || false}
+                />
+              )}
+
               {/* Conditionally render the Edit Profile page */}
               {isCurrentUserProfile &&
                 activeTab === 'edit' &&

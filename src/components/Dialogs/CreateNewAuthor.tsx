@@ -16,7 +16,6 @@ import * as yup from 'yup';
 import { CreateTagInterface } from '@/types/tag';
 import { Description } from '@radix-ui/react-dialog';
 import CustomButton from '../ui/customButton';
-// EducationServiceRoutes removed — not used in this component.
 import { useRouter } from 'next/navigation';
 import { GlobalNotifier } from '../ui/GlobalNotifier';
 import TextArea from '../ui/textarea';

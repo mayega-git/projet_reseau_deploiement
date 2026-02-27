@@ -14,6 +14,9 @@ import { fetchAllTags as serverFetchTags, fetchAllCategories as serverFetchCateg
 import { CategoryInterface } from '@/types/category';
 import SingleSelectDropdown from '../ui/SingleComponentDropdown';
 import { useAuth } from '@/context/AuthContext';
+import { useGlobalState } from '@/context/GlobalStateContext';
+import { getOrganisationsForUser } from '@/actions/user';
+import { GetUser } from '@/types/User';
 import {
   convertFromRaw,
   convertToRaw,
@@ -33,6 +36,7 @@ const DraftEditor = dynamic(() => import('../Editor/DraftEditor'), {
 
 const CreateBlogComponent = () => {
   const { user } = useAuth();
+  const { domains } = useGlobalState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<TagInterface[]>([
@@ -59,6 +63,7 @@ const CreateBlogComponent = () => {
   const [blogData, setBlogData] = useState<CreateBlogInterface>({
     coverImage: '',
     authorId: '',
+    organisationId: '',
     title: '',
     description: '',
     content: '',
@@ -157,7 +162,7 @@ const CreateBlogComponent = () => {
     return rawContentString;
   };
 
-  const [availableDomains, setAvailableDomains] = useState<string[]>([]);
+  const [organisations, setOrganisations] = useState<GetUser[]>([]);
 
   //Function to convert file to base64 encoded
   const base64ToFile = (base64: string, filename: string, mimeType: string) => {
@@ -173,19 +178,12 @@ const CreateBlogComponent = () => {
   useEffect(() => {
     fetchAllTags();
     fetchAllCategories();
-  }, []);
-  //Recuperer les domaines
-  useEffect(() => {
-  if (categories.length > 0) {
-    // Extraire tous les domaines des catégories
-    const domains = categories
-      .map(cat => cat.domain) // Extraire tous les domaines
-      .filter(domain => domain && domain.trim() !== '') // Supprimer les valeurs vides
-      .filter((domain, index, self) => self.indexOf(domain) === index); // Supprimer les doublons
-    
-    setAvailableDomains(domains);
-  }
-}, [categories]);
+    if (user?.id) {
+      getOrganisationsForUser(user.id)
+        .then(setOrganisations)
+        .catch(err => console.error('Error fetching organisations', err));
+    }
+  }, [user?.id]);
 
   const [preview, setPreview] = useState<boolean>(false);
 
@@ -253,6 +251,7 @@ const CreateBlogComponent = () => {
         tags: blogData.tags,
         categories: blogData.categories,
         domain: blogData.domain,
+        organisationId: blogData.organisationId || undefined,
         plateformeId:'e4d3d2e9-1a2b-3c4d-5e6f-7a8b9c0d1e2f'
       })
     );
@@ -328,7 +327,7 @@ const CreateBlogComponent = () => {
   return (
     <>
       {!preview ? (
-        <div className="mt-12 create-blog-form-height  max-w-[2100px] w-[800px] flex flex-col gap-8">
+        <div className="mt-12 create-blog-form-height w-full max-w-[1200px] mx-auto flex flex-col gap-8">
           <p className="h4-medium font-semibold">Create new blog</p>
 
           {/* form for blog validation */}
@@ -423,6 +422,26 @@ const CreateBlogComponent = () => {
                   )}
                 </div>
 
+                {/* Select Organisation */}
+                {organisations.length > 0 && (
+                  <div className="flex flex-col gap-3">
+                    <label className="form-label" htmlFor="domain">
+                      Select an Organisation
+                      <span className="content-date text-[14px]"> (optional)</span>
+                    </label>
+                    <SingleSelectDropdown
+                      choices={organisations.map(org => org.firstName || org.id)} 
+                      selectedChoiceId={blogData.organisationId 
+                        ? (organisations.find(o => o.id === blogData.organisationId)?.firstName || blogData.organisationId) 
+                        : ''}
+                      setSelectedChoiceId={(selectedName) => { 
+                        const org = organisations.find(o => o.firstName === selectedName || o.id === selectedName);
+                        setBlogData({ ...blogData, organisationId: org ? org.id : '' });
+                      }}
+                    />
+                  </div>
+                )}
+
                 {/* Select tags */}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
@@ -450,7 +469,7 @@ const CreateBlogComponent = () => {
                     <span className="content-date text-[14px]">(required)</span>
                   </label>
                   <SingleSelectDropdown
-                    choices={availableDomains} // 
+                    choices={domains} // 
                     selectedChoiceId={blogData.domain}
                     setSelectedChoiceId={(selected) => { 
                       
@@ -527,7 +546,7 @@ const CreateBlogComponent = () => {
         </div>
       ) : (
         // blog preview
-        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-[800px] px-4 mt-12">
+        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-full max-w-[1200px] mx-auto px-4 mt-12">
           <div className="h-full w-full overflow-y-auto">
             <div className="w-full h-full flex flex-col gap-12 px-6 py-8 ">
               <p className="h4-medium font-semibold text-black-500">

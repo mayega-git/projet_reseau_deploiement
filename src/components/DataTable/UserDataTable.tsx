@@ -40,14 +40,13 @@ const UserDataTable: React.FC<UserDataTableProps> = ({ data }) => {
     let filtered = data.filter(
 
         
-      (user) =>{
-
-         if (!user.roles     || !Array.isArray(user.roles)) {
-            console.warn('User without valid roles:', user);
-            return false; // Exclure les users sans rôles
+      (user) => {
+        if (!user.roles || !Array.isArray(user.roles)) {
+          console.warn('User without valid roles:', user);
+          return false;
         }
-         !user.roles.includes(AppRoles.SUPER_ADMIN);
-        }
+        return !user.roles.includes(AppRoles.SUPER_ADMIN);
+      }
     );
 
     // Filtrer par rôle si sélectionné
@@ -88,6 +87,8 @@ const UserDataTable: React.FC<UserDataTableProps> = ({ data }) => {
             <SelectItem value={AppRoles.USER}>User</SelectItem>
             <SelectItem value={AppRoles.AUTHOR}>Author</SelectItem>
             <SelectItem value={AppRoles.ADMIN}>Admin</SelectItem>
+            <SelectItem value={AppRoles.ORGANISATION}>Organisation</SelectItem>
+            <SelectItem value={AppRoles.PENDING_ORGANISATION}>Pending Organisation</SelectItem>
           </SelectContent>
         </Select>
         <span className="text-sm text-gray-500">

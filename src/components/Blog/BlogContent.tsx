@@ -27,6 +27,7 @@ import ShareButton2 from '../ui/ShareButton';
 import AddToFavoritiesButton from '../ui/AddToFavoritiesButton';
 import ViewsButton from '../ui/ViewsButton';
 import { AppRoles } from '@/constants/roles';
+import MentionOrganisation from '../MentionOrganisation';
 
 interface BlogContentParams {
   blog: BlogInterface;
@@ -188,8 +189,15 @@ const BlogContent: React.FC<BlogContentParams> = ({
         <div className="flex w-full">
           <ShareButtons />
           {blog.content && (
-            <div className="max-w-[800px] min-w-[100px] leading-28 paragraph-medium-normal">
+            <div className="max-w-[800px] min-w-[100px] w-[100%] leading-28 flex flex-col gap-8 paragraph-medium-normal">
               <ConvertDraftToHTML content={blog.content} />
+
+              {blog.organisationId && (
+                <div className="pt-8 border-t border-grey-300">
+                  <p className="paragraph-large-medium mb-4 text-black-400">Publié par l'organisation :</p>
+                  <MentionOrganisation organisationId={blog.organisationId} />
+                </div>
+              )}
             </div>
           )}
         </div>

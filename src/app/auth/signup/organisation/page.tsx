@@ -26,9 +26,10 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    name: '',
+    firstName: '',
     domain: '',
     bio: '',
+    description: '',
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,8 +44,8 @@ const Signup = () => {
     const newError: { [key: string]: string } = {};
 
     // Validate form fields
-    if (!formData.name.trim()) {
-      newError.name = 'Name is required';
+    if (!formData.firstName.trim()) {
+      newError.firstName = 'Name is required';
     }
     if (!formData.domain.trim()) {
       newError.domain = 'Domain is required';
@@ -84,9 +85,10 @@ const Signup = () => {
     // If no errors, proceed with form submission
     try {
       const result = await signupOrganisation(
-        formData.name,
+        formData.firstName,
         formData.domain,
         formData.bio,
+        formData.description,
         formData.email,
         formData.password,
       );
@@ -136,16 +138,16 @@ const Signup = () => {
               <Input
                 type="text"
                 placeholder=""
-                name="name"
+                name="firstName"
                 className={`${
-                  error.name && `border-redTheme focus-visible:ring-0`
+                  error.firstName && `border-redTheme focus-visible:ring-0`
                 }`}
-                value={formData.name}
+                value={formData.firstName}
                 onChange={handleInputChange}
               />
-              {error.name && (
+              {error.firstName && (
                 <p className="text-redTheme paragraph-xmedium-medium">
-                  {error.name}
+                  {error.firstName}
                 </p>
               )}
             </div>
@@ -189,6 +191,27 @@ const Signup = () => {
               {error.bio && (
                 <p className="text-redTheme paragraph-xmedium-medium">
                   {error.bio}
+                </p>
+              )}
+            </div>
+
+            <div className="w-full h-full flex flex-col gap-2">
+              <label htmlFor="" className="form-label">
+                Description
+              </label>
+              <Input
+                type="text"
+                placeholder=""
+                name="description"
+                className={`${
+                  error.description && `border-redTheme focus-visible:ring-0`
+                }`}
+                value={formData.description}
+                onChange={handleInputChange}
+              />
+              {error.description && (
+                <p className="text-redTheme paragraph-xmedium-medium">
+                  {error.description}
                 </p>
               )}
             </div>

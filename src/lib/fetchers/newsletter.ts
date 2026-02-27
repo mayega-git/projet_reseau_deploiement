@@ -205,6 +205,29 @@ export async function updateLecteurCategories(
   return unwrap<LecteurResponse>(res);
 }
 
+export async function fetchLecteurByEmail(email: string): Promise<boolean | null> {
+  if (!email) return null;
+  const url = new URL(NewsletterRoutes.isLecteurs);
+  url.searchParams.set('email', email);
+
+  console.log('[fetchLecteurByEmail] Requesting:', url.toString());
+
+  const res = await authFetch(url.toString());
+  
+  if (!res.ok) {
+    console.error('[fetchLecteurByEmail] Request failed with status:', res.status);
+    return null;
+  }
+
+  const text = await res.text();
+  const trimmed = text.trim().toLowerCase();
+  
+  if (trimmed === 'true' || trimmed === '"true"') return true;
+  if (trimmed === 'false' || trimmed === '"false"') return false;
+
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Redacteurs
 // ---------------------------------------------------------------------------

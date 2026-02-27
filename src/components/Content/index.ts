@@ -1,4 +1,3 @@
-// Barrel exports for Content components
 export { default as ContentActionButton } from './ContentActionButton';
 export { default as ContentCard } from './ContentCard';
 export { default as ContentCover } from './ContentCover';

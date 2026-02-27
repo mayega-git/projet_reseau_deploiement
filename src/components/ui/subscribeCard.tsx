@@ -1,12 +1,47 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '@/styles/background.css';
 import Image from 'next/image';
 import Button from './customButton';
 import NewsletterSubscribeDialog from '@/components/SubscribeCards/NewsletterSubscribeDialog';
+import { useAuth } from '@/context/AuthContext';
+import { fetchLecteurByEmail, fetchRedacteurByEmail } from '@/actions/newsletter';
+
 const SubscribeCard = () => {
+  const { user } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    const checkSubscription = async () => {
+      if (!user?.sub) return;
+      try {
+        const [isLecteur, isRedacteur] = await Promise.all([
+          fetchLecteurByEmail(user.sub),
+          fetchRedacteurByEmail(user.sub)
+        ]);
+        
+        if (isMounted && (isLecteur === true || isRedacteur === true)) {
+          setIsSubscribed(true);
+        }
+      } catch (err) {
+        console.error('Erreur lors de la vérification de l\'abonnement :', err);
+      }
+    };
+
+    checkSubscription();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
+
+  if (isSubscribed) {
+    return null;
+  }
 
   return (
     <div className="w-[100%] mx-auto h-[380px] max-w-[100%]">
@@ -34,7 +69,7 @@ const SubscribeCard = () => {
               name="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              id="email"
+              id="subscribe-email"
               placeholder="Email Address"
               className="px-[16px] py-[8px] outline-none bg-inherit w-full paragraph-medium-normal"
             />

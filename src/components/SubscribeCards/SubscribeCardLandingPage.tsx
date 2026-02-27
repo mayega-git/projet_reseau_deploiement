@@ -14,7 +14,7 @@ const SubscribeCardLandingPage = () => {
         name="email"
         onChange={(e) => setEmail(e.target.value)}
         value={email}
-        id="email"
+        id="landing-email"
         placeholder="Email Address"
         className="px-[16px] py-[8px] outline-none bg-inherit w-full paragraph-medium-normal"
       />

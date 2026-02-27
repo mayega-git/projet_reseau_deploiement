@@ -62,38 +62,7 @@ export async function login(email: string, password: string): Promise<AuthResult
   }
 }
 
-export async function loginOrganisation(email: string, password: string): Promise<AuthResult> {
-  try {
-    const res = await authFetch(UserRoutes.organisationLogin, {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
 
-    if (!res.ok) {
-      const errorBody = await res.json().catch(() => ({}));
-      return {
-        success: false,
-        error: errorBody.message ?? `Login failed (${res.status})`,
-      };
-    }
-
-    const data = await res.json();
-    const token: string = data.token ?? data.data?.token ?? '';
-
-    if (!token) {
-      return { success: false, error: 'No token received from server' };
-    }
-
-    const cookieStore = await cookies();
-    cookieStore.set(USER_TOKEN_COOKIE, token, COOKIE_OPTIONS);
-
-    const decoded = jwtDecode<User>(token);
-    return { success: true, user: decoded };
-  } catch (err) {
-    console.error('[auth action] loginOrganisation error:', err);
-    return { success: false, error: 'An unexpected error occurred' };
-  }
-}
 
 export async function signup(
   firstName: string,
@@ -135,16 +104,17 @@ export async function signup(
 }
 
 export async function signupOrganisation(
-  name: string,
+  firstName: string,
   domain: string,
   bio: string,
+  description: string,
   email: string,
   password: string,
 ): Promise<AuthResult> {
   try {
     const res = await authFetch(UserRoutes.organisation, {
       method: 'POST',
-      body: JSON.stringify({ name, domain, bio, email, password }),
+      body: JSON.stringify({ firstName, domain, bio, description, email, password }),
     });
 
     if (!res.ok) {

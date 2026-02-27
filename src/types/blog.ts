@@ -39,8 +39,8 @@ export interface CreateBlogInterface {
 
 
 export interface CreateCourseInterface extends CreateBlogInterface {
-  formateur : string;
-  nombreHeures : string;
-  niveau : string;
+  trainerName : string;
+  duration : string;
+  level : string;
   
 }

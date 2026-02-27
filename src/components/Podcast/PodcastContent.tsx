@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
-// Removed: UserServiceRoutes import (migrated to server actions)
+// Removed import
 import { PodcastInterface } from '@/types/podcast';
 import { GetUser } from '@/types/User';
 import React, { useEffect, useRef, useState } from 'react';

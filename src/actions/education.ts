@@ -146,6 +146,24 @@ export async function updateBlogStatus(id: string, status: string): Promise<bool
 }
 
 // ---------------------------------------------------------------------------
+// Course CRUD
+// ---------------------------------------------------------------------------
+
+export async function createCourse(formData: FormData): Promise<{ success: boolean; data?: any; error?: string }> {
+  try {
+    const res = await authFetch(EducationRoutes.courses, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) return { success: false, error: data?.message ?? `Status ${res.status}` };
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: String(err) };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Podcast CRUD
 // ---------------------------------------------------------------------------
 

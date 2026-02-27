@@ -3,4 +3,6 @@ export const AppRoles: { [key: string]: string } = {
   ADMIN: 'ADMIN',
   SUPER_ADMIN: 'SUPER_ADMIN',
   AUTHOR: 'AUTHOR',
+  ORGANISATION: 'ORGANISATION',
+  PENDING_ORGANISATION: 'PENDING_ORGANISATION',
 };

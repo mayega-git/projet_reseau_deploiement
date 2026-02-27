@@ -177,3 +177,49 @@ export async function updateUser(
   const json = await res.json();
   return json.data ?? json; // Adjust based on actual API response structure
 }
+
+// ---------------------------------------------------------------------------
+// Organisation Members
+// ---------------------------------------------------------------------------
+
+export async function getUserByEmail(email: string): Promise<GetUser | null> {
+  const url = UserRoutes.userByEmail.replace('{email}', encodeURIComponent(email));
+  return authFetchData<GetUser>(url);
+}
+
+export async function getOrganisationsForUser(userId: string): Promise<GetUser[]> {
+  const url = UserRoutes.userOrganisations.replace('{userId}', encodeURIComponent(userId));
+  const data = await authFetchData<GetUser[]>(url);
+  return data ?? [];
+}
+
+export async function getOrganisationMembers(orgId: string): Promise<GetUser[]> {
+  // We assume the userOrganisations endpoint gives members when targeting an org ID or similar, 
+  // or we use the base fallback. Given the endpoints provided, org members aren't directly 
+  // specified as a GET. Assuming GET on deleteUserFromOrganisation URL works for fetching.
+  const url = UserRoutes.deleteUserFromOrganisation.replace('{orgId}', encodeURIComponent(orgId));
+  const data = await authFetchData<GetUser[]>(url);
+  return data ?? [];
+}
+
+export async function addUserToOrganisation(orgId: string, userId: string): Promise<void> {
+  const url = UserRoutes.addUserToOrganisation
+    .replace('{orgId}', encodeURIComponent(orgId))
+    .replace('{userId}', encodeURIComponent(userId));
+  
+  const res = await authFetch(url, { method: 'POST' });
+  if (!res.ok) throw new Error(`Failed to add user to organisation: ${res.statusText}`);
+}
+
+export async function deleteUserFromOrganisation(orgId: string, userId: string): Promise<void> {
+  // Using the delete URL which ends with /members. In REST typically it's DELETE /members/{userId}
+  // If the backend expects the userId in the query parameter or body, we adjust here.
+  // Based on standard REST, let's append /userId if missing, or use query param.
+  // Looking at UserRoutes.deleteUserFromOrganisation: `${ServiceURLs.user}/api/users/{orgId}/members`
+  // It most likely expects the userId in the path or as a query param. 
+  // Let's assume path:
+  const url = `${UserRoutes.deleteUserFromOrganisation.replace('{orgId}', encodeURIComponent(orgId))}/${encodeURIComponent(userId)}`;
+  
+  const res = await authFetch(url, { method: 'DELETE' });
+  if (!res.ok) throw new Error(`Failed to delete user from organisation: ${res.statusText}`);
+}

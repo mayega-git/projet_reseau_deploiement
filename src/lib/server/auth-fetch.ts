@@ -57,7 +57,14 @@ export async function authFetchJson<T>(
   url: string,
   options: RequestInit = {},
 ): Promise<T | null> {
-  const res = await authFetch(url, options);
+  let res: Response;
+  try {
+    res = await authFetch(url, options);
+  } catch (err) {
+    console.error('❌ [authFetchJson] fetch failed (service unreachable?):', url, err);
+    return null;
+  }
+
   if (!res.ok) return null;
 
   const contentType = res.headers.get('content-type');
@@ -121,7 +128,14 @@ export async function authFetchData<T>(
  * Returns the body as a number[] (Uint8Array contents), or null if the fetch fails.
  */
 export async function authFetchBinary(url: string): Promise<number[] | null> {
-  const res = await authFetch(url);
+  let res: Response;
+  try {
+    res = await authFetch(url);
+  } catch (err) {
+    console.error('❌ [authFetchBinary] fetch failed (service unreachable?):', url, err);
+    return null;
+  }
+
   if (!res.ok) {
     // Return null instead of throwing to allow graceful handling of missing assets
     return null;

@@ -8,7 +8,6 @@ export const ServiceURLs = {
   education: process.env.NEXT_PUBLIC_EDUCATION_URL ?? '',
   user:  process.env.NEXT_PUBLIC_USER_URL ?? '',
   review:  process.env.NEXT_PUBLIC_REVIEW_URL ?? '',
-  organisation: process.env.NEXT_PUBLIC_ORGANISATION_URL ?? '',
   newsletter: process.env.NEXT_PUBLIC_NEWSLETTER_URL ?? '',
   forum: process.env.NEXT_PUBLIC_FORUM_URL ?? '',
   gateway: process.env.NEXT_PUBLIC_GATEWAY_URL ?? '',
@@ -27,8 +26,14 @@ export const UserRoutes = {
   allFollowers: `${ServiceURLs.user}/api/connections/followers`,
   unfollow: `${ServiceURLs.user}/api/connections/unfollow`,
   role: `${ServiceURLs.user}/api/roles`,
-  organisation: `${ServiceURLs.user}/api/organisation`,
-  organisationLogin: `${ServiceURLs.user}/api/organisation/login`,
+  userByEmail: `${ServiceURLs.user}/api/users/email/{email}`,
+  organisation: `${ServiceURLs.user}/api/users/organisation`,
+  deleteUserFromOrganisation: `${ServiceURLs.user}/api/users/{orgId}/members`,
+  addUserToOrganisation: `${ServiceURLs.user}/api/users/{orgId}/members/{userId}`,
+  userOrganisations: `${ServiceURLs.user}/api/users/{userId}/organisations`,
+
+
+
 };
 
 export const EducationRoutes = {
@@ -36,7 +41,7 @@ export const EducationRoutes = {
   category: `${ServiceURLs.education}/categories`,
   blogs: `${ServiceURLs.education}/blogs`,
   podcasts: `${ServiceURLs.education}/podcasts`,
-  cours: `${ServiceURLs.education}/cours`,
+  courses: `${ServiceURLs.education}/courses`,
   favorites: `${ServiceURLs.education}/favorites`,
   domains: `${ServiceURLs.education}/domains`,
 };
@@ -46,11 +51,6 @@ export const ReviewRoutes = {
   comments: `${ServiceURLs.review}/comments`,
   commentReply: `${ServiceURLs.review}/comment_replies`,
   entityStats: `${ServiceURLs.review}/entity/stats`,
-};
-
-export const OrganisationRoutes = {
-  organisation: `${ServiceURLs.organisation}/v1/organisation`,
-  employee: `${ServiceURLs.organisation}/v1/employee`,
 };
 
 export const NewsletterRoutes = {
@@ -63,6 +63,8 @@ export const NewsletterRoutes = {
   redacteursAdminPending: `${ServiceURLs.newsletter}/admin/redacteurs/pending`,
   redacteurs: `${ServiceURLs.newsletter}/redacteurs`,
   redacteursByEmail: `${ServiceURLs.newsletter}/redacteurs/email`,
+  isRedacteurs: `${ServiceURLs.newsletter}/redacteurs/exists-by-email`,
+  isLecteurs: `${ServiceURLs.newsletter}/lecteurs/exists-by-email`,
 
 };
 

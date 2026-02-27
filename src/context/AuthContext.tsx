@@ -6,7 +6,6 @@ import { User } from '@/types/User';
 import { AppRoles } from '@/constants/roles';
 import {
   login as serverLogin,
-  loginOrganisation as serverLoginOrganisation,
   logout as serverLogout,
   signup as serverSignup,
   signupOrganisation as serverSignupOrganisation,
@@ -27,8 +26,6 @@ interface AuthContextType {
   isLoading: boolean;
   /** Call the server action to log in, then update local state */
   login: (email: string, password: string) => Promise<AuthResult>;
-  /** Call the server action to log in as organisation */
-  loginOrganisation: (email: string, password: string) => Promise<AuthResult>;
   /** Call the server action to sign up */
   signup: (
     firstName: string,
@@ -39,9 +36,10 @@ interface AuthContextType {
   ) => Promise<AuthResult>;
   /** Call the server action to sign up an organisation */
   signupOrganisation: (
-    name: string,
+    firstName: string,
     domain: string,
     bio: string,
+    description: string,
     email: string,
     password: string,
   ) => Promise<AuthResult>;
@@ -82,7 +80,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       if (
         roles.includes(AppRoles.SUPER_ADMIN) ||
         roles.includes(AppRoles.ADMIN) ||
-        roles.includes(AppRoles.AUTHOR)
+        roles.includes(AppRoles.AUTHOR) ||
+        roles.includes(AppRoles.PENDING_ORGANISATION)
       ) {
         router.push('/u/dashboard');
       } else if (roles.length === 1 && roles.includes(AppRoles.USER)) {
@@ -98,25 +97,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       setIsLoading(true);
       try {
         const result = await serverLogin(email, password);
-        if (result.success && result.user) {
-          setUser(result.user);
-          setRole(result.user.roles ?? null);
-          redirectByRole(result.user.roles ?? []);
-        }
-        return result;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [redirectByRole],
-  );
-
-  // ---- Login Organisation ----
-  const loginOrganisation = useCallback(
-    async (email: string, password: string): Promise<AuthResult> => {
-      setIsLoading(true);
-      try {
-        const result = await serverLoginOrganisation(email, password);
         if (result.success && result.user) {
           setUser(result.user);
           setRole(result.user.roles ?? null);
@@ -158,15 +138,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   // ---- Signup Organisation ----
   const signupOrganisation = useCallback(
     async (
-      name: string,
+      firstName: string,
       domain: string,
       bio: string,
+      description: string,
       email: string,
       password: string,
     ): Promise<AuthResult> => {
       setIsLoading(true);
       try {
-        const result = await serverSignupOrganisation(name, domain, bio, email, password);
+        const result = await serverSignupOrganisation(firstName, domain, bio, description, email, password);
         if (result.success && result.user) {
           setUser(result.user);
           setRole(result.user.roles ?? null);
@@ -196,7 +177,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, role, isLoading, login, loginOrganisation, signup, signupOrganisation, logout, refreshUser }}
+      value={{ user, role, isLoading, login, signup, signupOrganisation, logout, refreshUser }}
     >
       {children}
     </AuthContext.Provider>

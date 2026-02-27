@@ -63,17 +63,31 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({
                   </button>
                 </div>
                 <div className="flex items-center gap-2 text-black-300 text-[14.5px] paragraph-small-normal">
-                  {config.hasReadingTime && (
-                    <p>
-                      {item.readingTime
-                        ? `${item.readingTime} min read`
-                        : '2 min read'}
-                    </p>
-                  )}
-                  {config.hasDuration && item.audioLength && (
+                  {contentType === 'cours' || contentType === 'course' ? (
                     <>
-                      <p>·</p>
-                      <p>{formatHumanReadableDuration(item.audioLength)}</p>
+                      {item.duration && <p>⏱ {item.duration}</p>}
+                      {item.level && (
+                        <>
+                          <p>·</p>
+                          <p className="capitalize">🎓 {item.level}</p>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {config.hasReadingTime && (
+                        <p>
+                          {item.readingTime
+                            ? `${item.readingTime} min read`
+                            : '2 min read'}
+                        </p>
+                      )}
+                      {config.hasDuration && item.audioLength && (
+                        <>
+                          <p>·</p>
+                          <p>{formatHumanReadableDuration(item.audioLength)}</p>
+                        </>
+                      )}
                     </>
                   )}
                   {item?.publishedAt && (

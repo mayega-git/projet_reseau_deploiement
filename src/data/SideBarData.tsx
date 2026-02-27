@@ -44,6 +44,7 @@ export const SideBarData = [
     role: [
       AppRoles.SUPER_ADMIN,
       AppRoles.AUTHOR,
+      AppRoles.PENDING_ORGANISATION,
       AppRoles.ADMIN,
       AppRoles.USER],
     icon: HomeIcon,
@@ -52,7 +53,7 @@ export const SideBarData = [
   {
     title: 'Dashboard',
     url: `/u/dashboard`,
-    role: [AppRoles.SUPER_ADMIN, AppRoles.AUTHOR, AppRoles.ADMIN],
+    role: [AppRoles.SUPER_ADMIN, AppRoles.AUTHOR, AppRoles.PENDING_ORGANISATION, AppRoles.ADMIN],
     icon: LayoutDashboard,
     subnav: [],
   },
@@ -62,6 +63,7 @@ export const SideBarData = [
     role: [
       AppRoles.SUPER_ADMIN,
       AppRoles.AUTHOR,
+      AppRoles.PENDING_ORGANISATION,
       AppRoles.ADMIN,
       AppRoles.USER,
     ],
@@ -74,6 +76,7 @@ export const SideBarData = [
     role: [
       AppRoles.SUPER_ADMIN,
       AppRoles.AUTHOR,
+      AppRoles.PENDING_ORGANISATION,
       AppRoles.ADMIN,
       AppRoles.USER,
     ],
@@ -129,8 +132,8 @@ export const SideBarData = [
     role: [
       AppRoles.SUPER_ADMIN,
       AppRoles.AUTHOR,
+      AppRoles.PENDING_ORGANISATION,
       AppRoles.ADMIN,
-     
     ],
     icon: Tag,
     subnav: [
@@ -139,8 +142,8 @@ export const SideBarData = [
         role: [
           AppRoles.SUPER_ADMIN,
           AppRoles.AUTHOR,
+          AppRoles.PENDING_ORGANISATION,
           AppRoles.ADMIN,
-          
         ],
         url: `/u/tags`,
       },
@@ -157,8 +160,8 @@ export const SideBarData = [
     role: [
       AppRoles.SUPER_ADMIN,
       AppRoles.AUTHOR,
+      AppRoles.PENDING_ORGANISATION,
       AppRoles.ADMIN,
-      
     ],
     icon: Folder,
     subnav: [
@@ -167,8 +170,8 @@ export const SideBarData = [
         role: [
           AppRoles.SUPER_ADMIN,
           AppRoles.AUTHOR,
+          AppRoles.PENDING_ORGANISATION,
           AppRoles.ADMIN,
-          
         ],
         url: `/u/category`,
       },
@@ -189,7 +192,7 @@ export const SideBarData = [
   {
     title: 'Forum',
     url: `/u/forum`,
-    role: [AppRoles.SUPER_ADMIN,AppRoles.AUTHOR,AppRoles.USER],
+    role: [AppRoles.SUPER_ADMIN, AppRoles.AUTHOR, AppRoles.PENDING_ORGANISATION, AppRoles.USER],
     icon: MessageCircle,
     subnav: [],
   },
@@ -198,56 +201,53 @@ export const SideBarData = [
     url: `/u/manage/newsletter`,
     role: [AppRoles.SUPER_ADMIN],
     icon: Mail,
-    subnav: [],
-  },
-  {
-
-
-
-    title: 'Redacteurs',
-
-
-    url: `/u/manage/newsletter/redacteurs`,
-
-
-    role: [AppRoles.SUPER_ADMIN, AppRoles.ADMIN],
-
-
-    icon: Mail,
-
-
-    subnav: [],
+    subnav: [{
+      title: 'Redacteurs',
+      url: `/u/manage/newsletter/redacteurs`,
+      role: [AppRoles.SUPER_ADMIN, AppRoles.ADMIN],
+      icon: Mail,
+      subnav: [],
 
 
   },
-
-
   {
-
-
     title: 'Newsletter Categories',
-
-
     url: `/u/newsletter/categories/manage`,
-
-
     role: [AppRoles.SUPER_ADMIN, AppRoles.ADMIN],
-
-
     icon: Mail,
-
-
     subnav: [],
-
-
   },
   {
     title: 'NewsLetter',
     url: `/u/newsletter`,
-    role: [AppRoles.AUTHOR],
+    role: [AppRoles.AUTHOR, AppRoles.PENDING_ORGANISATION],
     icon: Mail,
     subnav: [],
+  }],
   },
+  {
+    title: 'Education',
+    url: ``,
+    role: [AppRoles.AUTHOR, AppRoles.USER,AppRoles.ADMIN,AppRoles.SUPER_ADMIN,AppRoles.PENDING_ORGANISATION,AppRoles.ORGANISATION],
+    icon: Mail,
+    subnav: [
+      {
+        title: 'Blogs',
+        url: `/blog/create`,
+        role: [AppRoles.AUTHOR, AppRoles.PENDING_ORGANISATION],
+        icon: Mail,
+        subnav: [],
+      },
+      {
+        title: 'Courses',
+        url: `/course/create`,
+        role: [AppRoles.AUTHOR, AppRoles.USER,AppRoles.ADMIN,AppRoles.SUPER_ADMIN,AppRoles.PENDING_ORGANISATION,AppRoles.ORGANISATION],
+        icon: Mail,
+        subnav: [],
+      },
+    ],
+  }
+  ,
 
   // {
   //   title: 'Analytics',

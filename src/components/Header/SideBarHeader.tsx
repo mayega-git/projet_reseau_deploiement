@@ -52,7 +52,7 @@ const SideBarHeader = () => {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-6">
             <Bell size={24} className="text-black-100" />
-            {role && role.includes(AppRoles.AUTHOR) ? (
+            {role && (role.includes(AppRoles.AUTHOR) || role.includes(AppRoles.PENDING_ORGANISATION)) ? (
               <CreateContentIcons />
             ) : role?.length === 1 && role.includes(AppRoles.USER) ? (
               <CustomButton

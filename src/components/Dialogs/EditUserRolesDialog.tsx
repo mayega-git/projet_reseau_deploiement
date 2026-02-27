@@ -28,6 +28,8 @@ const AVAILABLE_ROLES = [
   { value: AppRoles.USER, label: 'User' },
   { value: AppRoles.AUTHOR, label: 'Author' },
   { value: AppRoles.ADMIN, label: 'Admin' },
+  { value: AppRoles.ORGANISATION, label: 'Organisation' },
+  { value: AppRoles.PENDING_ORGANISATION, label: 'Pending Organisation' },
 ];
 
 const EditUserRolesDialog: React.FC<EditUserRolesDialogProps> = ({
