@@ -347,13 +347,13 @@ const domainChoices = Array.from(new Set(categories.map(c => c.domain)));
   return (
     <>
       {!preview ? (
-        <div className="mt-12 create-blog-form-height  max-w-[2100px] w-[800px] flex flex-col gap-8">
+        <div className="mt-6 sm:mt-12 create-blog-form-height w-full max-w-4xl flex flex-col gap-6 sm:gap-8">
           <p className="h4-medium font-semibold">Create new blog</p>
 
           {/* form for blog validation */}
           <form className="create-blog-form-height border border-grey-300  rounded-lg flex flex-col gap-4 w-full">
             <div className="w-full h-full overflow-y-auto">
-              <div className="w-full flex flex-col gap-6 px-6 py-8 ">
+              <div className="w-full flex flex-col gap-6 px-4 sm:px-6 py-6 sm:py-8">
                 {/* Blog Title*/}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
@@ -525,7 +525,7 @@ const domainChoices = Array.from(new Set(categories.map(c => c.domain)));
               </div>
             </div>
             {/* buttons */}
-            <div className="flex justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-8">
+            <div className="flex flex-wrap justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-4 sm:px-8">
               <CustomButton
                 disabled={isLoading}
                 onClick={handlePreview}
@@ -546,9 +546,9 @@ const domainChoices = Array.from(new Set(categories.map(c => c.domain)));
         </div>
       ) : (
         // blog preview
-        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-[800px] px-4 mt-12">
+        <div className="create-blog-form-height2 flex flex-col gap-4 h-full w-full max-w-4xl px-0 sm:px-4 mt-6 sm:mt-12">
           <div className="h-full w-full overflow-y-auto">
-            <div className="w-full h-full flex flex-col gap-12 px-6 py-8 ">
+            <div className="w-full h-full flex flex-col gap-8 sm:gap-12 px-4 sm:px-6 py-6 sm:py-8">
               <p className="h4-medium font-semibold text-black-500">
                 {' '}
                 Blog preview
@@ -558,7 +558,7 @@ const domainChoices = Array.from(new Set(categories.map(c => c.domain)));
           </div>
 
           {/* buttons */}
-          <div className="flex justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-8">
+          <div className="flex flex-wrap justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-4 sm:px-8">
             <CustomButton
               disabled={isLoading}
               onClick={() => setPreview(false)}

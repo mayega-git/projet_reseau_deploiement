@@ -17,7 +17,12 @@ export async function getAllBlogsEverCreated(): Promise<BlogInterface[]> {
 export async function getAllBlogs(status: string): Promise<BlogInterface[]> {
   const url = new URL(`${EducationRoutes.blogs}/published`);
   url.searchParams.set('status', status);
-  return (await authFetchJson<BlogInterface[]>(url.toString())) ?? [];
+  return (
+    (await authFetchJson<BlogInterface[]>(url.toString(), {
+      cache: 'force-cache',
+      next: { revalidate: 60 },
+    })) ?? []
+  );
 }
 
 export async function getAllBlogsByAuthorId(
@@ -107,7 +112,12 @@ export async function getAllPodcastsEverCreated(): Promise<PodcastInterface[]> {
 export async function getAllPodcasts(status: string): Promise<PodcastInterface[]> {
   const url = new URL(EducationRoutes.podcasts);
   url.searchParams.set('status', status);
-  return (await authFetchJson<PodcastInterface[]>(url.toString())) ?? [];
+  return (
+    (await authFetchJson<PodcastInterface[]>(url.toString(), {
+      cache: 'force-cache',
+      next: { revalidate: 60 },
+    })) ?? []
+  );
 }
 
 export async function getAllPodcastsByAuthorId(

@@ -8,7 +8,7 @@ const SubscribeCardLandingPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
-    <div className="mt-4 w-[500px] flex paragraph-medium-normal rounded-full bg-inherit border border-grey-500">
+    <div className="mt-4 w-full max-w-[500px] flex flex-col sm:flex-row gap-2 sm:gap-0 paragraph-medium-normal rounded-2xl sm:rounded-full bg-inherit border border-grey-500 p-2 sm:p-0">
       <input
         type="email"
         name="email"
@@ -20,7 +20,8 @@ const SubscribeCardLandingPage = () => {
       />
       <CustomButton
         variant="secondary"
-        round
+        round={false}
+        className="sm:rounded-full w-full sm:w-auto"
         onClick={() => setDialogOpen(true)}
       >
         Subscribe

@@ -230,12 +230,12 @@ const CreatePodcastComponent = () => {
   return (
     <>
       {!preview ? (
-        <div className="mt-12 create-blog-form-height  max-w-[2100px] w-[800px] flex flex-col gap-8">
+        <div className="mt-6 sm:mt-12 create-blog-form-height w-full max-w-4xl flex flex-col gap-6 sm:gap-8">
           <p className="h4-medium font-semibold">Create new Podcast</p>
 
           <form className="create-blog-form-height border border-grey-300  rounded-lg flex flex-col gap-4 w-full">
             <div className="w-full h-full overflow-y-auto">
-              <div className="w-full flex flex-col gap-6 px-6 py-8 ">
+              <div className="w-full flex flex-col gap-6 px-4 sm:px-6 py-6 sm:py-8">
                 {/* Podcast Title*/}
                 <div className="flex flex-col gap-3">
                   <label className="form-label" htmlFor="title">
@@ -393,7 +393,7 @@ const CreatePodcastComponent = () => {
               </div>
             </div>
             {/* buttons */}
-            <div className="flex justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-8">
+            <div className="flex flex-wrap justify-end items-center gap-2 border-t border-t-grey-300 py-4 px-4 sm:px-8">
               {/* <CustomButton onClick={handlePreview} variant="primaryOutline">
                 Preview
               </CustomButton> */}
@@ -409,7 +409,7 @@ const CreatePodcastComponent = () => {
           </form>
         </div>
       ) : (
-        <div className="flex flex-col gap-4 h-full w-[800px] px-4 mt-12">
+        <div className="flex flex-col gap-4 h-full w-full max-w-4xl px-0 sm:px-4 mt-6 sm:mt-12">
           {/* <div className="h-full w-full overflow-y-auto">
             <div className="w-full flex flex-col gap-6 px-6 py-8 ">
               <BlogPreview blog={podcastData} />

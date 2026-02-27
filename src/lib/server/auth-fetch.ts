@@ -40,8 +40,8 @@ export async function authFetch(
   return fetch(url, {
     ...options,
     headers,
-    // Disable Next.js cache for API calls by default to avoid stale data
-    cache: 'no-store',
+    // Keep no-store by default, but let callers override for read-heavy pages.
+    cache: options.cache ?? 'no-store',
   });
 }
 

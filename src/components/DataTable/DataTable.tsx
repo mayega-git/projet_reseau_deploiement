@@ -36,89 +36,121 @@ export function DataTable<TData>({ data, type }: DataTableProps<TData>) {
     setDescription(`Are you sure you want to delete this ${type}`);
   };
 
+  const formatCreatedAt = (createdAt?: string) => {
+    if (!createdAt) return 'N/A';
+    const date = new Date(createdAt);
+    if (isNaN(date.getTime())) return 'N/A';
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).format(date);
+  };
+
+  const renderActions = (id: string) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel className="paragraph-medium-medium">
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => id}>
+          <Edit /> Edit
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            handleClickDelete(id);
+          }}
+        >
+          <Trash2 /> Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <>
-      <div className="rounded-md border overflow-hidden">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Name
-              </th>
-              <th className="text-start w-[50%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Description
-              </th>
-              <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Created At
-              </th>
-              <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr
-                key={row.id}
-                className={
-                  index === data.length - 1
-                    ? 'rounded-b-[20px] overflow-hidden'
-                    : ''
-                }
-              >
-                <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
-                  {row.name}
-                </td>
-                <td className="text-start w-[50%] paragraph-xmedium-normal px-4 py-2 border-b">
+      <div className="rounded-md border bg-white">
+        <div className="md:hidden divide-y">
+          {data.map((row) => (
+            <div key={row.id} className="p-4 space-y-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="paragraph-small-normal text-black-300">Name</p>
+                  <p className="paragraph-medium-medium break-words">{row.name}</p>
+                </div>
+                {renderActions(row.id)}
+              </div>
+              <div>
+                <p className="paragraph-small-normal text-black-300">
+                  Description
+                </p>
+                <p className="paragraph-medium-normal break-words">
                   {row.description}
-                </td>
-                <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
-                  {(() => {
-                    console.log('Row createdAt:', row.createdAt); // Debug logging
-                    const date = new Date(row.createdAt);
-                    return !isNaN(date.getTime())
-                      ? new Intl.DateTimeFormat('en-GB', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit',
-                          hour12: false,
-                        }).format(date)
-                      : 'N/A';
-                  })()}
-                </td>
-                <td className="text-start w-[10%] paragraph-xmedium-normal px-4 py-2 border-b">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel className="paragraph-medium-medium">
-                        Actions
-                      </DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => row.id}>
-                        <Edit /> Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => {
-                          handleClickDelete(row.id);
-                        }}
-                      >
-                        <Trash2 /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
+                </p>
+              </div>
+              <p className="paragraph-small-normal text-black-300">
+                Created at: {formatCreatedAt(row.createdAt)}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full min-w-[760px] border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Name
+                </th>
+                <th className="text-start w-[50%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Description
+                </th>
+                <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Created At
+                </th>
+                <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((row, index) => (
+                <tr
+                  key={row.id}
+                  className={
+                    index === data.length - 1
+                      ? 'rounded-b-[20px] overflow-hidden'
+                      : ''
+                  }
+                >
+                  <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
+                    {row.name}
+                  </td>
+                  <td className="text-start w-[50%] paragraph-xmedium-normal px-4 py-2 border-b">
+                    {row.description}
+                  </td>
+                  <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
+                    {formatCreatedAt(row.createdAt)}
+                  </td>
+                  <td className="text-start w-[10%] paragraph-xmedium-normal px-4 py-2 border-b">
+                    {renderActions(row.id)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <DeleteDialog
         id={currentId}

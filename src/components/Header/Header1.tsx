@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import CustomButton from '../ui/customButton';
 import { useRouter } from 'next/navigation';
@@ -9,11 +9,6 @@ import { useAuth } from '@/context/AuthContext';
 const Header1 = () => {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isLoggedIn = !!user;
 
@@ -21,20 +16,9 @@ const Header1 = () => {
     logout();
   };
 
-  // Évite les erreurs d'hydratation SSR
-  if (!mounted) {
-    return (
-      <header className="h-[92px] py-5 border-b border-b-grey-100 sticky top-0 w-full bg-white z-50">
-        <div className="container flex justify-between items-center">
-          <Image alt="logo" width={110} height={52} src="/logoBlack.png" />
-        </div>
-      </header>
-    );
-  }
-
   return (
-    <header className="h-[92px] py-5 border-b border-b-grey-100 sticky top-0 w-full bg-white z-50">
-      <div className="container flex justify-between items-center">
+      <header className="h-[92px] py-5 border-b border-b-grey-100 sticky top-0 w-full bg-white z-50">
+      <div className="container flex justify-between items-center gap-3">
         {/* Logo cliquable */}
         <Link href="/">
           <Image
@@ -47,7 +31,7 @@ const Header1 = () => {
         </Link>
 
         <nav>
-          <ul className="flex items-center gap-3">
+          <ul className="flex items-center gap-2 sm:gap-3">
             {isLoggedIn ? (
               <>
                 {/* Bouton vers le Feed */}
@@ -56,6 +40,7 @@ const Header1 = () => {
                     onClick={() => router.push('/u/feed/blog')}
                     variant="tertiary"
                     round={true}
+                    className="px-3 sm:px-4"
                   >
                     Dashboard
                   </CustomButton>
@@ -66,6 +51,7 @@ const Header1 = () => {
                     onClick={handleLogout}
                     variant="primary"
                     round={true}
+                    className="px-3 sm:px-4"
                   >
                     Sign out
                   </CustomButton>
@@ -78,6 +64,7 @@ const Header1 = () => {
                     onClick={() => router.push('/auth/login')}
                     variant="tertiary"
                     round={true}
+                    className="px-3 sm:px-4"
                   >
                     Sign in
                   </CustomButton>
@@ -87,8 +74,10 @@ const Header1 = () => {
                     onClick={() => router.push('/auth/signup')}
                     variant="primary"
                     round={true}
+                    className="px-3 sm:px-4"
                   >
-                    Create an account
+                    <span className="sm:hidden">Sign up</span>
+                    <span className="hidden sm:inline">Create an account</span>
                   </CustomButton>
                 </li>
               </>

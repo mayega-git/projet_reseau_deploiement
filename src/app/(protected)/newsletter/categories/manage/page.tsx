@@ -169,6 +169,37 @@ const ManageNewsletterCategories = () => {
     setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
   };
 
+  const renderActions = (category: NewsletterCategory) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel className="paragraph-medium-medium">
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => openEditDialog(category)}
+          className="gap-2"
+        >
+          <PencilLine className="h-4 w-4" />
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => openDeleteDialog(category)}
+          className="gap-2 text-red-600"
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -193,71 +224,65 @@ const ManageNewsletterCategories = () => {
           </Button>
         </div>
       ) : (
-        <div className="rounded-md border overflow-hidden bg-white">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="text-start w-[30%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Name
-                </th>
-                <th className="text-start w-[55%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Description
-                </th>
-                <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((category, index) => (
-                <tr
-                  key={category.id || index}
-                  className={
-                    index === categories.length - 1
-                      ? 'rounded-b-[20px]'
-                      : ''
-                  }
-                >
-                  <td className="text-start w-[30%] paragraph-xmedium-normal px-4 py-3 border-b">
-                    {category.nom || '-'}
-                  </td>
-                  <td className="text-start w-[55%] paragraph-xmedium-normal px-4 py-3 border-b">
-                    {category.description || '-'}
-                  </td>
-                  <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel className="paragraph-medium-medium">
-                          Actions
-                        </DropdownMenuLabel>
-                        <DropdownMenuItem
-                          onClick={() => openEditDialog(category)}
-                          className="gap-2"
-                        >
-                          <PencilLine className="h-4 w-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => openDeleteDialog(category)}
-                          className="gap-2 text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </td>
+        <div className="rounded-md border bg-white">
+          <div className="md:hidden divide-y">
+            {categories.map((category, index) => (
+              <div key={category.id || index} className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="paragraph-small-normal text-black-300">Name</p>
+                    <p className="paragraph-medium-medium break-words">
+                      {category.nom || '-'}
+                    </p>
+                  </div>
+                  {renderActions(category)}
+                </div>
+                <p className="paragraph-small-normal text-black-300 break-words">
+                  {category.description || '-'}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full min-w-[760px] border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="text-start w-[30%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Name
+                  </th>
+                  <th className="text-start w-[55%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Description
+                  </th>
+                  <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {categories.map((category, index) => (
+                  <tr
+                    key={category.id || index}
+                    className={
+                      index === categories.length - 1
+                        ? 'rounded-b-[20px]'
+                        : ''
+                    }
+                  >
+                    <td className="text-start w-[30%] paragraph-xmedium-normal px-4 py-3 border-b">
+                      {category.nom || '-'}
+                    </td>
+                    <td className="text-start w-[55%] paragraph-xmedium-normal px-4 py-3 border-b">
+                      {category.description || '-'}
+                    </td>
+                    <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
+                      {renderActions(category)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

@@ -42,10 +42,10 @@ const BlogPreview: React.FC<BlogContentParams> = ({ blog }) => {
 
           {/* // Blog Author information */}
 
-          <div className="flex flex-col gap-12">
-            <div className=" h-[46px] flex gap-3">
+          <div className="flex flex-col gap-8 sm:gap-12">
+            <div className="min-h-[46px] flex gap-3">
               {/* image */}
-              <div className="w-[46px] h-[46px] rounded-full bg-purple-700 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-[46px] sm:h-[46px] rounded-full bg-purple-700 flex items-center justify-center">
                 <p className="text-white paragraph-large-normal">
                   {getInitials(user?.firstName+' '+user?.lastName)}
                 </p>
@@ -93,7 +93,7 @@ const BlogPreview: React.FC<BlogContentParams> = ({ blog }) => {
 
         {/* blog image content */}
 
-        <div className="h-[400px] w-full">
+        <div className="h-[220px] sm:h-[320px] lg:h-[400px] w-full">
           <Image
             src={blog.coverImage}
             alt={blog.title}

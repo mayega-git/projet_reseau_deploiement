@@ -33,13 +33,13 @@ const Header2 = () => {
     <>
       <header className="h-[92px] py-5 border-b border-b-grey-100 sticky top-0 w-full bg-white z-50">
         <div className="container flex justify-between items-center">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 lg:gap-8 min-w-0">
               <Link href="/">
 
                 <Image alt="logo" width={110} height={52} src="/logoBlack.png" />
 
               </Link>
-            <div className="border border-grey-300 flex items-center px-4 py-2 w-[450px] h-10 bg-white rounded-lg">
+            <div className="hidden md:flex border border-grey-300 items-center px-4 py-2 w-[320px] lg:w-[450px] h-10 bg-white rounded-lg">
               <input
                 type="text"
                 placeholder="Search..."
@@ -50,18 +50,19 @@ const Header2 = () => {
           </div>
           <nav className="flex">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 md:gap-6">
                 {role && role.includes(AppRoles.AUTHOR) ? (
                   <CreateContentIcons />
                 ) : role?.length === 1 && role.includes(AppRoles.USER) ? (
                   <CustomButton
                     onClick={() => setShowAuthorDialog(true)}
                     variant="gradientOrange"
+                    className="hidden lg:inline-flex"
                   >
                     Become an author
                   </CustomButton>
                 ) : null}
-                <Bell size={24} className="text-black-100" />
+                <Bell size={22} className="text-black-100" />
                 {/* image */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -71,11 +72,11 @@ const Header2 = () => {
                           {getInitials(user?.firstName + ' ' + user?.lastName)}
                         </p>
                       </div>
-                      <div className="flex flex-col gap-0">
+                      <div className="hidden lg:flex flex-col gap-0 max-w-[220px]">
                         <p className="paragraph-medium-medium">
                           {user?.firstName + ' ' + user?.lastName}
                         </p>
-                        <p className="paragraph-small-normal text-black-300">
+                        <p className="paragraph-small-normal text-black-300 truncate">
                           {user?.sub}
                         </p>
                       </div>

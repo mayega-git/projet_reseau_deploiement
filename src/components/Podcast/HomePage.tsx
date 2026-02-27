@@ -2,37 +2,35 @@
 import React from 'react';
 import Image from 'next/image';
 import '../Blog/styles/blogBackground.css';
-import { ThumbsUp } from 'lucide-react';
-import { MessageCircle } from 'lucide-react';
 import PodcastCard from './podcastCard';
 import SubscribeCard from '../ui/subscribeCard';
 import Button from '../ui/customButton';
 import { PodcastInterface } from '@/types/podcast';
-import LikeDislikeButton from '../ui/LikeDislikeButton';
-import CommentsButton from '../ui/CommentsButton';
 
 interface PodcastCardProps {
   data: PodcastInterface[];
-  images: {
-    [key: string]: number[];
-  };
 }
 
-const PodcastPage: React.FC<PodcastCardProps> = ({ data, images }) => {
+const PodcastPage: React.FC<PodcastCardProps> = ({ data }) => {
+  const mostPopular = data.slice(0, 3);
+  const mostRecent = data.slice(3, 9);
+  const exploreAll = data.slice(9);
+
   return (
     <div>
       <div className="container">
-        <div className="w-full flex flex-col gap-[84px]">
+        <div className="w-full flex flex-col gap-14 md:gap-20">
           {/* coverImage blog */}
           <section className="background-container-blog">
             <div className="background-overlay-blog" />
             <Image
               src="/images/content/background2.png"
               alt="Background"
-              // layout="intrinsic" // Make the image responsive while maintaining aspect ratio
-              width={1200} // Set the width to the original image's width or desired aspect ratio
-              height={420} // Set the height to match the container or desired aspect ratio
+              width={1200}
+              height={420}
+              sizes="(max-width: 768px) 100vw, 1200px"
               className="background-image-blog"
+              priority
             />
             <div className="text-overlay-blog">
               <p className="paragraph-small-medium">
@@ -55,46 +53,50 @@ const PodcastPage: React.FC<PodcastCardProps> = ({ data, images }) => {
 
           {/* most popular */}
           <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
+            <div className="w-full items-center flex justify-between gap-4">
               <p className="h4-medium">Most Popular</p>
-              <Button round variant="outline">
+              <Button round variant="outline" className="hidden sm:inline-flex">
                 View all
               </Button>
             </div>
-            {Array.isArray(data) && data.length > 0 && (
-              <PodcastCard data={data} images={images} />
+            {Array.isArray(mostPopular) && mostPopular.length > 0 && (
+              <PodcastCard data={mostPopular} />
             )}
           </section>
 
           {/* most recent */}
           <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
+            <div className="w-full items-center flex justify-between gap-4">
               <p className="h4-medium">Most Recent</p>
-              <Button round variant="outline">
+              <Button round variant="outline" className="hidden sm:inline-flex">
                 View all
               </Button>
             </div>
-            {Array.isArray(data) && data.length > 0 && (
-              <PodcastCard data={data} images={images} />
+            {Array.isArray(mostRecent) && mostRecent.length > 0 && (
+              <PodcastCard data={mostRecent} />
             )}
           </section>
 
-          <div className="w-[80%] mx-auto">
+          <div className="w-full lg:w-[80%] mx-auto">
             <SubscribeCard />
           </div>
 
           {/* Explorre all */}
-          <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
-              <p className="h4-medium">Explore All</p>
-              <Button round variant="outline">
-                View all
-              </Button>
-            </div>
-            {Array.isArray(data) && data.length > 0 && (
-              <PodcastCard data={data} images={images} />
-            )}
-          </section>
+          {exploreAll.length > 0 && (
+            <section className="flex flex-col gap-8">
+              <div className="w-full items-center flex justify-between gap-4">
+                <p className="h4-medium">Explore All</p>
+                <Button
+                  round
+                  variant="outline"
+                  className="hidden sm:inline-flex"
+                >
+                  View all
+                </Button>
+              </div>
+              <PodcastCard data={exploreAll} />
+            </section>
+          )}
         </div>
       </div>
     </div>

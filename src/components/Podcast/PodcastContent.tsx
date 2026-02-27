@@ -83,8 +83,8 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8">
-      <div className="flex flex-col items-center justify-center gap-8">
-        <div className="h-full flex flex-col gap-8 w-[800px]">
+      <div className="flex flex-col items-center justify-center gap-8 w-full">
+        <div className="h-full flex flex-col gap-8 w-full max-w-4xl">
           {/* tags and title */}
           <div>
             <div className="flex gap-1">
@@ -104,7 +104,7 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
           {/* // Podcast Author information */}
 
           <div className="flex flex-col gap-12">
-            <div className=" h-[46px] flex gap-3">
+            <div className="min-h-[46px] flex gap-3">
               {/* image */}
               <Link href={`/profile/${podcast.authorId}`}>
                 <UserAvatar
@@ -115,8 +115,8 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
               </Link>
 
               {/* name etc */}
-              <div className="flex flex-col w-full justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col w-full justify-between gap-1">
+                <div className="flex flex-wrap items-center gap-2">
                   <p className="paragraph-medium-normal">
                     {userData.firstName + ' ' + userData.lastName}
                   </p>
@@ -155,7 +155,7 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
 
           {/* blog image content */}
 
-          <div className="h-[400px] w-full">
+          <div className="h-[220px] sm:h-[320px] lg:h-[400px] w-full">
             {images[podcast.id] &&
               // Convert the binary data to a Base64 string if necessary
               (() => {
@@ -187,7 +187,7 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
             {(podcast.audioUrl || podcast.id_ressource) && (
               <AudioPlayerContent type="podcast" id={podcast.id} />
             )}
-            <div className="border-y border-t py-3 border-grey-300 flex gap-6 items-center">
+            <div className="border-y border-t py-3 border-grey-300 flex flex-wrap gap-4 sm:gap-6 items-center">
               <LikeDislikeButton
                 entityId={podcast.id}
                 entityType={entityType.podcast}
@@ -215,22 +215,20 @@ const PodcastContent: React.FC<PodcastContentProps> = ({
         </div>
 
         {/* share buttons and main content */}
-        <div className="flex w-full">
-          <div className="flex flex-col gap-3 max-w-[800px] min-w-[100px]">
+        <div className="flex flex-col lg:flex-row w-full max-w-5xl gap-4 lg:gap-0">
+          <ShareButtons />
+          <div className="flex flex-col gap-3 w-full max-w-4xl min-w-0">
             <p className="h1-bold font-bold">Description</p>
             <p className="leading-28 paragraph-medium-normal">
               {podcast.description}
             </p>
           </div>
         </div>
-        <div
-          style={{ marginTop: '100px' }}
-          className="flex flex-col w-full gap-16"
-        >
+        <div className="mt-10 sm:mt-24 flex flex-col w-full max-w-4xl gap-10 sm:gap-16">
           <SubscribeCard />
           <div
             ref={commentSectionRef}
-            className="flex flex-col gap-16 w-full mt-16"
+            className="flex flex-col gap-10 sm:gap-16 w-full mt-10 sm:mt-16"
           >
             <CommentSection
               entityId={podcast.id}

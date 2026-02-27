@@ -130,6 +130,37 @@ const RedacteursAdminPage = () => {
     setRejectOpen(open);
   };
 
+  const renderActions = (row: RedacteurRequestResponse, isApproved: boolean) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel className="paragraph-medium-medium">
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {isApproved ? (
+          <DropdownMenuItem
+            onClick={() => handleOpenReject(row)}
+            className="gap-2 text-red-600"
+          >
+            <Power className="h-4 w-4" />
+            Desactiver
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem onClick={() => handleActivate(row)} className="gap-2">
+            <Power className="h-4 w-4" />
+            Activer
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <div className="flex flex-col gap-8">
       <SidebarPageHeading
@@ -144,95 +175,98 @@ const RedacteursAdminPage = () => {
           <EmptyState />
         </div>
       ) : (
-        <div className="rounded-md border overflow-hidden bg-white">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Email
-                </th>
-                <th className="text-start w-[18%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Prenom
-                </th>
-                <th className="text-start w-[18%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Nom
-                </th>
-                <th className="text-start w-[14%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Statut
-                </th>
-                <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Cree le
-                </th>
-                <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, index) => {
-                const status = normalizeStatus(row.status);
-                const isApproved = status === 'APPROVED';
-
-                return (
-                  <tr
-                    key={row.id || index}
-                    className={
-                      index === rows.length - 1 ? 'rounded-b-[20px]' : ''
-                    }
-                  >
-                    <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-3 border-b">
-                      {row.email || '-'}
-                    </td>
-                    <td className="text-start w-[18%] paragraph-xmedium-normal px-4 py-3 border-b">
-                      {row.prenom || '-'}
-                    </td>
-                    <td className="text-start w-[18%] paragraph-xmedium-normal px-4 py-3 border-b">
-                      {row.nom || '-'}
-                    </td>
-                    <td className="text-start w-[14%] paragraph-xmedium-normal px-4 py-3 border-b">
-                      <StatusTag status={status || 'UNKNOWN'} />
-                    </td>
-                    <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
+        <div className="rounded-md border bg-white">
+          <div className="md:hidden divide-y">
+            {rows.map((row, index) => {
+              const status = normalizeStatus(row.status);
+              const isApproved = status === 'APPROVED';
+              return (
+                <div key={row.id || index} className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="paragraph-small-normal text-black-300">
+                        Email
+                      </p>
+                      <p className="paragraph-medium-medium break-words">
+                        {row.email || '-'}
+                      </p>
+                    </div>
+                    {renderActions(row, isApproved)}
+                  </div>
+                  <p className="paragraph-small-normal text-black-300">
+                    {row.prenom || '-'} {row.nom || '-'}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <StatusTag status={status || 'UNKNOWN'} />
+                    <p className="paragraph-small-normal text-black-300">
                       {row.createdAt ? formatDateOrRelative(row.createdAt) : '-'}
-                    </td>
-                    <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel className="paragraph-medium-medium">
-                            Actions
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {isApproved ? (
-                            <DropdownMenuItem
-                              onClick={() => handleOpenReject(row)}
-                              className="gap-2 text-red-600"
-                            >
-                              <Power className="h-4 w-4" />
-                              Desactiver
-                            </DropdownMenuItem>
-                          ) : (
-                            <DropdownMenuItem
-                              onClick={() => handleActivate(row)}
-                              className="gap-2"
-                            >
-                              <Power className="h-4 w-4" />
-                              Activer
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full min-w-[920px] border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Email
+                  </th>
+                  <th className="text-start w-[18%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Prenom
+                  </th>
+                  <th className="text-start w-[18%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Nom
+                  </th>
+                  <th className="text-start w-[14%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Statut
+                  </th>
+                  <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Cree le
+                  </th>
+                  <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, index) => {
+                  const status = normalizeStatus(row.status);
+                  const isApproved = status === 'APPROVED';
+
+                  return (
+                    <tr
+                      key={row.id || index}
+                      className={
+                        index === rows.length - 1 ? 'rounded-b-[20px]' : ''
+                      }
+                    >
+                      <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        {row.email || '-'}
+                      </td>
+                      <td className="text-start w-[18%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        {row.prenom || '-'}
+                      </td>
+                      <td className="text-start w-[18%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        {row.nom || '-'}
+                      </td>
+                      <td className="text-start w-[14%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        <StatusTag status={status || 'UNKNOWN'} />
+                      </td>
+                      <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        {row.createdAt ? formatDateOrRelative(row.createdAt) : '-'}
+                      </td>
+                      <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-3 border-b">
+                        {renderActions(row, isApproved)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

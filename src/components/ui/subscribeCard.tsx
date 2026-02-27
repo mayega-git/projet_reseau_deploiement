@@ -9,7 +9,7 @@ const SubscribeCard = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
-    <div className="w-[100%] mx-auto h-[380px] max-w-[100%]">
+    <div className="w-full mx-auto min-h-[320px] h-auto">
       {' '}
       {/* background-overlay */}
       <section className="background-container rounded-[24px]">
@@ -22,13 +22,15 @@ const SubscribeCard = () => {
           className="background-image rounded-[24px]"
         />
         <div className="text-overlay container rounded-[24px]">
-          <p className="h4-medium">Subscribe to our newsletter</p>
-          <p className="paragraph-large-normal">
+          <p className="h5-medium sm:text-h4 sm:leading-36">
+            Subscribe to our newsletter
+          </p>
+          <p className="paragraph-medium-normal sm:text-paragraph-large sm:leading-28">
             Enter your email to get original stories, travel tips and insights
             across Cameroon
           </p>
 
-          <div className="mt-4 w-[500px] flex paragraph-medium-normal rounded-full bg-inherit border border-grey-500">
+          <div className="mt-4 w-full max-w-[500px] flex flex-col sm:flex-row gap-2 sm:gap-0 paragraph-medium-normal rounded-2xl sm:rounded-full bg-inherit border border-grey-500 p-2 sm:p-0">
             <input
               type="email"
               name="email"
@@ -40,7 +42,8 @@ const SubscribeCard = () => {
             />
             <Button
               variant="secondary"
-              round
+              round={false}
+              className="sm:rounded-full w-full sm:w-auto"
               onClick={() => setDialogOpen(true)}
             >
               Subscribe

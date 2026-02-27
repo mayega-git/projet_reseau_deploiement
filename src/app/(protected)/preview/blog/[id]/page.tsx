@@ -40,8 +40,8 @@ export default async function BlogPostPageFunction({
     <div className="flex flex-col justify-between min-h-screen">
       <HeaderWrapper />
       <React.Suspense fallback={<div>Loading...</div>}>
-        <section className="flex flex-col gap-32">
-          <div className="w-[1000px] min-h-screen max-w-[1400px] mx-auto mt-12">
+        <section className="flex flex-col gap-16 sm:gap-32">
+          <div className="w-full min-h-screen max-w-[1000px] mx-auto mt-6 sm:mt-12 px-3 sm:px-4">
             <BlogContent
               blog={BlogPost}
               //images={BlogImage}

@@ -25,6 +25,7 @@ import { useAuth } from '@/context/AuthContext';
 import Logout from '@/components/Dialogs/LogoutDialog';
 import { useState, useEffect } from 'react';
 import RatingModal from '@/components/Dialogs/RateApp.dialog';
+import Link from 'next/link';
 
 export const AppSidebar = () => {
   const { role } = useAuth();
@@ -57,14 +58,14 @@ export const AppSidebar = () => {
             className="hover:bg-transparent h-[80px] w-full"
             asChild
           >
-            <a>
+            <Link href="/">
               <Image
                 src="/logoBlack.png"
                 alt="LetsGo Logo"
                 width={120}
                 height={80}
               />
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarHeader>
         <SidebarContent className=" flex flex-col justify-between">
@@ -117,9 +118,9 @@ export const AppSidebar = () => {
                                             asChild
                                             isActive={pathname === subItem.url}
                                           >
-                                            <a href={subItem.url}>
+                                            <Link href={subItem.url}>
                                               <span>{subItem.title}</span>
-                                            </a>
+                                            </Link>
                                           </SidebarMenuButton>
                                         </SidebarMenuSubItem>
                                       );
@@ -134,10 +135,10 @@ export const AppSidebar = () => {
                               asChild
                               isActive={pathname === item.url}
                             >
-                              <a href={item.url}>
+                              <Link href={item.url}>
                                 <ColoredIcon Icon={item.icon} />
                                 <span>{item.title}</span>
-                              </a>
+                              </Link>
                             </SidebarMenuButton>
                           )}
                         </SidebarMenuItem>
@@ -170,10 +171,10 @@ export const AppSidebar = () => {
                       asChild
                       isActive={pathname === `/profile/${user.id}`}
                     >
-                      <a href={`/profile/${user.id}`}>
+                      <Link href={`/profile/${user.id}`}>
                         <ColoredIcon Icon={User} />
                         <span>My Profile</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   )}
                   <SidebarMenuButton

@@ -96,110 +96,151 @@ const BlogAndPodcastDataTable: React.FC<DataTableProps> = ({
     );
   };
 
+  const formatCreatedAt = (dateValue: string) =>
+    new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).format(new Date(dateValue));
+
+  const renderActions = (row: BlogInterface | PodcastInterface) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[180px]" align="end">
+        <DropdownMenuLabel className="paragraph-medium-medium">
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => handleOnClickPreview(row.id)}>
+          <Eye /> Preview
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handlePublishClick(row.id)}>
+          <CheckCircle /> Publish
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => handleRejection(row.id)}
+          className="text-redTheme hover:text-redTheme"
+        >
+          <XCircle /> Decline publication
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <>
-      <div className="rounded-md border overflow-hidden">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Title
-              </th>
-              <th className="text-start w-[30%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Description
-              </th>
-              <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Posted By
-              </th>
-              <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Status
-              </th>
-              <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Created At
-              </th>
-              <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(data) &&
-              data.length > 0 &&
-              [...data].map((row, index) => (
-                <tr
-                  key={row.id}
-                  className={
-                    index === data.length - 1
-                      ? 'rounded-b-[20px] overflow-hidden'
-                      : ''
-                  }
-                >
-                  <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
-                    {truncateText(row.title)}
-                  </td>
-                  <td className="text-start w-[40%] paragraph-xmedium-normal px-4 py-2 border-b">
+      <div className="rounded-md border bg-white">
+        <div className="md:hidden divide-y">
+          {Array.isArray(data) && data.length > 0 ? (
+            [...data].map((row) => (
+              <div key={row.id} className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="paragraph-small-normal text-black-300">Title</p>
+                    <p className="paragraph-medium-medium break-words">
+                      {truncateText(row.title)}
+                    </p>
+                  </div>
+                  {renderActions(row)}
+                </div>
+                <div>
+                  <p className="paragraph-small-normal text-black-300">
+                    Description
+                  </p>
+                  <p className="paragraph-medium-normal break-words">
                     {truncateText(row.description)}
-                  </td>
-                  <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-2 border-b">
-                    {users[row.id] &&
-                      users[row.id].firstName + ' ' + users[row.id].lastName}
-                  </td>
-                  <td className="text-start w-[1%] paragraph-xmedium-normal px-4 py-2 border-b">
-                    <StatusTag status={row.status} />
-                  </td>
-                  <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-2 border-b">
-                    {new Intl.DateTimeFormat('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                      hour12: false,
-                    }).format(new Date(row.createdAt))}
-                  </td>
-                  <td className="text-start w-[10%] paragraph-xmedium-normal px-4 py-2 border-b">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-[180px]" align="end">
-                        <DropdownMenuLabel className="paragraph-medium-medium">
-                          Actions
-                        </DropdownMenuLabel>
-                        <DropdownMenuItem
-                          onClick={() => handleOnClickPreview(row.id)}
-                        >
-                          <Eye /> Preview
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handlePublishClick(row.id)}
-                        >
-                          <CheckCircle /> Publish
-                        </DropdownMenuItem>
-                        {/* <DropdownMenuItem
-                          className=""
-                          onClick={() => handleArchive(row.id)}
-                        >
-                          <Archive size={24} /> Archive
-                        </DropdownMenuItem> */}
-                        <DropdownMenuItem
-                          onClick={() => handleRejection(row.id)}
-                          className="text-redTheme hover:text-redTheme"
-                        >
-                          <XCircle /> Decline publication
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <StatusTag status={row.status} />
+                  <p className="paragraph-small-normal text-black-300">
+                    {formatCreatedAt(row.createdAt)}
+                  </p>
+                </div>
+                <p className="paragraph-small-normal text-black-300 break-words">
+                  Posted by:{' '}
+                  {users[row.id]
+                    ? `${users[row.id].firstName} ${users[row.id].lastName}`
+                    : '-'}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="px-4 py-8 text-center text-gray-500">
+              No content found
+            </p>
+          )}
+        </div>
+
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full min-w-[980px] border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="text-start w-[20%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Title
+                </th>
+                <th className="text-start w-[30%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Description
+                </th>
+                <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Posted By
+                </th>
+                <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Status
+                </th>
+                <th className="text-start w-[15%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Created At
+                </th>
+                <th className="text-start w-[10%] paragraph-xmedium-normal text-black-300 px-4 py-2 border-b">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(data) &&
+                data.length > 0 &&
+                [...data].map((row, index) => (
+                  <tr
+                    key={row.id}
+                    className={
+                      index === data.length - 1
+                        ? 'rounded-b-[20px] overflow-hidden'
+                        : ''
+                    }
+                  >
+                    <td className="text-start w-[20%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      {truncateText(row.title)}
+                    </td>
+                    <td className="text-start w-[40%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      {truncateText(row.description)}
+                    </td>
+                    <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      {users[row.id] &&
+                        users[row.id].firstName + ' ' + users[row.id].lastName}
+                    </td>
+                    <td className="text-start w-[1%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      <StatusTag status={row.status} />
+                    </td>
+                    <td className="text-start w-[15%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      {formatCreatedAt(row.createdAt)}
+                    </td>
+                    <td className="text-start w-[10%] paragraph-xmedium-normal px-4 py-2 border-b">
+                      {renderActions(row)}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <DeleteDialog
         id={currentId}

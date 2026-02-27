@@ -1,63 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PodcastInterface } from '@/types/podcast';
 import React from 'react';
-import Image from 'next/image';
-import { MessageCircle, ThumbsUp } from 'lucide-react';
-import CustomButton from '../ui/customButton';
-import { Play } from 'lucide-react';
 import { truncateText, truncateTitleText } from '../../helper/TruncateText';
 import Link from 'next/link';
-import LikeDislikeButton from '../ui/LikeDislikeButton';
-import CommentsButton from '../ui/CommentsButton';
 import { formatDateOrRelative } from '@/helper/formatDateOrRelative';
 import { formatHumanReadableDuration } from '@/helper/formatAudioDuration';
-import { entityType } from '@/constants/entityType';
-import ViewsButton from '../ui/ViewsButton';
 import AddToFavoritiesButton from '../ui/AddToFavoritiesButton';
 import ShareButton2 from '../ui/ShareButton';
 import PodcastCoverImage from './PodcastCoverImage';
 
 interface PodcastCardProps {
   data: PodcastInterface[];
-  images?: {
-    [key: string]: number[];
-  };
 }
-const PodcastCard: React.FC<PodcastCardProps> = ({ data, images }) => {
-  const userInteraction = {
-    likes: 0,
-    comments: 0,
-  };
+
+const PodcastCard: React.FC<PodcastCardProps> = ({ data }) => {
+  if (!Array.isArray(data) || data.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="grid grid-cols-1 gap-y-[60px] gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((podcast, index) => (
+    <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {data.map((podcast) => (
         <div
           key={podcast.id}
           className="flex w-full flex-col gap-4 cursor-pointer"
         >
           <Link href={`/podcast/${podcast.id}`}>
-            <div className="h-[300px]">
-              {images && images[podcast.id] ? (
-                (() => {
-                  const currentImage = images[podcast.id];
-                  const binaryData =
-                    Buffer.from(currentImage).toString('base64');
-                  const base64ImageUrl = `data:image/jpeg;base64,${binaryData}`;
-
-                  return (
-                    <Image
-                      src={base64ImageUrl}
-                      alt={podcast.title}
-                      width={1200}
-                      height={100}
-                      className="rounded-lg object-cover w-full h-full"
-                    />
-                  );
-                })()
-              ) : (
-                <PodcastCoverImage podcastId={podcast.id} />
-              )}
+            <div className="h-56 sm:h-64 md:h-72 rounded-lg overflow-hidden bg-gray-100">
+              <PodcastCoverImage podcastId={podcast.id} />
             </div>
           </Link>
           <div className="flex flex-col gap-3">
@@ -89,27 +59,14 @@ const PodcastCard: React.FC<PodcastCardProps> = ({ data, images }) => {
               Play now
             </Button> */}
             </div>
-            <div className="flex gap-6 items-center">
-              <LikeDislikeButton
-                entityId={podcast.id}
-                entityType={entityType.podcast}
-              />
-
-              <CommentsButton
-                entityId={podcast.id}
-                entityType={entityType.podcast}
-              />
-              <ViewsButton
-                entityId={podcast.id}
-                entityType={entityType.podcast}
-              />
+            <div className="flex gap-4 items-center">
               <AddToFavoritiesButton
                 entityId={podcast.id}
-                entityType={entityType.podcast}
+                entityType="PODCAST"
               />
               <ShareButton2
                 entityId={podcast.id}
-                entityType={entityType.podcast}
+                entityType="PODCAST"
               />
             </div>
           </div>

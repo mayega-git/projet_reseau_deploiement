@@ -81,9 +81,9 @@ const BlogContent: React.FC<BlogContentParams> = ({
   }, [user?.id, blog?.authorId, param]);
 
   return (
-    <div className="flex flex-col gap-24">
+    <div className="flex flex-col gap-12 sm:gap-24">
       <div className="flex flex-col items-center justify-center gap-8">
-        <div className="flex flex-col gap-8 w-[800px]">
+        <div className="flex flex-col gap-8 w-full max-w-4xl">
           <div>
             <div className="flex gap-1">
               {blog.tags.map((tag, index) => (
@@ -100,7 +100,7 @@ const BlogContent: React.FC<BlogContentParams> = ({
           </div>
 
           <div className="flex flex-col gap-12">
-            <div className="h-[46px] flex gap-3">
+            <div className="min-h-[46px] flex gap-3">
               <Link href={`/profile/${blog.authorId}`}>
                 <UserAvatar
                   size="md"
@@ -109,8 +109,8 @@ const BlogContent: React.FC<BlogContentParams> = ({
                 />
               </Link>
 
-              <div className="flex flex-col w-full justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col w-full justify-between gap-1">
+                <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-1">
                     <p className="paragraph-medium-normal text-black-500">
                       {userData.firstName + ' ' + userData.lastName}
@@ -153,7 +153,7 @@ const BlogContent: React.FC<BlogContentParams> = ({
             )}
 
             {param !== 'preview' && (
-              <div className="border-y border-t py-3 border-grey-300 flex gap-8 items-center">
+              <div className="border-y border-t py-3 border-grey-300 flex flex-wrap gap-4 sm:gap-8 items-center">
                 <LikeDislikeButton
                   entityId={blog.id}
                   entityType={entityType.blog}
@@ -180,24 +180,24 @@ const BlogContent: React.FC<BlogContentParams> = ({
             )}
           </div>
 
-          <div className="h-[400px] w-full">
+          <div className="h-[220px] sm:h-[320px] lg:h-[400px] w-full">
             <BlogCoverImage  blogId={blog.id} />
           </div>
         </div>
 
-        <div className="flex w-full">
+        <div className="flex flex-col lg:flex-row w-full max-w-5xl gap-4 lg:gap-0">
           <ShareButtons />
           {blog.content && (
-            <div className="max-w-[800px] min-w-[100px] leading-28 paragraph-medium-normal">
+            <div className="w-full max-w-4xl min-w-0 leading-28 paragraph-medium-normal">
               <ConvertDraftToHTML content={blog.content} />
             </div>
           )}
         </div>
-        <div className="flex flex-col max-w-[800px] gap-16 w-full mt-16">
+        <div className="flex flex-col max-w-4xl gap-10 sm:gap-16 w-full mt-10 sm:mt-16">
           <SubscribeCard />
           <div
             ref={commentSectionRef}
-            className="flex flex-col gap-16 w-full mt-16"
+            className="flex flex-col gap-10 sm:gap-16 w-full mt-10 sm:mt-16"
           >
             <CommentSection entityId={blog.id} entityType={entityType.blog}  />
             

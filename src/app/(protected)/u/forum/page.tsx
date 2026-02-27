@@ -91,10 +91,10 @@ export default function HomePage() {
       {/* Search and context could go here if needed, but SideBarHeader already has a search bar */}
 
       {/* Forum Title and Back button (local navigation) */}
-      <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-        <div className="flex items-center gap-4">
+      <div className="px-3 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div className="flex items-center gap-3 sm:gap-4">
           <h1
-            className="h3-bold text-black-500 cursor-pointer"
+            className="h4-bold sm:h3-bold text-black-500 cursor-pointer"
             onClick={handleBackToGroups}
           >
             Forum Community
@@ -112,7 +112,7 @@ export default function HomePage() {
           {isAdmin && (
             <button
               onClick={loadAdminGroups}
-              className="px-4 py-2 bg-black-500 text-white rounded-lg hover:bg-black-400 transition-colors paragraph-medium-medium"
+              className="px-4 py-2 bg-black-500 text-white rounded-lg hover:bg-black-400 transition-colors paragraph-medium-medium w-full sm:w-auto"
             >
               Administration
             </button>
@@ -120,7 +120,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-3 sm:p-6">
         {error && <ErrorMessage message={error} />}
 
         {loading && view === 'groups' ? (

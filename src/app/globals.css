@@ -7,7 +7,8 @@
 }
 
 audio {
-    width:600px;
+    width:100%;
+    max-width: 600px;
     height: 40px;
     border-radius: 8px;
     background-color: transparent;
@@ -40,8 +41,13 @@ body {
 }
 .container {
     max-width: 2100px;
-    padding: 0 128px;
+    padding: 0 clamp(16px, 4vw, 128px);
     margin: 0 auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .notfound {

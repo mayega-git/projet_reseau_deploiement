@@ -9,59 +9,67 @@ import { BlogInterface } from '@/types/blog';
 
 interface BlogPageProps {
   data: BlogInterface[];
- 
 }
-const BlogPage: React.FC<BlogPageProps> = ({ data}) => {
+
+const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
+  const mostPopular = data.slice(0, 3);
+  const mostRecent = data.slice(3, 9);
+  const exploreAll = data.slice(9);
+
   return (
     <div>
       <div className="container">
-        <div className="w-full flex flex-col gap-[84px]">
+        <div className="w-full flex flex-col gap-14 md:gap-20">
           {/* coverImage blog */}
           <CoverBlog blog={coverBlogData} />
 
           {/* most popular */}
           <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
+            <div className="w-full items-center flex justify-between gap-4">
               <p className="h4-medium">Most Popular</p>
-              <Button round variant="outline">
+              <Button round variant="outline" className="hidden sm:inline-flex">
                 View all
               </Button>
             </div>
 
-            {Array.isArray(data) && data.length > 0 && (
-              <BlogCard data={data}  />
+            {Array.isArray(mostPopular) && mostPopular.length > 0 && (
+              <BlogCard data={mostPopular} />
             )}
           </section>
 
           {/* most recent */}
           <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
+            <div className="w-full items-center flex justify-between gap-4">
               <p className="h4-medium">Most Recent</p>
-              <Button round variant="outline">
+              <Button round variant="outline" className="hidden sm:inline-flex">
                 View all
               </Button>
             </div>
-            {Array.isArray(data) && data.length > 0 && (
-              <BlogCard data={data}  />
+            {Array.isArray(mostRecent) && mostRecent.length > 0 && (
+              <BlogCard data={mostRecent} />
             )}
           </section>
 
-          <div className='w-[80%] mx-auto'>
+          <div className="w-full lg:w-[80%] mx-auto">
             <SubscribeCard />
           </div>
 
           {/* Explorre all */}
-          <section className="flex flex-col gap-8">
-            <div className="w-full items-center flex justify-between">
+          {exploreAll.length > 0 && (
+            <section className="flex flex-col gap-8">
+              <div className="w-full items-center flex justify-between gap-4">
               <p className="h4-medium">Explore All</p>
-              <Button round variant="outline">
+                <Button
+                  round
+                  variant="outline"
+                  className="hidden sm:inline-flex"
+                >
                 View all
               </Button>
-            </div>
-            {Array.isArray(data) && data.length > 0 && (
-              <BlogCard data={data}  />
-            )}
-          </section>
+              </div>
+              <BlogCard data={exploreAll} />
+            </section>
+          )}
         </div>
       </div>
     </div>

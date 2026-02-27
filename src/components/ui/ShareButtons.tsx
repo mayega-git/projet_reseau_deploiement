@@ -66,9 +66,9 @@ const ShareButtons = () => {
 
   return (
     <div
-      className={`overflow-hidden py-6 sticky top-32 mr-[54px] flex flex-col items-center gap-4 h-full text-black-300`}
+      className="overflow-hidden py-4 lg:py-6 lg:sticky lg:top-32 lg:mr-10 flex flex-row lg:flex-col items-center gap-3 lg:gap-4 h-full text-black-300"
     >
-      <p className="font-medium paragraph-medium-medium">Share</p>
+      <p className="font-medium paragraph-medium-medium hidden lg:block">Share</p>
       {socialPlatforms.map(({ name, icon, url }) => (
         <button
           key={name}

@@ -67,11 +67,11 @@ const Login = () => {
 
   return (
     <div className="main-layout w-full min-h-screen bg-secondaryGreen-500 flex flex-col items-center">
-      <main className="flex flex-col items-center mt-20 gap-14">
+      <main className="flex flex-col items-center mt-10 sm:mt-20 gap-8 sm:gap-14 w-full px-4">
         <Image alt="logo" width={110} height={52} src="/logoBlack.png" />
         <form
           onSubmit={handleSubmit}
-          className="py-8 w-[460px] border border-grey-300 max-sm:w-full bg-white rounded-[8px] px-8 flex justify-center flex-col gap-10"
+          className="py-6 sm:py-8 w-full max-w-[460px] border border-grey-300 bg-white rounded-[8px] px-4 sm:px-8 flex justify-center flex-col gap-8 sm:gap-10"
         >
           <h4 className="h4-bold">Log in to your account</h4>
           <div className="flex flex-col gap-8">

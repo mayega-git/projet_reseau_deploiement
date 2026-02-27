@@ -1,38 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import { BlogInterface } from '@/types/blog';
-import { ThumbsUp } from 'lucide-react';
-import { MessageCircle } from 'lucide-react';
 import { truncateText, truncateTitleText } from '../../helper/TruncateText';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import LikeDislikeButton from '../ui/LikeDislikeButton';
-import CommentsButton from '../ui/CommentsButton';
 import { formatDateOrRelative } from '@/helper/formatDateOrRelative';
-// Removed: EducationServiceRoutes import (migrated to server actions)
-import { GetUser } from '@/types/User';
-import { entityType } from '@/constants/entityType';
-import { useAuth } from '@/context/AuthContext';
-import ViewsButton from '../ui/ViewsButton';
 import AddToFavoritiesButton from '../ui/AddToFavoritiesButton';
 import ShareButton2 from '../ui/ShareButton';
 import BlogCoverImage from './BlogCoverImage';
 
 interface BlogCardProps {
   data: BlogInterface[];
-  
 }
 
-const userInteraction = {
-  likes: 0,
-  comments: 0,
-};
-
 const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
-  const router = useRouter();
-  const { user } = useAuth();
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <p className="text-center text-gray-500">No blog posts available.</p>
@@ -40,16 +21,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-y-[60px] gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((blog, index) => (
+    <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {data.map((blog) => (
         <div
           key={blog.id}
-          className="flex w-full  transition duration-300 flex-col gap-4 cursor-pointer"
+          className="flex w-full transition duration-300 flex-col gap-4 cursor-pointer"
         >
           <Link href={`/blog/${blog.id}`}>
-            <div className="h-[300px]">
-              <BlogCoverImage blogId={blog.id}  />
-
+            <div className="h-56 sm:h-64 md:h-72 rounded-lg overflow-hidden bg-gray-100">
+              <BlogCoverImage blogId={blog.id} />
             </div>
           </Link>
           <div className="flex flex-col gap-3">
@@ -74,21 +54,12 @@ const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
               </div>
             </div>
 
-            <div className="flex gap-6 items-center">
-              <LikeDislikeButton
-                entityId={blog.id}
-                entityType={entityType.blog}
-              />
-
-              <CommentsButton entityId={blog.id} entityType={entityType.blog} />
-
-              <ViewsButton entityId={blog.id} entityType={entityType.blog} />
-
+            <div className="flex gap-4 items-center">
               <AddToFavoritiesButton
                 entityId={blog.id}
-                entityType={entityType.blog}
+                entityType="BLOG"
               />
-              <ShareButton2 entityId={blog.id} entityType={entityType.blog} />
+              <ShareButton2 entityId={blog.id} entityType="BLOG" />
             </div>
           </div>
         </div>

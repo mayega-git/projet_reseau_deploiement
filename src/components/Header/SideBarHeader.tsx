@@ -35,10 +35,10 @@ const SideBarHeader = () => {
   const { user, role } = useAuth();
 
   return (
-    <header className=" flex justify-between items-center px-6 h-[92px] w-full bg-white-50 border-b border-gray-300">
-      <div className="flex items-center gap-6">
+    <header className="flex justify-between items-center px-4 sm:px-6 h-[92px] w-full bg-white-50 border-b border-gray-300 gap-3">
+      <div className="flex items-center gap-3 sm:gap-6 min-w-0">
         <SidebarTrigger className="text-black-100" />
-        <div className="border border-grey-300 flex items-center px-4 py-2 w-[450px] h-10 bg-white rounded-lg">
+        <div className="hidden md:flex border border-grey-300 items-center px-4 py-2 w-[260px] lg:w-[450px] h-10 bg-white rounded-lg">
           <input
             type="text"
             placeholder="Search..."
@@ -48,16 +48,17 @@ const SideBarHeader = () => {
         </div>
       </div>
 
-      <nav className="flex  ">
+      <nav className="flex min-w-0">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-6">
-            <Bell size={24} className="text-black-100" />
+          <div className="flex items-center gap-3 md:gap-6">
+            <Bell size={22} className="text-black-100" />
             {role && role.includes(AppRoles.AUTHOR) ? (
               <CreateContentIcons />
             ) : role?.length === 1 && role.includes(AppRoles.USER) ? (
               <CustomButton
                 onClick={() => setShowAuthorDialog(true)}
                 variant="gradientOrange"
+                className="hidden lg:inline-flex"
               >
                 Become an author
               </CustomButton>
@@ -72,17 +73,20 @@ const SideBarHeader = () => {
                       {getInitials(user?.firstName + ' ' + user?.lastName)}
                     </p>
                   </div>
-                  <div className="flex flex-col gap-0">
+                  <div className="hidden lg:flex flex-col gap-0 max-w-[220px]">
                     <p className="paragraph-medium-medium">
                       {user?.firstName + ' ' + user?.lastName}
                     </p>
-                    <p className="paragraph-small-normal text-black-300">
+                    <p className="paragraph-small-normal text-black-300 truncate">
                       {user?.sub}
                     </p>
                   </div>
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[160px] mx-8 items-start py-4 px-3 flex flex-col gap-2 bg-white shadow-lg rounded-lg">
+              <DropdownMenuContent
+                align="end"
+                className="w-[160px] items-start py-4 px-3 flex flex-col gap-2 bg-white shadow-lg rounded-lg"
+              >
                 <DropdownMenuGroup className="w-full">
                   {user && (
                     <DropdownMenuItem className="w-full cursor-pointer border-none outline-none flex paragraph-medium-normal items-center gap-2 px-3 rounded-lg hover:outline-none hover:border-none hover:bg-grey-100 bg-transparent py-2">

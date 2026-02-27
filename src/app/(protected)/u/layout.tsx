@@ -47,7 +47,9 @@ const RoleLayout = ({
       <AppSidebar />
       <SidebarInset>
         <SideBarHeader />
-        <main className="w-full px-6 mt-4 mb-16">{children}</main>
+        <main className="w-full px-3 sm:px-4 lg:px-6 mt-4 mb-12 sm:mb-16">
+          {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );

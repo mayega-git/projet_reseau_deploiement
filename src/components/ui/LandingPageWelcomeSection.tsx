@@ -9,13 +9,16 @@ const LandingPageWelcomeSection = () => {
       <Image
         src="/images/background.png"
         alt="Background"
-        width={100}
-        height={'0'}
+        fill
+        sizes="100vw"
         className="background-image"
+        priority
       />
       <div className="text-overlay container">
-        <h1 className="h1-bold">The LetsGo Blog & Podcast</h1>
-        <p className="paragraph-large-normal">
+        <h1 className="h2-bold sm:text-h1 sm:leading-48">
+          The LetsGo Blog & Podcast
+        </h1>
+        <p className="paragraph-medium-normal sm:text-paragraph-large sm:leading-28">
           Welcome to the Let’s Go Blog and Podcast – your source for tips,
           stories, and insights across Cameroon! From travel advice to inspiring
           local stories, we’ve got what you need to stay informed and inspired.

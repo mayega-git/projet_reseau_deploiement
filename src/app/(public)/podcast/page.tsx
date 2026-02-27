@@ -4,15 +4,11 @@ import Header1 from '@/components/Header/Header1';
 import NavTabsMain from '@/components/Navigation/NavTabsMain';
 import PodcastPage from '@/components/Podcast/HomePage';
 import LandingPageWelcomeSection from '@/components/ui/LandingPageWelcomeSection';
-import {
-  fetchPodcastImages,
-  getAllPodcasts,
-} from '@/lib/fetchers/blog';
+import { getAllPodcasts } from '@/lib/fetchers/blog';
 import React, { Suspense } from 'react';
 
 const PodcastFeed = async () => {
   const allPodcastData = await getAllPodcasts('PUBLISHED');
-  const allPodcastImages = await fetchPodcastImages(allPodcastData);
 
   if (!allPodcastData || allPodcastData.length === 0) {
     return (
@@ -24,7 +20,7 @@ const PodcastFeed = async () => {
 
   return (
     <>
-      <PodcastPage data={allPodcastData} images={allPodcastImages} />
+      <PodcastPage data={allPodcastData} />
     </>
   );
 };

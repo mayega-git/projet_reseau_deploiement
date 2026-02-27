@@ -19,18 +19,21 @@ const CoverBlog: React.FC<CoverBlogParams> = ({ blog }) => {
         <Image
           src={blog.coverImage}
           alt="Background"
-          // layout="intrinsic" // Make the image responsive while maintaining aspect ratio
-          width={1200} // Set the width to the original image's width or desired aspect ratio
-          height={420} // Set the height to match the container or desired aspect ratio
+          width={1200}
+          height={420}
+          sizes="(max-width: 768px) 100vw, 1200px"
           className="background-image-blog"
+          priority
         />
         <div className="text-overlay-blog">
           <p className="paragraph-small-medium">
             {formatDateOrRelative(blog.publishedAt)}
           </p>
           <div className="flex flex-col gap-1">
-            <p className="h5-medium">{blog.title}</p>
-            <p className="paragraph-medium-normal">{blog.description}</p>
+            <p className="h6-medium sm:text-h5 sm:leading-32">{blog.title}</p>
+            <p className="paragraph-small-normal sm:text-paragraph-medium sm:leading-24">
+              {blog.description}
+            </p>
             <div className="flex items-center gap-4 mt-2">
               <div className="flex gap-6 items-center text-white">
                 {/* <LikeDislikeButton color="#fff" initialLikes={0} />
