@@ -5,4 +5,9 @@ databaseChangeLog:
   - include:
       file: changes/2_changelog-master.yaml
       relativeToChangelogFile: true
-  
+  - include:
+      file: changes/3_changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/4_changelog-master.yaml
+      relativeToChangelogFile: true

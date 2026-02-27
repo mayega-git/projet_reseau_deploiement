@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: v4-create-abonnement-table
+      author: antigravity
+      preConditions:
+        onFail: MARK_RAN
+        onError: HALT
+        not:
+          tableExists:
+            tableName: abonnement
+      changes:
+        - sqlFile:
+            path: sql/V4__create_abonnement_table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: false

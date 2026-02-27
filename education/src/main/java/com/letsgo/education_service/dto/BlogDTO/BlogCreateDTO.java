@@ -8,10 +8,11 @@ import lombok.Data;
 import java.util.List;
 import java.util.UUID;
 
+import com.letsgo.education_service.dto.EducationCreateDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
-public class BlogCreateDTO {
+public class BlogCreateDTO implements EducationCreateDTO {
 
     @NotBlank
     @Schema(description = "Titre du blog", example = "Les bases de Spring Boot")
@@ -20,9 +21,6 @@ public class BlogCreateDTO {
     @NotBlank
     @Schema(description = "Description du blog", example = "Introduction à Spring Boot et ses fonctionnalités principales.")
     private String description;
-
-
-   
 
     @NotNull(message = "L'identifiant de l'auteur est requis")
     @Schema(description = "ID de l'auteur du blog", example = "123456")
@@ -40,31 +38,21 @@ public class BlogCreateDTO {
     @Schema(description = "Contenu du blog", example = "Spring Boot facilite le développement des applications Spring...")
     private String content;
 
-
-
-
     @Schema(description = "Liste des tags associés", example = "[\"Spring Boot\", \"Java\"]")
     private List<String> tags;
- 
-       
-    /*@Schema(description = "URL de l'audio du blog (optionnel)", example = "https://example.com/audio.mp3")
-    private String audioUrl;*/
+
+    /*
+     * @Schema(description = "URL de l'audio du blog (optionnel)", example =
+     * "https://example.com/audio.mp3")
+     * private String audioUrl;
+     */
 
     @NotNull
     @Schema(description = "Temps de lecture estimé en minutes", example = "10")
     private Integer readingTime;
 
-    
-
     @NotEmpty
     @Schema(description = "categorie", example = "[\"Roman\",\"Essai\"]")
     private List<String> categories;
-
-    /*@NotNull
-    @Schema(description = "plateformeId" , example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID plateformeId;*/
-
-
-
 
 }

@@ -15,13 +15,12 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+import com.letsgo.education_service.dto.EducationCreateDTO;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PodcastCreateDTO {
-
-
+public class PodcastCreateDTO implements EducationCreateDTO {
 
     @NotBlank(message = "Le titre ne peut pas être vide")
     @Schema(description = "Titre du podcast", example = "Les bases de Spring Boot")
@@ -30,7 +29,6 @@ public class PodcastCreateDTO {
     @NotNull(message = "L'identifiant de l'auteur est requis")
     @Schema(description = "ID de l'auteur", example = "3b4f0154-7273-48b6-9529-1eaa24460c3d")
     private UUID authorId;
-
 
     @NotNull(message = "S'il appartient à une organisation")
     @Schema(description = "ID de l'organisation", example = "3b4f0154-7273-48b6-9529-1eaa24460c3d")
@@ -47,14 +45,11 @@ public class PodcastCreateDTO {
     @Schema(description = "Transcription de l\'audio", example = "Transcription de l\'audio")
     private String transcript;
 
-    
     @NotBlank(message = "Le nom du domaine")
     @Schema(description = "Le nom du domaine", example = "LITTERATURE")
     private String domain;
 
-   
     @Schema(description = "categorie", example = "[\"Roman\",\"Essai\"]")
     private List<String> categories;
-
 
 }

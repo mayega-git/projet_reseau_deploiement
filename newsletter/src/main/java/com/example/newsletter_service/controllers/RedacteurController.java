@@ -4,6 +4,7 @@ import com.example.newsletter_service.dto.RedacteurRequestResponse;
 import com.example.newsletter_service.dto.RedacteurRequestSubmission;
 import com.example.newsletter_service.models.Redacteur;
 import com.example.newsletter_service.services.RedacteurApprovalService;
+import com.example.newsletter_service.services.RedacteurService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import jakarta.validation.Valid;
 public class RedacteurController {
 
     private final RedacteurApprovalService approvalService;
+    private final RedacteurService redacteurService;
 
     /**
      * Soumettre une demande d'inscription
@@ -50,5 +52,13 @@ public class RedacteurController {
     public Mono<Redacteur> getRedacteurByEmail(@RequestParam(name = "email") String email) {
         log.info("Recherche du rédacteur par email: {}", email);
         return approvalService.findByEmail(email);
+    }
+
+    /**
+     * NOUVEAU : Vérifier si un rédacteur existe
+     */
+    @GetMapping("/exists-by-email")
+    public Mono<Boolean> checkRedacteurExists(@RequestParam(name = "email") String email) {
+        return redacteurService.checkIfRedacteurExists(email);
     }
 }

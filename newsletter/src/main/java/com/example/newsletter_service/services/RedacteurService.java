@@ -21,10 +21,9 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class RedacteurService {
-    
+
     private final RedacteurRepository redacteurRepository;
-   
-    
+
     /**
      * Inscription d'un nouveau rédacteur
      */
@@ -34,27 +33,24 @@ public class RedacteurService {
         log.info(" Inscription d'un nouveau rédacteur: {}", request.getEmail());
 
         return redacteurRepository.existsByEmail(request.getEmail())
-            .flatMap(exists -> {
-                if (exists) {
-                    return Mono.error(
-                        new IllegalArgumentException("Cet email est déjà utilisé")
-                    );
-                }
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(
+                                new IllegalArgumentException("Cet email est déjà utilisé"));
+                    }
 
-                Redacteur redacteur = Redacteur.builder()
-                    .email(request.getEmail())          
-                    .password(request.getPassword())    
-                    .nom(request.getNom())
-                    .prenom(request.getPrenom())
-                    .createdAt(LocalDateTime.now())
-                    .build();
+                    Redacteur redacteur = Redacteur.builder()
+                            .email(request.getEmail())
+                            .password(request.getPassword())
+                            .nom(request.getNom())
+                            .prenom(request.getPrenom())
+                            .createdAt(LocalDateTime.now())
+                            .build();
 
-                return redacteurRepository.save(redacteur);
-            })
-            .map(this::mapToResponse)
-            .doOnSuccess(response ->
-                log.info(" Rédacteur {} inscrit avec succès", response.getEmail())
-            );
+                    return redacteurRepository.save(redacteur);
+                })
+                .map(this::mapToResponse)
+                .doOnSuccess(response -> log.info(" Rédacteur {} inscrit avec succès", response.getEmail()));
     }
 
     /**
@@ -62,10 +58,8 @@ public class RedacteurService {
      */
     public Flux<RedacteurResponse> getAllRedacteurs() {
         return redacteurRepository.findAll()
-            .map(this::mapToResponse)
-            .doOnComplete(() ->
-                log.debug(" Liste des rédacteurs récupérée")
-            );
+                .map(this::mapToResponse)
+                .doOnComplete(() -> log.debug(" Liste des rédacteurs récupérée"));
     }
 
     /**
@@ -73,17 +67,24 @@ public class RedacteurService {
      */
     public Mono<RedacteurResponse> getRedacteurById(UUID id) {
         return redacteurRepository.findById(id)
-            .switchIfEmpty(Mono.error(new ResourceNotFoundException(id)))
-            .map(this::mapToResponse);
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException(id)))
+                .map(this::mapToResponse);
     }
 
     private RedacteurResponse mapToResponse(Redacteur redacteur) {
         return RedacteurResponse.builder()
-            .id(redacteur.getId())
-            .email(redacteur.getEmail())
-            .nom(redacteur.getNom())
-            .prenom(redacteur.getPrenom())
-            .createdAt(redacteur.getCreatedAt())
-            .build();
+                .id(redacteur.getId())
+                .email(redacteur.getEmail())
+                .nom(redacteur.getNom())
+                .prenom(redacteur.getPrenom())
+                .createdAt(redacteur.getCreatedAt())
+                .build();
+    }
+
+    /**
+     * NOUVEAU : Vérifie si un rédacteur existe à partir de son email
+     */
+    public Mono<Boolean> checkIfRedacteurExists(String email) {
+        return redacteurRepository.existsByEmail(email);
     }
 }

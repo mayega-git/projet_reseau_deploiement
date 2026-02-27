@@ -237,4 +237,11 @@ public class LecteurService {
     public Mono<Lecteur> getLecteurById(UUID id) {
         return lecteurRepository.findById(id);
     }
+
+    /**
+     * NOUVEAU : Vérifie si un lecteur existe à partir de son email
+     */
+    public Mono<Boolean> checkIfLecteurExists(String email) {
+        return lecteurRepository.existsByEmail(email);
+    }
 }

@@ -41,14 +41,12 @@ public class BlogController {
 
     private final BlogService blogService;
     private final ObjectMapper objectMapper;
-     private final EducationCategoryService educationCategoryService;
+    private final EducationCategoryService educationCategoryService;
 
     private final EducationTagService educationTagService;
 
     @Autowired
     private final FileStorageService fileStorageService;
-
-    
 
     @GetMapping("/test")
     public String getMethodName() {
@@ -87,7 +85,7 @@ public class BlogController {
 
                 .flatMap(createDTO -> {
                     System.out.println("Appel du service...");
-                    return blogService.createBlog(createDTO, audioFile, coverFile);
+                    return blogService.create(createDTO, audioFile, coverFile);
                 })
                 .map(blog -> {
                     System.out.println("Blog créé : " + blog.getId());
@@ -122,7 +120,7 @@ public class BlogController {
             @ApiResponse(responseCode = "400", description = "Mauvaise requête")
     })
     public Mono<ResponseEntity<Blog_entity>> getBlogById(@PathVariable("id") String id) {
-        return blogService.getBlogById(id)
+        return blogService.getById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -148,9 +146,11 @@ public class BlogController {
             @ApiResponse(responseCode = "200", description = "Succès"),
             @ApiResponse(responseCode = "404", description = "Id non trouvé")
     })
-    public Flux<Blog_entity> getAllBlogs() {
+    public Flux<Blog_entity> getAllBlogs(
+            @RequestParam(name = "authorId", required = false) String authorId,
+            @RequestParam(name = "status", required = false) String status) {
 
-        return blogService.getAllBlog();
+        return blogService.getAll(authorId, status);
     }
 
     @PatchMapping("/{id}/publish")
@@ -160,7 +160,7 @@ public class BlogController {
             @ApiResponse(responseCode = "404", description = "Id non trouvé")
     })
     public Mono<ResponseEntity<Blog_entity>> publishBlog(@PathVariable("id") String id) {
-        return blogService.publishBlog(id)
+        return blogService.publish(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -175,7 +175,7 @@ public class BlogController {
             @PathVariable String id,
             @Valid @RequestBody BlogCreateDTO updateDTO) {
 
-        return blogService.updateBlog(id, updateDTO)
+        return blogService.update(id, updateDTO)
                 .map(ResponseEntity::ok)
                 .onErrorResume(NoSuchElementException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(ResponseStatusException.class, e -> Mono.error(e))
@@ -199,7 +199,7 @@ public class BlogController {
     public Mono<ResponseEntity<Flux<DataBuffer>>> audio(@PathVariable UUID idPodcast) {
         System.out.println("=====PODCAST SERVICE - GET AUDIO IMAGE =======");
 
-        return blogService.getAudioPodcast(idPodcast)
+        return blogService.getAudioFile(idPodcast)
                 .map(file -> ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(file.getHeaders().getContentType().toString()))
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
@@ -224,7 +224,7 @@ public class BlogController {
             @ApiResponse(responseCode = "400", description = "Le blog est déjà supprimé")
     })
     public Mono<ResponseEntity<Void>> deleteBlog(@PathVariable String id) {
-        return blogService.archiveBlog(id)
+        return blogService.archive(id)
                 .map(isArchived -> isArchived
                         ? ResponseEntity.ok().<Void>build()
                         : ResponseEntity.status(HttpStatus.BAD_REQUEST).<Void>build())
@@ -232,13 +232,13 @@ public class BlogController {
     }
 
     @GetMapping("count-by-author/{id}")
-    @Operation(summary = "Nombre de blog par auteur")
+    @Operation(summary = "Nombre de contenus par auteur")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = " succès"),
 
     })
-    public Mono<Integer> getBlogCountByAuthor(@PathVariable("id") String authorId) {
-        return blogService.getBlogCountByAuthor(UUID.fromString(authorId));
+    public Mono<Integer> getCountByAuthor(@PathVariable("id") String authorId) {
+        return blogService.getCountByAuthor(UUID.fromString(authorId));
     }
 
     /*

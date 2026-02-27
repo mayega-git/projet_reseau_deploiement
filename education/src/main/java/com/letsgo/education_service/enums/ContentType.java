@@ -3,6 +3,7 @@ package com.letsgo.education_service.enums;
 public enum ContentType {
     BLOG("BLOG"),
     PODCAST("PODCAST"),
+    COURSE("COURSE"),
     COMMENT("COMMENT");
 
     private  final String  value;

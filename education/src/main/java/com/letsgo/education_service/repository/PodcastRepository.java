@@ -10,11 +10,9 @@ import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface PodcastRepository extends R2dbcRepository<Podcast_entity, UUID> {
+public interface PodcastRepository extends EducationBaseRepository<Podcast_entity> {
 
     Flux<Podcast_entity> findByStatus(String status);
-
 
 }

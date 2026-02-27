@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: v3-alter-cours-schema
+      author: mayega
+      preConditions:
+        onFail: MARK_RAN
+        onError: HALT
+        not:
+          tableExists:
+            tableName: cours
+      changes:
+        - sqlFile:
+            path: sql/V3__alter_schema_cours.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: false

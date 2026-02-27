@@ -43,11 +43,9 @@ public class PodcastController {
     private final PodcastService podcastService;
     private final ObjectMapper objectMapper;
 
-     private final EducationCategoryService educationCategoryService;
+    private final EducationCategoryService educationCategoryService;
 
     private final EducationTagService educationTagService;
-
-   
 
     /*
      * 
@@ -110,7 +108,7 @@ public class PodcastController {
         })
                 .flatMap(dto -> {
                     System.out.println("Appel du service PodcastService...");
-                    return podcastService.createPodcast(dto, audioFile, coverFile);
+                    return podcastService.create(dto, audioFile, coverFile);
                 })
                 .map(podcast -> {
                     System.out.println("Podcast créé : " + podcast.getId());
@@ -138,13 +136,15 @@ public class PodcastController {
     }
 
     @GetMapping
-    @Operation(summary = "Récupérer tous les podcasts")
-    @ApiResponses({
+    @Operation(summary = "Obtenir tous les podcasts ✅ ")
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Succès"),
-            @ApiResponse(responseCode = "404", description = "Podcast non trouvé")
+            @ApiResponse(responseCode = "404", description = "Id non trouvé")
     })
-    public Flux<Podcast_entity> getAllPodcast() {
-        return podcastService.getAllPodcast();
+    public Flux<Podcast_entity> getAll(
+            @RequestParam(name = "authorId", required = false) String authorId,
+            @RequestParam(name = "status", required = false) String status) {
+        return podcastService.getAll(authorId, status);
     }
 
     @GetMapping("/{id}")
@@ -154,7 +154,7 @@ public class PodcastController {
             @ApiResponse(responseCode = "404", description = "Podcast non trouvé")
     })
     public Mono<ResponseEntity<Podcast_entity>> getPodcastById(@PathVariable("id") String id) {
-        return podcastService.getPodcastById(id)
+        return podcastService.getById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -166,7 +166,7 @@ public class PodcastController {
             @ApiResponse(responseCode = "404", description = "Podcast non trouvé")
     })
     public Mono<ResponseEntity<Podcast_entity>> publishBlog(@PathVariable("id") String id) {
-        return podcastService.publishPodcast(id)
+        return podcastService.publish(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -181,7 +181,7 @@ public class PodcastController {
             @PathVariable String id,
             @Valid @RequestBody PodcastCreateDTO updateDTO) {
         System.out.println("UPDATE PODCAST CONTROLLER HIT");
-        return podcastService.updatePodcast(id, updateDTO)
+        return podcastService.update(id, updateDTO)
                 .map(updatedBlog -> ResponseEntity.ok(updatedBlog))
                 .onErrorResume(NoSuchElementException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(IllegalStateException.class,
@@ -203,7 +203,7 @@ public class PodcastController {
     public Mono<ResponseEntity<Flux<DataBuffer>>> audio(@PathVariable("idPodcast") UUID idPodcast) {
         System.out.println("=====PODCAST SERVICE - GET AUDIO IMAGE =======");
 
-        return podcastService.getAudioPodcast(idPodcast)
+        return podcastService.getAudioFile(idPodcast)
                 .map(file -> ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(file.getHeaders().getContentType().toString()))
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
@@ -220,7 +220,14 @@ public class PodcastController {
         return educationCategoryService.getCategoriesByEducation(idpodcast).collectList();
     }
 
-    
+    @GetMapping("count-by-author/{id}")
+    @Operation(summary = "Nombre de contenus par auteur")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = " succès"),
+    })
+    public Mono<Integer> getCountByAuthor(@PathVariable("id") String authorId) {
+        return podcastService.getCountByAuthor(UUID.fromString(authorId));
+    }
 
     /*
      * 
